@@ -1,5 +1,5 @@
 ---
 name: Alex Oladele
-avatar: /uploads/Adetayo (Alex) Oladele.jpeg
+avatar: /assets/uploads/profile-pic/Adetayo (Alex) Oladele.jpeg
 ---
 
