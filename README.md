@@ -24,10 +24,11 @@ Deployment:
 - [**asdf**](https://asdf-vm.com/)
 - [**Vercel**](https://vercel.com/)
 
-Tools:
+Other Tools:
 
 - [Gitmoji-cli](https://github.com/carloscuesta/gitmoji-cli)
-[- readme.so](https://readme.so/)
+- [readme.so](https://readme.so/)
+- [Vercel Badge Tool](https://therealsujitk-vercel-badge.vercel.app/)
 
 Site Theme:
 
