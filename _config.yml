@@ -5,7 +5,6 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Alex's blog
-# author: "Alex Oladele"
 email: oladelaa@gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
@@ -111,10 +110,10 @@ analytics:
     anonymize_ip: # true, false (default)
 
 # Site Author
-# author:
-#   name: "Alex Oladele"
-#   location: "Raleigh, NC"
-#   email:
+author:
+  name: "Alex Oladele"
+  location: "Raleigh, NC"
+  email: Oladelaa@gmail.com
 #   links:
 #     - label: "Email"
 #       icon: "fas fa-fw fa-envelope-square"
