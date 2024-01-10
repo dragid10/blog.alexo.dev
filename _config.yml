@@ -17,6 +17,7 @@ github_username: dragid10
 theme: minimal-mistakes-jekyll
 
 plugins:
+  - jekyll-dotenv
   - jekyll-feed
   - jekyll-gist
   - jekyll-seo-tag
@@ -102,11 +103,11 @@ social:
   name: # If the user or organization name differs from the site's name
   links: # An array of links to social media profiles
 
-# Analytics
+# Analytics (https://mmistakes.github.io/minimal-mistakes/docs/configuration/#analytics)
 analytics:
-  provider: false # false (default), "google", "google-universal", "google-gtag", "custom"
+  provider: "google-gtag" # false (default), "google", "google-universal", "google-gtag", "custom"
   google:
-    tracking_id:
+    tracking_id: {{ site.env.GOOGLE_ANALYTICS_GTAG_ID }}
     anonymize_ip: # true, false (default)
 
 # Site Author
