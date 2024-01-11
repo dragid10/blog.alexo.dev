@@ -25,12 +25,10 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 # Custom Gems
 #
-gem 'jekyll-dotenv'
-
 gem "jekyll-gist"
 gem "jekyll-seo-tag"
 gem "jekyll-include-cache"
-# gem "jekyll-default-layout"
 gem "minimal-mistakes-jekyll"
 gem "jekyll-paginate"
-gem "jekyll-feed", "~> 0.12"
+# gem "jekyll-feed", "~> 0.12"
+gem "jekyll-feed"
