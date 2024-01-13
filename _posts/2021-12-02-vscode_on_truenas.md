@@ -19,7 +19,7 @@ This is something I've been trying to figure out for the past couple of weeks. T
 
 1. Download the [SSH remote extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) in VS Code
 2. SSH into your TrueNAS server
-3. In the file /etc/ssh/sshd\_config change the line AllowTcpForwarding no to AllowTcpForwarding yes
+3. In the file `/etc/ssh/sshd\_config` change the line `AllowTcpForwarding no` to `AllowTcpForwarding yes`
 4. Open the Remote Explorer side panel in VS Code and connect to your TrueNAS server
 5. If prompted, enter your password or ssh key passphrase
 6. You should be able to connect without a problem!
