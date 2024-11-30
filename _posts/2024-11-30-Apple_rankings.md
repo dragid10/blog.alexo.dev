@@ -13,7 +13,7 @@ Okay so this actually occured back in September, but I felt it necessary to shar
 
 One random day in September, my partner and I were dicussing the site [AppleRankings.com](https://applerankings.com/) with our friend Sam. After looking at a bunch of random apples, we all collectively realized that we haven't actually tried that many apple varieties. Thus we decided to go to our Wegmans grocery store and buy 1 of each apple variety they had in stock.
 
-We sliced up each apple and ate 1 slice of each. We rated each apple on a scale of 1-5 and wrote down our thoughts. Just to make it know, I love crunchy apples and I love tart apples.
+We sliced up each apple and ate 1 slice of each. We rated each apple on a scale of 1-5 and wrote down our thoughts. Just to make it known, I love crunchy apples and I love tart apples.
 
 Here are the results:
 
@@ -25,7 +25,7 @@ Let me go through and explain my rankings:
 Okay this was a new apple for me. It had a kinda sparkling "Pop Rocks" feel to it. I don't know how else to describe it. I loved it.
 
 ## **Envy** (1/5):
-I didn't particularly like it. It was too sweet and not cirspy. I hate anything that tastes like a honeycrisp apple.
+I didn't particularly like it. It was too sweet and not crispy. I hate anything that tastes like a honeycrisp apple.
 
 ## **SugarBee** (2/5):
 Also too sweet but better than Envy.
