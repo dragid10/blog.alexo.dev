@@ -17,7 +17,7 @@ We sliced up each apple and ate 1 slice of each. We rated each apple on a scale 
 
 Here are the results:
 
-![List of 13 apples ranked by "Maddy", "Sam" and "alex"](/assets/uploads/apple-rankings-blog/apple-rankings.jpg)'
+![List of 13 apples ranked by "Maddy", "Sam" and "alex"](/assets/uploads/apple-rankings-blog/apple-rankings.jpg)
 
 Let me go through and explain my rankings:
 
