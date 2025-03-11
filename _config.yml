@@ -138,9 +138,9 @@ author:
 # Site Footer
 footer:
   links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: https://twitter.com/wizkid_alex
+    - label: "Bluesky"
+      icon: "fa-brands fa-bluesky"
+      url: https://bsky.app/profile/wizkidalex.bsky.social
 
     - label: "Mastodon"
       icon: "fab fa-mastodon"
@@ -157,6 +157,10 @@ footer:
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       url: https://www.instagram.com/wizkid_alex/
+
+    - label: "Threads"
+      icon: "fa-brands fa-threads"
+      url: https://www.threads.net/@wizkid_alex
 
 # Reading Files
 include:
