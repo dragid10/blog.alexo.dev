@@ -25,8 +25,8 @@ Ways it could probably be improved:
 For Tidbyt owners, the FRC Team Rank app is ready for download! Feel free to contribute by submitting a pull request if you encounter any bugs.
 [Tidbyt Community Repo](https://github.com/tidbyt/community/tree/main/apps/frcteamrank)
 
-![The FRC Team Rank app available in the Tidbyt app store. The pewview is of Team 6908 - Infuzed](../assets/uploads/tidbyt-app/tidbyt-app.png)
+![The FRC Team Rank app available in the Tidbyt app store. The pewview is of Team 6908 - Infuzed](/assets/uploads/tidbyt-app/tidbyt-app.png)
 
 ---
 
-![The FRC Team Rank app running on an actual tidbyt, displaying the rank (or lacktherof) of Team 6908-Infuzed ](../assets/uploads/tidbyt-app/tidbyt-app-on-device.jpg)
+![The FRC Team Rank app running on an actual tidbyt, displaying the rank (or lacktherof) of Team 6908-Infuzed ](/assets/uploads/tidbyt-app/tidbyt-app-on-device.jpg)
