@@ -277,3 +277,5 @@ build-iPhoneSimulator/
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/jekyll,yarn,node,linux,macos,ruby
+
+modules.xml
