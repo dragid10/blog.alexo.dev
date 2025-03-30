@@ -2,6 +2,8 @@
 title: I created a Tidbyt app!
 excerpt:
 date: 2025-03-20
+header:
+  og_image: /assets/uploads/default/default-header.png
 tags:
   - Programming
   - Projects

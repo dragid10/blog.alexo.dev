@@ -2,6 +2,8 @@
 title: My Ideal Todo App
 excerpt: A reflection on the features that would make up my ideal Todo productivity app. This would literally make me unstoppable.
 date: 2025-03-29
+header:
+  og_image: /assets/uploads/default/default-header.png
 tags:
   - Opinion
   - Reflection
