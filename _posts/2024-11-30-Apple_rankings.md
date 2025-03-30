@@ -2,10 +2,12 @@
 title: My Apple Rankings
 excerpt:
 date: 2024-11-30
+header:
+  og_image: /assets/uploads/default/default-header.png
 tags:
-  - fun
-  - slice-of-life
-  - food
+  - Fun
+  - Slice-of-life
+  - Food
 author: content/authors/Alex-Oladele.md
 ---
 

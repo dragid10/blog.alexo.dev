@@ -4,8 +4,10 @@ header:
 title: Connecting to DB2 on MacOS with Python (Intel and Apple Silicon)
 date: 2021-06-14T03:00:00.000Z
 tags:
-  - python
-  - knowledge-share
+  - Programming
+  - Guide
+  - Tutorial
+  - Python
 author: content/authors/Alex-Oladele.md
 ---
 If you’ve tried to connect to a DB2 database using the ibm-db package, you might have run into this issue at some point.
