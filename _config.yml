@@ -27,9 +27,9 @@ plugins:
 
 # Custom settings
 collections:
-  posts:
+  articles:
     output: true
-    permalink: /:collection/:path/
+    permalink: /:title/
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -268,10 +268,10 @@ compress_html:
 
 # Defaults
 defaults:
-  # _posts
+  # _articles
   - scope:
       path: ""
-      type: posts
+      type: articles
     values:
       layout: single
       author_profile: false
