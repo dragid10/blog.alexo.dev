@@ -1,9 +1,9 @@
 
 # blog.alexo.dev
+
 ![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=blog-alexo-dev&style=flat-square)
 
 The code that hosts [Alex's blog](https://blog.alexo.dev)
-
 
 ## Tech Stack
 
@@ -34,8 +34,6 @@ Site Theme:
 
 - [**Minimal-Mistakes**](https://github.com/mmistakes/minimal-mistakes)
 
-
-
 ## Run Locally
 
 1. Clone the project
@@ -51,11 +49,13 @@ Site Theme:
     ```
 
 1. Install asdf version manager following these instructions:
+
     ```plain
     https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
     ```
 
 1. Install asdf plugins
+
     ```bash
     # Ruby Plugin
     asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
@@ -78,8 +78,8 @@ Site Theme:
     yarn clean && yarn dev
     ```
 
-6. The site should now be available at: http://localhost:4000
+1. The site should now be available at: http://localhost:4000
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-

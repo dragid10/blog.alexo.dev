@@ -10,8 +10,13 @@ header:
 title: Connecting to TrueNAS Scale with VS Code SSH
 date: 2021-12-02T03:00:00.000Z
 tags:
-  - home-server
-  - knowledge-share
+  - Programming
+  - Projects
+  - DevOps
+  - Guide
+  - Quick Tip
+  - Linux
+  - TIL
 author: content/authors/Alex-Oladele.md
 ---
 
