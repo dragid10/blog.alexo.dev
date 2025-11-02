@@ -2,7 +2,12 @@
 title: Media consumed in 2023
 excerpt:
 date: 2024-02-11
+header:
+  og_image: /assets/uploads/default/default-header.png
 tags:
+  - Media
+  - Fun
+  - Slice-of-life
 author: content/authors/Alex-Oladele.md
 ---
 I'm doing this post for 2 reason:
