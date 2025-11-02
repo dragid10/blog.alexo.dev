@@ -3,7 +3,7 @@ import type { Collection } from "tinacms";
 const Post: Collection = {
     name: "post",
     label: "Posts",
-    path: "_posts",
+    path: "_articles",
     format: "md",
     defaultItem: () => ({
         title: "New Post",
@@ -17,14 +17,8 @@ const Post: Collection = {
         filename: {
             readonly: false,
             slugify: (values) => {
-                const date = new Date();
-                const day = date.getDate();
-                const month = date.getMonth() + 1;
-                const year = date.getFullYear();
-
-                let currentDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-                return `${currentDate}-${values?.title?.toLowerCase().replace(/ /g, '_')}`
+                // Use title only, no date prefix
+                return values?.title?.toLowerCase().replace(/ /g, '_') || 'untitled'
             },
         },
     },
