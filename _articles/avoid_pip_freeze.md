@@ -4,8 +4,11 @@ header:
 title: "**Stop** using pip freeze to create a requirements file"
 date: 2021-06-13T21:34:00.000Z
 tags:
-  - opinion
-  - python
+  - Opinion
+  - Python
+  - Thoughts
+  - Resources
+  - Learning
 author: content/authors/Alex-Oladele.md
 ---
 Dependency management be complicated sometimes
