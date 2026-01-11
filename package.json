@@ -28,7 +28,7 @@
     "dompurify": ">=3.2.4",
     "mermaid": ">=10.9.3",
     "jsonpath-plus": ">=10.3.0",
-    "esbuild": ">=0.25.0",
+    "esbuild": "~0.24.2",
     "vite": "~5.4.21"
   }
 }
