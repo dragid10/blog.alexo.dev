@@ -1,0 +1,26 @@
+FROM ruby:3.1.3
+
+# Install Node.js 20.x
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
+# Install Yarn
+RUN npm install -g yarn
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependency files
+COPY Gemfile Gemfile.lock package.json yarn.lock ./
+
+# Install Ruby and Node dependencies
+RUN bundle install && yarn install
+
+# Copy the rest of the application
+COPY . .
+
+# Expose Jekyll and TinaCMS ports
+EXPOSE 4000
+
+# Start development server
+CMD ["yarn", "dev"]
