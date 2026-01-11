@@ -1,6 +1,6 @@
-# WARP.md
+# CLAUDE.md
 
-This file provides guidance to WARP (warp.dev) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -9,10 +9,10 @@ This is a personal blog site built with Jekyll (static site generator) and TinaC
 ## Tech Stack
 
 - **Jekyll** 4.3.3 - Static site generator (Ruby-based)
-- **TinaCMS** 1.5.x - Headless CMS for content management
+- **TinaCMS** 3.2.0 - Headless CMS for content management
 - **Minimal Mistakes** - Jekyll theme
 - **Ruby** 3.1.3 (managed via asdf)
-- **Node.js** 20.10.0 (managed via asdf)
+- **Node.js** 22.21.1 (managed via asdf)
 - **Yarn** - Node.js package manager
 
 ## Common Development Commands
@@ -152,6 +152,18 @@ Key settings in `_config.yml`:
 
 Edit markdown files directly in `_articles/` or use TinaCMS admin interface at `/admin` during development.
 
+## Important Guidelines for AI Agents
+
+When working in this repository:
+
+1. **Content Location**: Articles are in `_articles/` directory (NOT `_posts/`)
+2. **File Naming Convention**: Use underscore-separated filenames WITHOUT date prefixes (e.g., `my_article_title.md`, not `YYYY-MM-DD-title.md`)
+3. **TinaCMS Schema**: Respect the schema definitions in `tina/collection/post.ts` when modifying content structure
+4. **Package Manager**: Use `yarn` (not `npm`) for Node.js package management
+5. **Jekyll Commands**: Always prefix Jekyll commands with `bundle exec` (e.g., `bundle exec jekyll serve`)
+6. **Hybrid Project**: This is a Ruby + Node.js hybrid project (Jekyll + TinaCMS), requiring both ecosystems
+7. **Container Runtime**: Prefer `podman` over `docker` when available on this system
+
 ## Environment Variables
 
 TinaCMS requires these environment variables (typically in Vercel):
@@ -171,7 +183,7 @@ Site is deployed on Vercel:
 
 This project uses **asdf** for managing Ruby and Node.js versions. Version specifications are in `.tool-versions`:
 - Ruby 3.1.3
-- Node.js 20.10.0
+- Node.js 22.21.1
 
 Always use `asdf install` to ensure correct versions are installed.
 
