@@ -1,7 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "public/pagefind", "public/admin", "tina/__generated__", "_site"],
+  "exclude": ["dist", "public/pagefind", "public/admin", "tina/__generated__",
+    "vendor", "_site"],
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
