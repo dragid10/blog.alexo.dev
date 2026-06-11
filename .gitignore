@@ -284,3 +284,5 @@ modules.xml
 .astro/
 public/pagefind
 public/admin
+.vercel
+ASTRO_MIGRATION_PLAN.md
