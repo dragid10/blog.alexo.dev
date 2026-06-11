@@ -140,7 +140,10 @@ listing survives automatically with AstroPaper.
 - [~] Phase 4 — Vercel cutover **IN PROGRESS, paused 2026-06-11 (usage limit)**:
   - Branch pushed; Vercel↔GitHub integration was severed (Alex's past security concern) → reconnected, scoped to this repo only. Webhook confirmed working.
   - GA4 history-events ✓ on; Node 24.x selected in Vercel (verify it saved); Tina Cloud branch indexing was only showing `main` — **verify `astro-migration` got indexed (Refresh Branches at app.tina.io)**.
-  - **First preview build FAILED** (deployment `dpl_GNoFVCDAkXajNqM7QMALBDMbpd7q`, commit e289450). Suspected: Tina branch not indexed yet (predicted race), or Node version. **Next step: read the build log** — Vercel dashboard → blog-alexo-dev → failed deployment, or `npx vercel inspect dpl_GNoFVCDAkXajNqM7QMALBDMbpd7q --logs` (needs `vercel login` first — this machine is not authed). Then fix → Redeploy → run the verification checklist below against the preview URL (pattern: blog-alexo-dev-git-astro-migration-dragid10s-projects.vercel.app).
+  - **Preview builds FAILED — ROOT CAUSE FOUND (2026-06-11):** `TINA_TOKEN` (and `TINA_SEARCH_TOKEN`) in Vercel are empty — almost certainly revoked/cleared during Alex's security sweep. Reproduced locally: `tinacms build` with the pulled preview env fails instantly with "Client not configured properly. Missing token". NOT a code problem.
+  - **Fix (Alex):** app.tina.io → project → Tokens → copy/regenerate read-only token → Vercel env `TINA_TOKEN` (Production+Preview); same for search token. Confirm `astro-migration` is indexed in Tina's Branches list. Then Redeploy.
+  - Vercel CLI on this machine IS now authed (device flow, June 11); project linked (`dragid10s-projects/blog-alexo-dev`, prj_8SNInrBY54yCSHcBmAtzJu3roN1i). Preview env pulled to gitignored `.env`. Local repro command: `set -a; . ./.env; set +a; VERCEL_GIT_COMMIT_REF=astro-migration npx tinacms build`.
+  - After green build: verify checklist below against https://blog-alexo-dev-git-astro-migration-dragid10s-projects.vercel.app
 - [ ] Phase 5 — cleanup (remove Jekyll files + ruby pin, update README/CLAUDE.md/AGENTS.md/WARP.md)
 
 ### Build quirks worth knowing (all worked around, yarn-1 hoisting related)
