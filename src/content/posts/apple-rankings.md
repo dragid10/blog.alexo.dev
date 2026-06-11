@@ -1,6 +1,6 @@
 ---
 title: "My Apple Rankings"
-description: "We bought one of every apple variety at Wegmans and ranked them all. Yes, the fruit."
+description: "We bought one of every apple variety at Wegmans and ranked them all."
 pubDatetime: 2024-11-30T12:00:00Z
 tags:
   - "Fun"
