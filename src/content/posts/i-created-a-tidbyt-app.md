@@ -1,6 +1,6 @@
 ---
 title: "I created a Tidbyt app!"
-description: "date: 2025-03-20"
+description: "I built a Tidbyt app in Starlark that shows live FRC team rankings during competition season."
 pubDatetime: 2025-03-20T12:00:00Z
 tags:
   - "Programming"

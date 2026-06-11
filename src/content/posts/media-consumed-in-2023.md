@@ -1,6 +1,6 @@
 ---
 title: "Media consumed in 2023"
-description: "date: 2024-02-11"
+description: "Everything I watched, read, and played in 2023."
 pubDatetime: 2024-02-11T12:00:00Z
 tags:
   - "Media"
