@@ -137,7 +137,10 @@ listing survives automatically with AstroPaper.
 - [x] Phase 1 — content port (8 posts converted, descriptions written for 5 that lacked excerpts; images in `public/assets/uploads`; the "gist" was a plain link — no conversion needed)
 - [x] Phase 2 — parity (tags/archives/search/rss/sitemap/404 build; GA4 in Layout.astro; `vercel.json` has all 8 post redirects + `/feed.xml`→`/rss.xml`) — **NOTE: posts now live under `/posts/<slug>/` (AstroPaper convention), redirects updated accordingly**
 - [x] Phase 3 — Tina rewire (post collection → `src/content/posts`, AstroPaper-schema fields; author collection dropped; codegen + dev mode verified)
-- [ ] Phase 4 — Vercel cutover (push branch → preview deploy → update project settings: framework Astro, Node 24 → verify checklist → merge)
+- [~] Phase 4 — Vercel cutover **IN PROGRESS, paused 2026-06-11 (usage limit)**:
+  - Branch pushed; Vercel↔GitHub integration was severed (Alex's past security concern) → reconnected, scoped to this repo only. Webhook confirmed working.
+  - GA4 history-events ✓ on; Node 24.x selected in Vercel (verify it saved); Tina Cloud branch indexing was only showing `main` — **verify `astro-migration` got indexed (Refresh Branches at app.tina.io)**.
+  - **First preview build FAILED** (deployment `dpl_GNoFVCDAkXajNqM7QMALBDMbpd7q`, commit e289450). Suspected: Tina branch not indexed yet (predicted race), or Node version. **Next step: read the build log** — Vercel dashboard → blog-alexo-dev → failed deployment, or `npx vercel inspect dpl_GNoFVCDAkXajNqM7QMALBDMbpd7q --logs` (needs `vercel login` first — this machine is not authed). Then fix → Redeploy → run the verification checklist below against the preview URL (pattern: blog-alexo-dev-git-astro-migration-dragid10s-projects.vercel.app).
 - [ ] Phase 5 — cleanup (remove Jekyll files + ruby pin, update README/CLAUDE.md/AGENTS.md/WARP.md)
 
 ### Build quirks worth knowing (all worked around, yarn-1 hoisting related)
