@@ -1,6 +1,6 @@
 ---
 title: "My Apple Rankings"
-description: "date: 2024-11-30"
+description: "We bought one of every apple variety at Wegmans and ranked them all. Yes, the fruit."
 pubDatetime: 2024-11-30T12:00:00Z
 tags:
   - "Fun"

@@ -7,7 +7,7 @@ tags:
   - "Guide"
   - "Tutorial"
   - "Python"
-ogImage: "/assets/uploads/db2-blog/db2-blog.png"
+ogImage: "https://blog.alexo.dev/assets/uploads/db2-blog/db2-blog.png"
 ---
 If you’ve tried to connect to a DB2 database using the ibm-db package, you might have run into this issue at some point.
 
