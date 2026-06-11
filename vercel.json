@@ -4,6 +4,26 @@
   "outputDirectory": "dist",
   "redirects": [
     {
+      "source": "/feed/",
+      "destination": "https://blog.alexo.dev/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "destination": "https://blog.alexo.dev/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/rss/",
+      "destination": "https://blog.alexo.dev/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/rss",
+      "destination": "https://blog.alexo.dev/rss.xml",
+      "permanent": true
+    },
+    {
       "source": "/feed.xml",
       "destination": "https://blog.alexo.dev/rss.xml",
       "permanent": true
