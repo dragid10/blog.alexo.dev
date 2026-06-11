@@ -1,8 +1,6 @@
 import { defineConfig } from "tinacms";
 
-import Author from "./collection/author";
 import Post from "./collection/post";
-
 
 // Your hosting provider likely exposes this as an environment variable
 const branch =
@@ -21,29 +19,24 @@ export default defineConfig({
 
   build: {
     outputFolder: "admin",
-    publicFolder: "./",
+    publicFolder: "./public",
   },
   media: {
     tina: {
-      mediaRoot: "/assets/uploads",
-      publicFolder: "./",
+      mediaRoot: "assets/uploads",
+      publicFolder: "./public",
     },
   },
-  // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
-    collections: [
-      Post,
-      Author,
-    ],
-  }, // Schema
+    collections: [Post],
+  },
 
   search: {
     tina: {
       indexerToken: process.env.TINA_SEARCH_TOKEN!,
-      stopwordLanguages: ['eng'],
+      stopwordLanguages: ["eng"],
     },
     indexBatchSize: 100,
     maxSearchIndexFieldLength: 100,
-  }, // Search
-
+  },
 });

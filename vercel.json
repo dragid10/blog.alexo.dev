@@ -1,0 +1,16 @@
+{
+  "framework": "astro",
+  "buildCommand": "yarn build",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/feed.xml", "destination": "/rss.xml", "permanent": true },
+    { "source": "/avoid_pip_freeze", "destination": "/posts/avoid-pip-freeze/", "permanent": true },
+    { "source": "/db2_on_mac", "destination": "/posts/db2-on-mac/", "permanent": true },
+    { "source": "/vscode_on_truenas", "destination": "/posts/vscode-on-truenas/", "permanent": true },
+    { "source": "/What_consistency_looks_like", "destination": "/posts/what-consistency-looks-like/", "permanent": true },
+    { "source": "/Media_consumed_in_2023", "destination": "/posts/media-consumed-in-2023/", "permanent": true },
+    { "source": "/Apple_rankings", "destination": "/posts/apple-rankings/", "permanent": true },
+    { "source": "/i-created-a-tidbyt-app", "destination": "/posts/i-created-a-tidbyt-app/", "permanent": true },
+    { "source": "/my-ideal-todo-app", "destination": "/posts/my-ideal-todo-app/", "permanent": true }
+  ]
+}
