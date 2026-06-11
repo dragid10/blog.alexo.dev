@@ -37,6 +37,8 @@ export default defineAstroPaperConfig({
     { name: "mail", url: "mailto:dragid10@gmail.com" },
   ],
   shareLinks: [
+    { name: "bluesky", url: "https://bsky.app/intent/compose?text=" },
+    { name: "mastodon", url: "https://triangletoot.party/share?text=" },
     { name: "mail", url: "mailto:?subject=See%20this%20post&body=" },
   ],
 });
