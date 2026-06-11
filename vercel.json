@@ -5,7 +5,7 @@
   "redirects": [
     {
       "source": "/feed.xml",
-      "destination": "/rss.xml",
+      "destination": "https://blog.alexo.dev/rss.xml",
       "permanent": true
     },
     {
