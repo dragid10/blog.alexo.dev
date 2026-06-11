@@ -279,3 +279,10 @@ build-iPhoneSimulator/
 # End of https://www.toptal.com/developers/gitignore/api/jekyll,yarn,node,linux,macos,ruby
 
 modules.xml
+
+# Astro
+.astro/
+public/pagefind
+public/admin
+.vercel
+ASTRO_MIGRATION_PLAN.md
