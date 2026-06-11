@@ -1,86 +1,85 @@
 import type { Collection } from "tinacms";
 
 const Post: Collection = {
-    name: "post",
-    label: "Posts",
-    path: "_articles",
-    format: "md",
-    defaultItem: () => ({
-        title: "New Post",
-        layout: "_layouts/single.html",
-        date: new Date(),
-        updated: new Date(),
-        tags: [],
-    }),
-    ui: {
-        dateFormat: "MMM DD YYYY",
-        filename: {
-            readonly: false,
-            slugify: (values) => {
-                // Use title only, no date prefix
-                return values?.title?.toLowerCase().replace(/ /g, '_') || 'untitled'
-            },
-        },
+  name: "post",
+  label: "Posts",
+  path: "src/content/posts",
+  format: "md",
+  defaultItem: () => ({
+    title: "New Post",
+    description: "",
+    pubDatetime: new Date().toISOString(),
+    tags: [],
+  }),
+  ui: {
+    filename: {
+      readonly: false,
+      slugify: (values) =>
+        values?.title
+          ?.toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "") || "untitled",
     },
-    // Fields to include in frontmatter for each post
-    fields: [
-        // Title
-        {
-            type: "string",
-            name: "title",
-            label: "Title",
-            isTitle: true,
-            required: true,
-        },
-
-        // Date Added
-        {
-            label: "Date",
-            name: "date",
-            type: "datetime",
-            ui: {
-                dateFormat: "MMM DD YYYY",
-                parse: (value) => value && value.format("MMM DD YYYY"),
-            },
-            required: true,
-        },
-
-        // Date Updated
-        {
-            label: "Updated",
-            name: "updated",
-            type: "datetime",
-            ui: {
-                dateFormat: "MMM DD YYYY",
-                parse: (value) => value && value.format("MMM DD YYYY"),
-            },
-        },
-
-        // Tags
-        {
-            label: 'Tags',
-            name: 'tags',
-            type: 'string',
-            list: true,
-        },
-
-        // Author
-        {
-            type: "reference",
-            label: "Author",
-            name: "author",
-            collections: ["author"],
-            searchable: false, // Disable indexing of the author field
-        },
-
-        // Body
-        {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
-            isBody: true,
-        },
-    ],
+  },
+  // Fields match the AstroPaper content schema (src/content.config.ts)
+  fields: [
+    {
+      type: "string",
+      name: "title",
+      label: "Title",
+      isTitle: true,
+      required: true,
+    },
+    {
+      type: "string",
+      name: "description",
+      label: "Description",
+      description: "Short summary used for SEO and post cards",
+      required: true,
+      ui: { component: "textarea" },
+    },
+    {
+      label: "Published",
+      name: "pubDatetime",
+      type: "datetime",
+      required: true,
+    },
+    {
+      label: "Updated",
+      name: "modDatetime",
+      type: "datetime",
+    },
+    {
+      label: "Tags",
+      name: "tags",
+      type: "string",
+      list: true,
+    },
+    {
+      label: "Featured",
+      name: "featured",
+      type: "boolean",
+      description: "Pin to the Featured section on the homepage",
+    },
+    {
+      label: "Draft",
+      name: "draft",
+      type: "boolean",
+      description: "Drafts are excluded from the published site",
+    },
+    {
+      label: "OG Image",
+      name: "ogImage",
+      type: "image",
+      description: "Social preview image (optional — one is auto-generated)",
+    },
+    {
+      type: "rich-text",
+      name: "body",
+      label: "Body",
+      isBody: true,
+    },
+  ],
 };
 
 export default Post;
