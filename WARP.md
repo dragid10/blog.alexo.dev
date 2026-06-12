@@ -9,6 +9,10 @@ on Vercel (Cloudflare-proxied). Includes a link-in-bio home page, blog, speaker 
 project showcase, and resume. Posts are plain markdown in `src/content/posts/`,
 editable from anywhere via git or the Tina visual editor at `/admin`.
 
+Note: `CLAUDE.md` is a symlink to `WARP.md` — edit `WARP.md` directly.
+
+`main` is branch-protected: all changes land via PR.
+
 ## Commands
 
 ```bash
@@ -41,6 +45,11 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
   to skip rebuilds on non-site file changes.
 - **Images**: `public/assets/uploads/` (referenced as `/assets/uploads/...`).
   Headshots in `public/` root and `public/assets/uploads/speaking/`.
+- **Nav**: Home, Posts, Speaking, Projects, About (text links) + Search, Theme toggle
+  (icon buttons). Tags and Archives pages exist but are not in the nav.
+- **Commit graph**: `src/components/CommitGraph.astro` — client-side fetch from
+  jogruber API, theme-aware colors. Uses `astro:page-load` event to re-init after
+  SPA navigation (Astro ClientRouter pattern).
 - GA4: gtag in `src/layouts/Layout.astro` (G-08Y6JZGV0F).
 
 ## Configurable things
