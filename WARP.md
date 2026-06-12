@@ -25,6 +25,9 @@ yarn format       # prettier --write
 ./scripts/new.sh post     # scaffold a draft post (prompts, or flags: --title --description --tags)
 ./scripts/new.sh project  # scaffold a project card (--title --description --repo --status ...)
 ./scripts/new.sh talk     # add a speaking engagement to speaking.yaml (--year --event --talk ...)
+./scripts/publish.sh <draft.md> [--publish] [--pr]  # move an Obsidian draft into the site:
+                          # strips date prefix, copies/rewrites images, lints wikilinks.
+                          # Set BLOG_REPO env var to run it from outside the repo.
 ```
 
 Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
