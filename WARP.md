@@ -47,13 +47,24 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Tina**: `tina/config.ts` + `tina/collection/` (post.ts, project.ts, speaking.ts)
   mirror the Astro schemas — keep them in sync when changing schemas.
   `tina/__generated__/` is gitignored, regenerated on build.
-- **Redirects + headers**: `vercel.json` — legacy URL 301s, cache headers (immutable
-  for hashed assets), security headers (HSTS, nosniff, etc.), and `ignoreCommand`
-  to skip rebuilds on non-site file changes.
+- **Domains**: `alexo.dev` is canonical (`site.url`). `blog.alexo.dev` and
+  `www.alexo.dev` are attached to the same Vercel project and 301/308 to the apex
+  via host-conditioned rules in `vercel.json`. Cloudflare proxies the zone; the
+  apex is a flattened CNAME to Vercel.
+- **Redirects + headers**: `vercel.json` — host redirects (blog/www → apex),
+  Ghost-era and Jekyll-era path 301s, cache headers (immutable for hashed assets),
+  security headers (HSTS, nosniff, etc.), and `ignoreCommand` to skip rebuilds on
+  non-site file changes.
 - **Images**: `public/assets/uploads/` (referenced as `/assets/uploads/...`).
   Headshots in `public/` root and `public/assets/uploads/speaking/`.
-- **Nav**: Home, Posts, Speaking, Projects, About (text links) + Search, Theme toggle
-  (icon buttons). Tags and Archives pages exist but are not in the nav.
+  `public/content/images/` is the old Ghost image tree kept so legacy hotlinks
+  resolve forever — do not delete or "clean up".
+- **Nav**: Home, Blog (route stays `/posts/`), Speaking, Projects, About (text
+  links) + Search, Theme toggle (icon buttons). Tags and Archives pages exist but
+  are not in the nav. Nav labels live in `src/i18n/lang/en.ts`.
+- **Scripts**: `scripts/new.sh` (scaffold post/project/talk) and
+  `scripts/publish.sh` (import an Obsidian draft; honors `BLOG_REPO` env var).
+  Plain bash, no dependencies, flags documented in each file's header.
 - **Commit graph**: `src/components/CommitGraph.astro` — client-side fetch from
   jogruber API, theme-aware colors. Uses `astro:page-load` event to re-init after
   SPA navigation (Astro ClientRouter pattern).
@@ -104,3 +115,14 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 - Don't use `text-muted` for text that needs to be readable (descriptions, subtitles,
   captions). Use `opacity-75` or `opacity-60` instead — `text-muted` is too low
   contrast in both themes.
+- **Vercel redirect sources**: `/:path*` does NOT match `/` or any path with a
+  trailing slash (Astro's canonical URL style). Use `/:path(.*)` for catch-alls
+  and `:slug(.*)` for prefix matches, with `:path` / `:slug` in the destination.
+- `main` is branch-protected; Tina `/admin` saves commit directly and may be
+  blocked. Fixes: enable Tina's Editorial Workflow at app.tina.io → Configuration
+  (paid plan; creates branch + draft PR per edit — then add a `ui.previewUrl` fn
+  to `tina/config.ts`), or add the TinaCMS GitHub App to the branch-protection
+  bypass list (free, keeps direct commits).
+- Pre-commit hooks (`pre-commit install` once): gitleaks, 2MB file guard
+  (`public/content/images/` exempt), yaml/json checks, whitespace fixers. The
+  whitespace fixer rewrites `tina/tina-lock.json` trailing newline — harmless.
