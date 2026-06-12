@@ -62,9 +62,11 @@ Tips:
 
 ## Other ways to publish
 
-- **Tina editor**: [alexo.dev/admin](https://alexo.dev/admin) — visual editing in
-  the browser from any device; saves commit straight to the repo.
-- **GitHub web editor**: edit/create files in `src/content/` directly on github.com.
+- **GitHub web editor**: edit/create files in `src/content/` directly on github.com
+  (it branches + opens a PR for you when the target branch is protected).
+- **Tina editor** (`/admin`): currently view-only in practice — saves are blocked by
+  branch protection on `main`, and that's intentional (Tina's PR-based Editorial
+  Workflow is paywalled, and a protection bypass isn't worth the risk).
 
 ## Local development
 
