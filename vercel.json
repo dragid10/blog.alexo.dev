@@ -47,6 +47,12 @@
       "permanent": true
     },
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "feeds.alexo.dev" }],
+      "destination": "https://alexo.dev/",
+      "permanent": false
+    },
+    {
       "source": "/afrotech-2024",
       "destination": "/posts/afrotech-2024/",
       "permanent": true
