@@ -1,0 +1,110 @@
+---
+---
+
+<div id="commit-graph" class="w-full overflow-x-auto">
+  <div id="commit-graph-inner" class="mx-auto w-fit"></div>
+</div>
+
+<script>
+  function initCommitGraph() {
+    const container = document.getElementById("commit-graph-inner");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    fetch(
+      "https://github-contributions-api.jogruber.de/v4/dragid10?y=last"
+    )
+      .then(res => {
+        if (!res.ok) throw new Error("fetch failed");
+        return res.json();
+      })
+      .then(data => {
+        const contributions: { date: string; count: number; level: number }[] =
+          data.contributions;
+        if (!contributions?.length) return;
+
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+
+        const lightColors = [
+          "#ebedf0",
+          "#9be9a8",
+          "#40c463",
+          "#30a14e",
+          "#216e39",
+        ];
+        const darkColors = [
+          "#161b22",
+          "#0e4429",
+          "#006d32",
+          "#26a641",
+          "#39d353",
+        ];
+        const colors = isDark ? darkColors : lightColors;
+
+        const weeks: { date: string; count: number; level: number }[][] = [];
+        let currentWeek: { date: string; count: number; level: number }[] = [];
+
+        for (const day of contributions) {
+          const d = new Date(day.date);
+          if (d.getDay() === 0 && currentWeek.length > 0) {
+            weeks.push(currentWeek);
+            currentWeek = [];
+          }
+          currentWeek.push(day);
+        }
+        if (currentWeek.length > 0) weeks.push(currentWeek);
+
+        const cellSize = 10;
+        const gap = 2;
+        const step = cellSize + gap;
+
+        const svgWidth = weeks.length * step;
+        const svgHeight = 7 * step;
+
+        const svg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg"
+        );
+        svg.setAttribute("width", String(svgWidth));
+        svg.setAttribute("height", String(svgHeight));
+        svg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+        svg.setAttribute("role", "img");
+        svg.setAttribute("aria-label", "GitHub contribution graph");
+
+        for (let w = 0; w < weeks.length; w++) {
+          for (const day of weeks[w]) {
+            const d = new Date(day.date);
+            const dow = d.getDay();
+            const rect = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "rect"
+            );
+            rect.setAttribute("x", String(w * step));
+            rect.setAttribute("y", String(dow * step));
+            rect.setAttribute("width", String(cellSize));
+            rect.setAttribute("height", String(cellSize));
+            rect.setAttribute("rx", "2");
+            rect.setAttribute("fill", colors[day.level] || colors[0]);
+
+            const title = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "title"
+            );
+            title.textContent = `${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}`;
+            rect.appendChild(title);
+            svg.appendChild(rect);
+          }
+        }
+
+        container.appendChild(svg);
+      })
+      .catch(() => {
+        const graphEl = document.getElementById("commit-graph");
+        if (graphEl) graphEl.style.display = "none";
+      });
+  }
+
+  document.addEventListener("astro:page-load", initCommitGraph);
+</script>

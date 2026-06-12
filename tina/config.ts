@@ -1,6 +1,8 @@
 import { defineConfig } from "tinacms";
 
 import Post from "./collection/post";
+import Project from "./collection/project";
+import Speaking from "./collection/speaking";
 
 // Your hosting provider likely exposes this as an environment variable
 const branch =
@@ -28,7 +30,7 @@ export default defineConfig({
     },
   },
   schema: {
-    collections: [Post],
+    collections: [Post, Project, Speaking],
   },
 
   search: {
