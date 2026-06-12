@@ -5,7 +5,7 @@ import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
+
 import Card from "@/components/Card.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import CommitGraph from "@/components/CommitGraph.astro";
@@ -51,10 +51,6 @@ const linkButtons = [
       />
       <h1 class="text-3xl font-bold sm:text-4xl">Alex Oladele</h1>
       <p class="mt-1 text-lg opacity-75">Tech nerd on the internet!</p>
-
-      <div class="mt-4">
-        <Socials />
-      </div>
     </section>
 
     <section class="border-border border-b pb-6">
@@ -102,6 +98,7 @@ const linkButtons = [
     }
 
     <section class="py-6">
+      <h2 class="mb-4 text-2xl font-semibold tracking-wide">GitHub Activity</h2>
       <CommitGraph />
     </section>
   </main>
