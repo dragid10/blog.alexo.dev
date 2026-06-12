@@ -35,28 +35,114 @@
   ],
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "blog.alexo.dev" }],
+      "destination": "https://alexo.dev/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/afrotech-2024",
+      "destination": "/posts/afrotech-2024/",
+      "permanent": true
+    },
+    {
+      "source": "/afrotech-2024/",
+      "destination": "/posts/afrotech-2024/",
+      "permanent": true
+    },
+    {
+      "source": "/pyohio-2024",
+      "destination": "/posts/pyohio-2024/",
+      "permanent": true
+    },
+    {
+      "source": "/pyohio-2024/",
+      "destination": "/posts/pyohio-2024/",
+      "permanent": true
+    },
+    {
+      "source": "/ontario-tech-2025",
+      "destination": "/posts/ontario-tech-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/ontario-tech-2025/",
+      "destination": "/posts/ontario-tech-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/r-markdown",
+      "destination": "/posts/r-markdown/",
+      "permanent": true
+    },
+    {
+      "source": "/r-markdown/",
+      "destination": "/posts/r-markdown/",
+      "permanent": true
+    },
+    {
+      "source": "/socials",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/socials/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/archive",
+      "destination": "/posts/",
+      "permanent": true
+    },
+    {
+      "source": "/archive/",
+      "destination": "/posts/",
+      "permanent": true
+    },
+    {
+      "source": "/newsletter",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/newsletter/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tag/:slug*",
+      "destination": "/posts/",
+      "permanent": true
+    },
+    {
+      "source": "/author/:slug*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/feed/",
-      "destination": "https://blog.alexo.dev/rss.xml",
+      "destination": "https://alexo.dev/rss.xml",
       "permanent": true
     },
     {
       "source": "/feed",
-      "destination": "https://blog.alexo.dev/rss.xml",
+      "destination": "https://alexo.dev/rss.xml",
       "permanent": true
     },
     {
       "source": "/rss/",
-      "destination": "https://blog.alexo.dev/rss.xml",
+      "destination": "https://alexo.dev/rss.xml",
       "permanent": true
     },
     {
       "source": "/rss",
-      "destination": "https://blog.alexo.dev/rss.xml",
+      "destination": "https://alexo.dev/rss.xml",
       "permanent": true
     },
     {
       "source": "/feed.xml",
-      "destination": "https://blog.alexo.dev/rss.xml",
+      "destination": "https://alexo.dev/rss.xml",
       "permanent": true
     },
     {
