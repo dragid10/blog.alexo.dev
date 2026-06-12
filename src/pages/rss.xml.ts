@@ -12,6 +12,8 @@ export async function GET() {
     title: config.site.title,
     description: config.site.description,
     site: config.site.url,
+    xmlns: { atom: "http://www.w3.org/2005/Atom" },
+    customData: `<atom:link href="${new URL("rss.xml", config.site.url).href}" rel="self" type="application/rss+xml"/>`,
     items: sortedPosts.map(({ data, id, filePath }) => ({
       link: getPostUrl(id, filePath, config.site.lang),
       title: data.title,
