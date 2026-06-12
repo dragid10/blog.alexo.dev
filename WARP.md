@@ -21,6 +21,10 @@ yarn build        # tinacms build && astro check && astro build && pagefind (nee
 yarn build:local  # same without tinacms build (no cloud creds needed)
 yarn lint         # eslint
 yarn format       # prettier --write
+
+./scripts/new.sh post     # scaffold a draft post (prompts, or flags: --title --description --tags)
+./scripts/new.sh project  # scaffold a project card (--title --description --repo --status ...)
+./scripts/new.sh talk     # add a speaking engagement to speaking.yaml (--year --event --talk ...)
 ```
 
 Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
