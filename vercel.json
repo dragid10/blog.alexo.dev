@@ -117,12 +117,12 @@
       "permanent": true
     },
     {
-      "source": "/tag/:slug*",
+      "source": "/tag/:slug(.*)",
       "destination": "/posts/",
       "permanent": true
     },
     {
-      "source": "/author/:slug*",
+      "source": "/author/:slug(.*)",
       "destination": "/",
       "permanent": true
     },
