@@ -40,6 +40,32 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Images**: `public/assets/uploads/` (referenced as `/assets/uploads/...`).
 - GA4: gtag in `src/layouts/Layout.astro` (G-08Y6JZGV0F).
 
+## Configurable things
+
+### Font
+
+The site font is configured in `astro.config.ts` under the `fonts` array. To change it:
+
+1. Update `name` to any Google Fonts name (e.g. `"Inter"`, `"IBM Plex Sans"`, `"JetBrains Mono"`)
+2. Update `cssVariable` to match (e.g. `"--font-inter"`)
+3. Update `fallbacks` (e.g. `["sans-serif"]` or `["monospace"]`)
+4. Update the same variable name in three other places:
+   - `src/styles/theme.css` — the `--font-app` value
+   - `src/layouts/Layout.astro` — the `<Font cssVariable="...">` prop
+   - `src/pages/og.png.ts` and `src/pages/posts/[...slug]/index.png.ts` — the `fontData["..."]` key
+
+### Site title, description, socials
+
+All in `astro-paper.config.ts`. Socials need a matching SVG icon in `src/assets/icons/socials/` (Tabler Icons format, 24x24, stroke-based).
+
+### Speaking engagements
+
+`src/data/speaking.yaml` — add new entries under `engagements`. The speaking page renders them automatically, grouped by year descending.
+
+### Projects
+
+One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, status, tags, featured, order. Archived projects are hidden from the page.
+
 ## Gotchas (hard-won, do not relearn)
 
 - `@tinacms/cli` hoists vite 4 / zod 3 to root with yarn 1. Hence: Tailwind runs

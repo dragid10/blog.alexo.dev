@@ -59,10 +59,10 @@ export default defineConfig({
   // plugin would wrongly resolve at build time
   fonts: [
     {
-      name: "Google Sans Code",
-      cssVariable: "--font-google-sans-code",
+      name: "IBM Plex Sans",
+      cssVariable: "--font-ibm-plex-sans",
       provider: fontProviders.google(),
-      fallbacks: ["monospace"],
+      fallbacks: ["JetBrains Mono", "sans-serif"],
       weights: [300, 400, 500, 600, 700],
       styles: ["normal", "italic"],
       formats: ["woff", "ttf"],
