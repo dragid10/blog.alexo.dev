@@ -118,11 +118,11 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 - **Vercel redirect sources**: `/:path*` does NOT match `/` or any path with a
   trailing slash (Astro's canonical URL style). Use `/:path(.*)` for catch-alls
   and `:slug(.*)` for prefix matches, with `:path` / `:slug` in the destination.
-- `main` is branch-protected; Tina `/admin` saves commit directly and may be
-  blocked. Fixes: enable Tina's Editorial Workflow at app.tina.io → Configuration
-  (paid plan; creates branch + draft PR per edit — then add a `ui.previewUrl` fn
-  to `tina/config.ts`), or add the TinaCMS GitHub App to the branch-protection
-  bypass list (free, keeps direct commits).
+- `main` is branch-protected (ruleset "Lock Main branch"), which blocks Tina
+  `/admin` saves (PUT errors). DECIDED 2026-06: leave it that way. Editorial
+  Workflow needs a business plan and a protection bypass for the Tina app is a
+  security risk Alex rejected. Content edits go through Obsidian/scripts/PRs;
+  do not "fix" Tina saves by weakening the ruleset.
 - Pre-commit hooks (`pre-commit install` once): gitleaks, 2MB file guard
   (`public/content/images/` exempt), yaml/json checks, whitespace fixers. The
   whitespace fixer rewrites `tina/tina-lock.json` trailing newline — harmless.
