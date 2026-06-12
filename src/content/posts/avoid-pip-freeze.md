@@ -8,7 +8,7 @@ tags:
   - "Thoughts"
   - "Resources"
   - "Learning"
-ogImage: "https://blog.alexo.dev/assets/uploads/pip-freeze-blog/pip-error-1.png"
+ogImage: "https://alexo.dev/assets/uploads/pip-freeze-blog/pip-error-1.png"
 ---
 Dependency management be complicated sometimes
 
