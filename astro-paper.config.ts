@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://blog.alexo.dev/",
+    url: "https://alexo.dev/",
     title: "Alex Oladele",
     description: "Tech nerd on the internet!",
     author: "Alex Oladele",
