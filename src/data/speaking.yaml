@@ -1,5 +1,9 @@
 engagements:
   - year: 2025
+    event: "GitHub Universe"
+    type: "Discussion lounge"
+    talk: "How to Practice Compassion (Not Criticism) During Your Code Reviews"
+  - year: 2025
     event: "Ontario Tech University"
     type: "Guest lecture"
     talk: "Things We Never Covered in School"
