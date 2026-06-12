@@ -50,7 +50,10 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Domains**: `alexo.dev` is canonical (`site.url`). `blog.alexo.dev` and
   `www.alexo.dev` are attached to the same Vercel project and 301/308 to the apex
   via host-conditioned rules in `vercel.json`. Cloudflare proxies the zone; the
-  apex is a flattened CNAME to Vercel.
+  apex is a flattened CNAME to Vercel. `feeds.alexo.dev` is DNS-only (NOT proxied,
+  on purpose): Cloudflare bot protection 403s datacenter fetchers (RSS readers,
+  TRMNL, validators), so feed consumers use feeds.alexo.dev/rss.xml straight from
+  Vercel. Do not proxy it.
 - **Redirects + headers**: `vercel.json` — host redirects (blog/www → apex),
   Ghost-era and Jekyll-era path 301s, cache headers (immutable for hashed assets),
   security headers (HSTS, nosniff, etc.), and `ignoreCommand` to skip rebuilds on
