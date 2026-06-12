@@ -9,7 +9,7 @@ I grew up in Westerville, Ohio and studied software engineering at Miami Univers
 
 I [speak](/speaking/) at conferences and universities about code review culture, Python, and practical engineering skills.
 
-Outside of work I build [open source side projects](/projects/) and run a homelab that I'm very proud of. My fiance and I share a love of [fountain pens and stationery](https://pens.alexo.dev/). I have a cat named Sokka, strong opinions about board games, and I play the viola. I also enjoy cooking and love horror comics and Avatar: The Last Airbender.
+Outside of work I build [open source side projects](/projects/) and run a homelab that I'm very proud of. My fiance and I share a love of [fountain pens and stationery](https://alexo-pens.notion.site/Alex-s-Fountain-Pen-Dashboard-268e3af9171080c4a7c2c8aca9b92a2e). I have a cat named Sokka, strong opinions about board games, and I play the viola. I also enjoy cooking and love horror comics and Avatar: The Last Airbender.
 
 You can find what I'm reading on [StoryGraph](https://app.thestorygraph.com/profile/wizkid_alex) and what I'm watching on [Letterboxd](https://letterboxd.com/wizkid_alex/).
 

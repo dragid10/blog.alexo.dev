@@ -4,13 +4,10 @@ Guidance for AI coding agents working in this repository.
 
 ## Overview
 
-Alex's blog at blog.alexo.dev — **Astro 6 (AstroPaper theme) + TinaCMS 3**, deployed
-on Vercel (Cloudflare-proxied). Posts are plain markdown in `src/content/posts/`,
+Alex Oladele's personal site at alexo.dev — **Astro 6 (AstroPaper theme) + TinaCMS 3**, deployed
+on Vercel (Cloudflare-proxied). Includes a link-in-bio home page, blog, speaker portfolio,
+project showcase, and resume. Posts are plain markdown in `src/content/posts/`,
 editable from anywhere via git or the Tina visual editor at `/admin`.
-(Migrated from Jekyll + minimal-mistakes in June 2026.)
-
-The main alexo.dev site (intro/resume) is separate — a Ghost instance on a
-DigitalOcean droplet, not this repo.
 
 ## Commands
 
@@ -29,15 +26,21 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Posts**: `src/content/posts/*.md` — schema in `src/content.config.ts`
   (title, description [required], pubDatetime, tags, ogImage…). Filename = URL slug
   (`/posts/<filename>/`). Drafts: `draft: true` or `_`-prefixed filename.
+- **Projects**: `src/content/projects/*.md` — title, description, repo, demo, status,
+  tags, featured, order. Archived projects are hidden from the page.
+- **Speaking data**: `src/data/speaking.yaml` — engagements list under `engagements` key
+  (object root required by Tina). Speaking page renders them grouped by year.
+- **Pages**: `src/content/pages/` — about.md, bio-short.md, bio-long.md, resume.md.
+  Home page is `src/pages/index.astro`. Speaking/projects/resume pages are in `src/pages/`.
 - **Site config**: `astro-paper.config.ts` (title, author, socials, features).
-- **Tina**: `tina/config.ts` + `tina/collection/post.ts` mirror the Astro schema —
-  keep them in sync when changing post front matter. `tina/__generated__/` is
-  gitignored, regenerated on build.
-- **Pages**: about lives in `src/content/pages/about.md`; homepage hero text is in
-  `src/pages/index.astro`.
-- **Redirects**: `vercel.json` — legacy Jekyll-era URLs 301 to `/posts/<slug>/`,
-  `/feed.xml` → `/rss.xml`. Also sets framework/buildCommand for Vercel.
+- **Tina**: `tina/config.ts` + `tina/collection/` (post.ts, project.ts, speaking.ts)
+  mirror the Astro schemas — keep them in sync when changing schemas.
+  `tina/__generated__/` is gitignored, regenerated on build.
+- **Redirects + headers**: `vercel.json` — legacy URL 301s, cache headers (immutable
+  for hashed assets), security headers (HSTS, nosniff, etc.), and `ignoreCommand`
+  to skip rebuilds on non-site file changes.
 - **Images**: `public/assets/uploads/` (referenced as `/assets/uploads/...`).
+  Headshots in `public/` root and `public/assets/uploads/speaking/`.
 - GA4: gtag in `src/layouts/Layout.astro` (G-08Y6JZGV0F).
 
 ## Configurable things
@@ -77,3 +80,11 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 - Tina Cloud env vars on Vercel are type "sensitive" (`vercel env pull` shows them
   empty — expected; builds get real values).
 - Local Tina codegen without cloud creds: `npx tinacms build --local --skip-cloud-checks --skip-indexing`.
+- **Tina lock file after schema changes**: `tina/tina-lock.json` must be rebuilt
+  when collections change. The cloud build needs creds we don't have locally.
+  Workaround: run local tina build, then rebuild the lock from generated files:
+  `node -e "const s=require('./tina/__generated__/_schema.json');const g=require('./tina/__generated__/_graphql.json');const l=require('./tina/__generated__/_lookup.json');require('fs').writeFileSync('tina/tina-lock.json',JSON.stringify({schema:s,lookup:l,graphql:g}))"`
+  Then commit and push. After pushing, refresh the branch at app.tina.io → Branches.
+- Don't use `text-muted` for text that needs to be readable (descriptions, subtitles,
+  captions). Use `opacity-75` or `opacity-60` instead — `text-muted` is too low
+  contrast in both themes.
