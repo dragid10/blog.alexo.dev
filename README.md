@@ -68,13 +68,42 @@ Tips:
   branch protection on `main`, and that's intentional (Tina's PR-based Editorial
   Workflow is paywalled, and a protection bypass isn't worth the risk).
 
-## Local development
+## Setup (new machine)
+
+Prereqs: [asdf](https://asdf.vm.dev/) with the nodejs plugin, yarn classic (1.22),
+and [pre-commit](https://pre-commit.com/). Then:
 
 ```bash
-asdf install        # Node 24
+git clone https://github.com/dragid10/blog.alexo.dev.git
+cd blog.alexo.dev
+asdf install              # installs Node 24 from .tool-versions
 yarn install
-pre-commit install  # gitleaks + hygiene hooks (one-time)
-yarn dev            # localhost:4321 (+ /admin)
+pre-commit install        # gitleaks + hygiene hooks (one-time, per clone)
 ```
 
-See `CLAUDE.md` for architecture notes and build gotchas.
+Optional, for the publish script to work from any directory:
+
+```bash
+export BLOG_REPO="$HOME/path/to/blog.alexo.dev"   # put it in your shell rc
+```
+
+No env vars or cloud credentials are needed for local dev or local builds.
+(Tina Cloud creds exist only in Vercel; they're used by the production build.)
+
+## Develop and test locally
+
+```bash
+yarn dev            # dev server at localhost:4321 (+ /admin, Tina GraphQL on :4001)
+yarn build:local    # full production-style build WITHOUT Tina Cloud: astro check
+                    #   (type errors), astro build, pagefind index. This is the
+                    #   "will CI pass?" command — run it before opening a PR.
+yarn preview        # serve the built dist/ locally
+yarn lint           # eslint
+yarn format         # prettier --write
+```
+
+`yarn build` (with `tinacms build`) needs Tina Cloud env vars and is what Vercel
+runs — you generally never run it locally.
+
+See `CLAUDE.md` for architecture notes and build gotchas (vite/zod hoisting,
+tina-lock rebuilds, etc.).
