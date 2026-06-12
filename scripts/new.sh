@@ -73,10 +73,17 @@ ask() {
   done
 }
 
+# title -> safe filename/URL slug: lowercase kebab-case, ASCII alnum only
 slugify() {
-  printf '%s' "$1" \
+  local slug
+  slug="$(printf '%s' "$1" \
     | tr '[:upper:]' '[:lower:]' \
-    | sed -e 's/[^a-z0-9 _-]//g' -e 's/[ _][ _]*/-/g' -e 's/^-*//' -e 's/-*$//'
+    | sed -e 's/[^a-z0-9 _-]//g' -e 's/[ _][ _]*/-/g' -e 's/--*/-/g' -e 's/^-*//' -e 's/-*$//')"
+  if [ -z "$slug" ]; then
+    echo "Could not derive a filename slug from that title; pass one with --slug" >&2
+    exit 1
+  fi
+  printf '%s' "$slug"
 }
 
 # escape double quotes for YAML double-quoted scalars
@@ -99,8 +106,14 @@ refuse_overwrite() {
   fi
 }
 
+# trim, collapse doubled spaces
+tidy_title() {
+  printf '%s' "$1" | sed -e 's/^ *//' -e 's/ *$//' -e 's/  */ /g'
+}
+
 new_post() {
   ask TITLE "Post title" "" required
+  TITLE="$(tidy_title "$TITLE")"
   ask DESCRIPTION "Description (one sentence, used for SEO/OG)" "" required
   ask TAGS "Tags (comma separated)" "Uncategorized"
   [ -n "$SLUG" ] || SLUG="$(slugify "$TITLE")"

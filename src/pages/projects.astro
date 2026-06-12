@@ -84,6 +84,11 @@ const statusColors: Record<string, string> = {
                   {project.data.demo.startsWith("/") ? "Read more" : "Demo"}
                 </a>
               )}
+              {project.data.post && (
+                <a href={project.data.post} class="text-accent hover:underline">
+                  Read more
+                </a>
+              )}
             </div>
           </div>
         ))
