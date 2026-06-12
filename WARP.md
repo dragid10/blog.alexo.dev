@@ -6,8 +6,9 @@ Guidance for AI coding agents working in this repository.
 
 Alex Oladele's personal site at alexo.dev — **Astro 6 (AstroPaper theme) + TinaCMS 3**, deployed
 on Vercel (Cloudflare-proxied). Includes a link-in-bio home page, blog, speaker portfolio,
-project showcase, and resume. Posts are plain markdown in `src/content/posts/`,
-editable from anywhere via git or the Tina visual editor at `/admin`.
+project showcase, and resume. Posts are plain markdown in `src/content/posts/`.
+Alex drafts in Obsidian and lands content via `scripts/publish.sh` + PR (see
+README). The Tina editor at `/admin` is view-only in practice (see Gotchas).
 
 Note: `CLAUDE.md` is a symlink to `WARP.md` — edit `WARP.md` directly.
 
@@ -46,7 +47,11 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Site config**: `astro-paper.config.ts` (title, author, socials, features).
 - **Tina**: `tina/config.ts` + `tina/collection/` (post.ts, project.ts, speaking.ts)
   mirror the Astro schemas — keep them in sync when changing schemas.
-  `tina/__generated__/` is gitignored, regenerated on build.
+  `tina/__generated__/` is gitignored, regenerated on build. Saves from `/admin`
+  are blocked by branch protection (intentional — see Gotchas).
+- **RSS**: `src/pages/rss.xml.ts` (@astrojs/rss, includes `atom:link rel=self`).
+  Canonical URL is alexo.dev/rss.xml; feed readers/TRMNL use
+  feeds.alexo.dev/rss.xml (see Domains).
 - **Domains**: `alexo.dev` is canonical (`site.url`). `blog.alexo.dev` and
   `www.alexo.dev` are attached to the same Vercel project and 301/308 to the apex
   via host-conditioned rules in `vercel.json`. Cloudflare proxies the zone; the
