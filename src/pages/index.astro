@@ -24,11 +24,11 @@ const recentPosts = sortedPosts.slice(0, postsConfig.perIndex);
 const homePath = getRelativeLocaleUrl(locale, "");
 
 const linkButtons = [
-  { label: "Speaking", href: "/speaking/" },
-  { label: "Projects", href: "/projects/" },
-  { label: "Posts", href: "/posts/" },
-  { label: "Resume", href: "/resume/" },
-  { label: "\u{1F58B}️ Fountain Pen Collection", href: "https://pens.alexo.dev/" },
+  { label: "🎤 Speaking", href: "/speaking/" },
+  { label: "💻 Projects", href: "/projects/" },
+  { label: "💬 Posts", href: "/posts/" },
+  { label: "📄 Resume", href: "/resume/" },
+  { label: "🖋️ Fountain Pen Collection", href: "https://pens.alexo.dev/" },
 ];
 ---
 
@@ -50,6 +50,9 @@ const linkButtons = [
         loading="eager"
       />
       <h1 class="text-3xl font-bold sm:text-4xl">Alex Oladele</h1>
+      <p class="mt-1 text-sm opacity-60">
+        <a href="https://pronouns.org/he-him" class="hover:underline">he/him</a>
+      </p>
       <p class="mt-1 text-lg opacity-75">Tech nerd on the internet!</p>
     </section>
 

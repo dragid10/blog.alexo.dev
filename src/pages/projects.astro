@@ -7,8 +7,9 @@ import Footer from "@/components/Footer.astro";
 import config from "@/config";
 
 const allProjects = await getCollection("projects");
+const visible = allProjects.filter(p => p.data.status !== "archived");
 
-const sorted = allProjects.sort((a, b) => {
+const sorted = visible.sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
   if (a.data.order != null && b.data.order != null)
     return a.data.order - b.data.order;
@@ -52,7 +53,7 @@ const statusColors: Record<string, string> = {
                 {project.data.status}
               </span>
             </div>
-            <p class="text-muted mb-3 text-sm">{project.data.description}</p>
+            <p class="mb-3 text-sm opacity-75">{project.data.description}</p>
             {project.data.tags.length > 0 && (
               <div class="mb-3 flex flex-wrap gap-1.5">
                 {project.data.tags.map(tag => (
