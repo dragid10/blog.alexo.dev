@@ -35,15 +35,15 @@
   ],
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "blog.alexo.dev" }],
-      "destination": "https://alexo.dev/:path*",
+      "destination": "https://alexo.dev/:path",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "www.alexo.dev" }],
-      "destination": "https://alexo.dev/:path*",
+      "destination": "https://alexo.dev/:path",
       "permanent": true
     },
     {
