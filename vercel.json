@@ -41,6 +41,12 @@
       "permanent": true
     },
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.alexo.dev" }],
+      "destination": "https://alexo.dev/:path*",
+      "permanent": true
+    },
+    {
       "source": "/afrotech-2024",
       "destination": "/posts/afrotech-2024/",
       "permanent": true
