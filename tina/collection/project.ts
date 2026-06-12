@@ -50,6 +50,12 @@ const Project: Collection = {
     },
     {
       type: "string",
+      name: "post",
+      label: "Blog post",
+      description: "Root-relative link to a write-up, e.g. /posts/my-post/",
+    },
+    {
+      type: "string",
       name: "status",
       label: "Status",
       options: ["active", "maintained", "archived"],

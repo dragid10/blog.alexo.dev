@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Move an Obsidian draft into the site and get it ready to ship.
 #
-#   ./scripts/publish.sh <draft.md> [--slug SLUG] [--publish] [--pr]
+#   ./scripts/publish.sh <draft.md> [--slug SLUG] [--publish] [--pr] [--force]
 #
 #   <draft.md>   a file from the vault, or one already exported into
 #                src/content/posts/ by the Obsidian markdown-export plugin
@@ -33,12 +33,13 @@ cd "$REPO"
 POSTS_DIR="src/content/posts"
 UPLOADS_DIR="public/assets/uploads"
 
-SRC="" SLUG="" PUBLISH="" MAKE_PR=""
+SRC="" SLUG="" PUBLISH="" MAKE_PR="" FORCE=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --slug)    SLUG="$2"; shift 2 ;;
     --publish) PUBLISH="y"; shift ;;
     --pr)      MAKE_PR="y"; shift ;;
+    --force)   FORCE="y"; shift ;;
     -*)        echo "Unknown flag: $1" >&2; exit 1 ;;
     *)         SRC="$1"; shift ;;
   esac
@@ -49,7 +50,7 @@ if [ -n "$SRC" ] && [ ! -f "$SRC" ] && [ -f "$ORIG_PWD/$SRC" ]; then
   SRC="$ORIG_PWD/$SRC"
 fi
 if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
-  echo "Usage: publish.sh <draft.md> [--slug SLUG] [--publish] [--pr]" >&2
+  echo "Usage: publish.sh <draft.md> [--slug SLUG] [--publish] [--pr] [--force]" >&2
   exit 1
 fi
 
@@ -63,8 +64,8 @@ DEST="$POSTS_DIR/$SLUG.md"
 
 if [ "$SRC_DIR/$BASE.md" = "$(pwd)/$DEST" ]; then
   : # already in place with the right name
-elif [ -e "$DEST" ]; then
-  echo "Refusing to overwrite existing post: $DEST" >&2
+elif [ -e "$DEST" ] && [ -z "$FORCE" ]; then
+  echo "Refusing to overwrite existing post: $DEST (use --force to replace a stub)" >&2
   exit 1
 else
   cp "$SRC" "$DEST"
