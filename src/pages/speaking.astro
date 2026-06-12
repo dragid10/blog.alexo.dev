@@ -1,0 +1,167 @@
+---
+import { getEntry, render } from "astro:content";
+import yaml from "js-yaml";
+import { z } from "astro/zod";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const engagementSchema = z.object({
+  engagements: z.array(
+    z.object({
+      year: z.number(),
+      event: z.string(),
+      type: z.string().optional(),
+      talk: z.string(),
+      recap: z.string().optional(),
+      slides: z.string().optional(),
+      video: z.string().optional(),
+      page: z.string().optional(),
+    })
+  ),
+});
+
+const speakingFile = await import("../data/speaking.yaml?raw");
+const speakingData = engagementSchema.parse(yaml.load(speakingFile.default));
+const engagements = speakingData.engagements;
+
+const years = [...new Set(engagements.map(e => e.year))].sort((a, b) => b - a);
+
+const bioShort = await getEntry("pages", "bio-short");
+const bioLong = await getEntry("pages", "bio-long");
+
+const { Content: BioShortContent } = bioShort
+  ? await render(bioShort)
+  : { Content: null };
+const { Content: BioLongContent } = bioLong
+  ? await render(bioLong)
+  : { Content: null };
+---
+
+<Layout
+  title={`Speaking | ${config.site.title}`}
+  description="Alex Oladele's speaking engagements, speaker bio, and headshot."
+>
+  <Header />
+  <Breadcrumb />
+
+  <main id="main-content" class="app-layout pb-8">
+    <h1 class="text-2xl font-semibold sm:text-3xl">Speaking</h1>
+    <p class="mt-2 mb-8 italic">
+      I speak about code review culture, Python, and the things school never
+      taught us.
+    </p>
+
+    <section class="border-border mb-8 border-b pb-8">
+      <figure>
+        <img
+          src="/assets/uploads/speaking/atc24-speaking.jpg"
+          alt="Alex Oladele speaking at AfroTech Conference 2024"
+          class="w-full rounded-lg"
+          loading="eager"
+        />
+        <figcaption class="mt-2 text-sm opacity-60">
+          Photo: Acacia Evans
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="border-border mb-8 border-b pb-8">
+      <div class="mb-6 flex flex-col items-center text-center">
+        <img
+          src="/assets/uploads/headshot-web.jpeg"
+          alt="Alex Oladele"
+          width="200"
+          height="200"
+          class="size-48 rounded-lg object-cover"
+        />
+        <a
+          href="/headshot-alex-oladele.jpeg"
+          download
+          class="text-accent mt-3 inline-block text-sm hover:underline"
+        >
+          Download high-res headshot
+        </a>
+      </div>
+
+      <h2 class="mb-4 text-xl font-semibold">Speaker Bio</h2>
+      <details open class="mb-4">
+        <summary class="cursor-pointer font-medium">Short bio</summary>
+        <div class="app-prose mt-2">
+          {BioShortContent && <BioShortContent />}
+        </div>
+      </details>
+      <details>
+        <summary class="cursor-pointer font-medium">Long bio</summary>
+        <div class="app-prose mt-2">
+          {BioLongContent && <BioLongContent />}
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <h2 class="mb-6 text-xl font-semibold">Engagements</h2>
+      {
+        years.map(year => (
+          <div class="mb-8">
+            <h3 class="text-accent mb-3 text-lg font-semibold">{year}</h3>
+            <ul class="space-y-3">
+              {engagements
+                .filter(e => e.year === year)
+                .map(e => (
+                  <li class="border-border rounded-lg border p-4">
+                    <div class="flex flex-wrap items-baseline gap-x-2">
+                      <span class="font-medium">{e.event}</span>
+                      {e.type && (
+                        <span class="text-sm opacity-60">{e.type}</span>
+                      )}
+                    </div>
+                    <div class="mt-1">
+                      &ldquo;{e.talk}&rdquo;
+                      <span class="ml-2 inline-flex gap-2 text-sm">
+                        {e.recap && (
+                          <a
+                            href={e.recap}
+                            class="text-accent hover:underline"
+                          >
+                            recap
+                          </a>
+                        )}
+                        {e.slides && (
+                          <a
+                            href={e.slides}
+                            class="text-accent hover:underline"
+                          >
+                            slides
+                          </a>
+                        )}
+                        {e.video && (
+                          <a
+                            href={e.video}
+                            class="text-accent hover:underline"
+                          >
+                            video
+                          </a>
+                        )}
+                        {e.page && (
+                          <a
+                            href={e.page}
+                            class="text-accent hover:underline"
+                          >
+                            details
+                          </a>
+                        )}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+  </main>
+  <Footer />
+</Layout>

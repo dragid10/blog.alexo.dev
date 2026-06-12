@@ -1,0 +1,94 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const allProjects = await getCollection("projects");
+const visible = allProjects.filter(p => p.data.status !== "archived");
+
+const sorted = visible.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  if (a.data.order != null && b.data.order != null)
+    return a.data.order - b.data.order;
+  if (a.data.order != null) return -1;
+  if (b.data.order != null) return 1;
+  return a.data.title.localeCompare(b.data.title);
+});
+
+const statusColors: Record<string, string> = {
+  active: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
+  maintained:
+    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
+  archived:
+    "bg-neutral-100 text-neutral-600 dark:bg-neutral-800/30 dark:text-neutral-400",
+};
+---
+
+<Layout
+  title={`Projects | ${config.site.title}`}
+  description="Alex Oladele's side projects and open source work."
+>
+  <Header />
+  <Breadcrumb />
+
+  <main id="main-content" class="app-layout pb-8">
+    <h1 class="text-2xl font-semibold sm:text-3xl">Projects</h1>
+    <p class="mt-2 mb-8 italic">Things I've built and tinkered with.</p>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        sorted.map(project => (
+          <div class="border-border rounded-lg border p-4 transition-colors hover:border-accent/40">
+            <div class="mb-2 flex items-start justify-between gap-2">
+              <h2 class="text-lg font-semibold">{project.data.title}</h2>
+              <span
+                class:list={[
+                  "shrink-0 rounded-full px-2 py-0.5 text-xs font-medium",
+                  statusColors[project.data.status] ?? statusColors.active,
+                ]}
+              >
+                {project.data.status}
+              </span>
+            </div>
+            <p class="mb-3 text-sm opacity-75">{project.data.description}</p>
+            {project.data.tags.length > 0 && (
+              <div class="mb-3 flex flex-wrap gap-1.5">
+                {project.data.tags.map(tag => (
+                  <span class="bg-muted/40 rounded px-1.5 py-0.5 text-xs">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div class="flex gap-3 text-sm">
+              {project.data.repo && (
+                <a
+                  href={project.data.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-accent hover:underline"
+                >
+                  Source
+                </a>
+              )}
+              {project.data.demo && (
+                <a
+                  href={project.data.demo}
+                  target={project.data.demo.startsWith("http") ? "_blank" : undefined}
+                  rel={project.data.demo.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="text-accent hover:underline"
+                >
+                  {project.data.demo.startsWith("/") ? "Read more" : "Demo"}
+                </a>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>

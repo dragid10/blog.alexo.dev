@@ -3,8 +3,8 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://blog.alexo.dev/",
-    title: "Alex's blog",
-    description: "Alex Oladele's random thoughts",
+    title: "Alex Oladele",
+    description: "Tech nerd on the internet!",
     author: "Alex Oladele",
     profile: "https://alexo.dev",
     ogImage: "default-og.jpg",
@@ -34,7 +34,10 @@ export default defineAstroPaperConfig({
     { name: "bluesky", url: "https://bsky.app/profile/wizkidalex.bsky.social" },
     { name: "mastodon", url: "https://triangletoot.party/@Wizkid_alex" },
     { name: "threads", url: "https://www.threads.net/@wizkid_alex" },
-    { name: "mail", url: "mailto:dragid10@gmail.com" },
+    { name: "instagram", url: "https://instagram.com/wizkid_alex" },
+    { name: "storygraph", url: "https://app.thestorygraph.com/profile/wizkid_alex" },
+    { name: "letterboxd", url: "https://letterboxd.com/wizkid_alex/" },
+    { name: "mail", url: "mailto:oladelaa@gmail.com" },
   ],
   shareLinks: [
     { name: "bluesky", url: "https://bsky.app/intent/compose?text=" },
