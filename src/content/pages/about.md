@@ -1,15 +1,12 @@
 ---
 title: "About"
-description: "About Alex Oladele and this blog"
+description: "About Alex Oladele"
 ---
 
-Hey, I'm **Alex Oladele**. This is where my random thoughts land: programming,
-homelab adventures, and productivity experiments.
+Hey, I'm **Alex Oladele**. I'm a software engineer and SRE at IBM. I write here about programming, homelab adventures, and productivity experiments.
 
-For my resume, speaking, and everything else, head over to
-[alexo.dev](https://alexo.dev).
+I speak at conferences and universities about code review culture, Python, and practical engineering skills. You can see where I've spoken on the [speaking](/speaking/) page.
 
-You can also find me on [GitHub](https://github.com/dragid10),
-[LinkedIn](https://www.linkedin.com/in/alexoladele),
-[Bluesky](https://bsky.app/profile/wizkidalex.bsky.social), and
-[Mastodon](https://triangletoot.party/@Wizkid_alex).
+I also build open source side projects. Check out what I'm working on at [projects](/projects/).
+
+Find me on [GitHub](https://github.com/dragid10), [LinkedIn](https://www.linkedin.com/in/alexoladele), [Bluesky](https://bsky.app/profile/wizkidalex.bsky.social), and [Mastodon](https://triangletoot.party/@Wizkid_alex).

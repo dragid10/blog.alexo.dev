@@ -1,0 +1,16 @@
+engagements:
+  - year: 2025
+    event: "Ontario Tech University"
+    type: "Guest lecture"
+    talk: "Things We Never Covered in School"
+    recap: "/posts/ontario-tech-2025/"
+  - year: 2024
+    event: "AfroTech Conference"
+    type: "Conference talk"
+    talk: "Code Reviews: Compassion vs. Criticism"
+    recap: "/posts/afrotech-2024/"
+  - year: 2024
+    event: "PyOhio"
+    type: "Conference talk"
+    talk: "Python + Discord = Great Bots!"
+    recap: "/posts/pyohio-2024/"
