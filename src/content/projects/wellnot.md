@@ -1,6 +1,6 @@
 ---
 title: "Wellnot"
-description: "Flutter app for tracking daily symptoms, moods, and tags. Local-first, fully offline, no backend."
+description: "Mobile app written in Flutter for tracking daily symptoms, moods, and tags. Local-first and fully offline. Deployed on both the Google Play Store and Apple App Store."
 repo: "https://github.com/dragid10/Wellnot-app"
 demo: "https://github.com/dragid10/Wellnot-releases"
 status: "active"
