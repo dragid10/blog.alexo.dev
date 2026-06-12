@@ -35,6 +35,8 @@ export default defineAstroPaperConfig({
     { name: "mastodon", url: "https://triangletoot.party/@Wizkid_alex" },
     { name: "threads", url: "https://www.threads.net/@wizkid_alex" },
     { name: "instagram", url: "https://instagram.com/wizkid_alex" },
+    { name: "storygraph", url: "https://app.thestorygraph.com/profile/wizkid_alex" },
+    { name: "letterboxd", url: "https://letterboxd.com/wizkid_alex/" },
     { name: "mail", url: "mailto:oladelaa@gmail.com" },
   ],
   shareLinks: [
