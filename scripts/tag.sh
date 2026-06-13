@@ -1,15 +1,29 @@
 #!/usr/bin/env bash
-# Interactive tag editor for blog posts. Uses gum for the TUI.
-#
-#   ./scripts/tag.sh            # pick a source (Obsidian drafts or repo), then a post, then tags
-#   ./scripts/tag.sh <slug>     # jump straight to tagging a specific repo post
-#
-# Reads the canonical tag list from scripts/tags.txt.
-# Set OBSIDIAN_POSTS to override the default Obsidian blog posts path.
-# Requires: gum (https://github.com/charmbracelet/gum)
-
 set -euo pipefail
 cd "$(dirname "$0")/.."
+
+usage() {
+  cat <<'EOF'
+tag.sh - interactive tag editor for blog posts
+
+Usage:
+  ./scripts/tag.sh [slug]
+
+Examples:
+  ./scripts/tag.sh                    # pick source, post, then tags
+  ./scripts/tag.sh avoid-pip-freeze   # tag a specific repo post by slug
+
+When run without arguments, prompts you to choose between Obsidian
+drafts and the blog repo, then pick a post, then select tags from
+the standard set (scripts/tags.txt) with a multi-select TUI.
+
+Environment:
+  OBSIDIAN_POSTS   Override the Obsidian blog posts path
+                   (default: ~/Documents/karabraxos/Personal/blog/posts)
+
+Requires: gum (https://github.com/charmbracelet/gum)
+EOF
+}
 
 POSTS_DIR="src/content/posts"
 TAGS_FILE="scripts/tags.txt"
@@ -100,6 +114,10 @@ pick_post() {
 }
 
 # --- pick a post ---
+
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+esac
 
 if [ "${1:-}" != "" ]; then
   POST_FILE="$POSTS_DIR/$1.md"

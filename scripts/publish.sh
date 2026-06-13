@@ -1,24 +1,37 @@
 #!/usr/bin/env bash
-# Move an Obsidian draft into the site and get it ready to ship.
-#
-#   ./scripts/publish.sh <draft.md> [--slug SLUG] [--publish] [--pr] [--force]
-#
-#   <draft.md>   a file from the vault, or one already exported into
-#                src/content/posts/ by the Obsidian markdown-export plugin
-#   --slug SLUG  override the URL slug (default: filename minus date prefix)
-#   --publish    set draft: false and bump pubDatetime to now
-#   --pr         create a branch, commit, push, and open the PR
-#
-# Handles: date-prefix stripping, copying referenced images into
-# public/assets/uploads/<slug>/, rewriting image paths to site URLs,
-# and yelling about anything Astro can't render (wikilinks, missing
-# description, Templater leftovers).
-#
-# Repo location: set BLOG_REPO to your checkout (export BLOG_REPO=~/coding/...)
-# so the script works from anywhere on any machine. If BLOG_REPO is unset it
-# assumes it is being run from inside the repo (scripts/publish.sh).
-
 set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+publish.sh - move an Obsidian draft into the site and get it ready to ship
+
+Usage:
+  ./scripts/publish.sh <draft.md> [flags]
+
+Examples:
+  ./scripts/publish.sh ~/Documents/karabraxos/Personal/blog/posts/my-post.md
+  ./scripts/publish.sh my-post.md --publish
+  ./scripts/publish.sh my-post.md --publish --pr
+
+Arguments:
+  <draft.md>             Path to an Obsidian draft or a file already in
+                         src/content/posts/ (via the markdown-export plugin)
+
+Flags:
+  --slug SLUG            Override the URL slug (default: filename minus date prefix)
+  --publish              Set draft: false and bump pubDatetime to now
+  --pr                   Create a branch, commit, push, and open a PR
+  --force                Overwrite an existing post file
+  -h, --help             Show this help
+
+Handles: date-prefix stripping, copying/rewriting image paths, and
+warning about wikilinks, missing descriptions, or Templater leftovers.
+
+Environment:
+  BLOG_REPO              Path to your blog.alexo.dev checkout
+                         (default: inferred from script location)
+EOF
+}
 
 ORIG_PWD="$(pwd)"
 REPO="${BLOG_REPO:-$(cd "$(dirname "$0")/.." && pwd)}"
@@ -32,15 +45,20 @@ cd "$REPO"
 
 POSTS_DIR="src/content/posts"
 UPLOADS_DIR="public/assets/uploads"
+OBSIDIAN_POSTS="${OBSIDIAN_POSTS:-$HOME/Documents/karabraxos/Personal/blog/posts}"
+
+HAS_GUM=""
+command -v gum &>/dev/null && [ -t 0 ] && HAS_GUM="y"
 
 SRC="" SLUG="" PUBLISH="" MAKE_PR="" FORCE=""
 while [ $# -gt 0 ]; do
   case "$1" in
+    -h|--help) usage; exit 0 ;;
     --slug)    SLUG="$2"; shift 2 ;;
     --publish) PUBLISH="y"; shift ;;
-    --pr)      MAKE_PR="y"; shift ;;
+    --pr)      MAKE_PR="y"; PUBLISH="y"; shift ;;
     --force)   FORCE="y"; shift ;;
-    -*)        echo "Unknown flag: $1" >&2; exit 1 ;;
+    -*)        echo "Unknown flag: $1" >&2; echo "Run ./scripts/publish.sh --help for usage." >&2; exit 1 ;;
     *)         SRC="$1"; shift ;;
   esac
 done
@@ -49,8 +67,47 @@ done
 if [ -n "$SRC" ] && [ ! -f "$SRC" ] && [ -f "$ORIG_PWD/$SRC" ]; then
   SRC="$ORIG_PWD/$SRC"
 fi
+
+# no file given - if gum is available, pick a draft interactively
+if [ -z "$SRC" ] && [ -n "$HAS_GUM" ]; then
+  declare -a draft_files=()
+  declare -a draft_labels=()
+
+  # collect Obsidian drafts
+  if [ -d "$OBSIDIAN_POSTS" ]; then
+    for f in "$OBSIDIAN_POSTS"/*.md; do
+      [ -f "$f" ] || continue
+      draft_files+=("$f")
+      draft_labels+=("[obsidian]  $(basename "$f" .md)")
+    done
+  fi
+
+  # collect repo drafts (only those with draft: true)
+  for f in "$POSTS_DIR"/*.md; do
+    [ -f "$f" ] || continue
+    grep -q '^draft: true' "$f" || continue
+    draft_files+=("$f")
+    draft_labels+=("[repo]      $(basename "$f" .md)")
+  done
+
+  if [ ${#draft_files[@]} -gt 0 ]; then
+    CHOSEN_LABEL="$(printf '%s\n' "${draft_labels[@]}" | gum choose --header "Pick a draft to publish:")"
+    for i in "${!draft_labels[@]}"; do
+      if [ "${draft_labels[$i]}" = "$CHOSEN_LABEL" ]; then
+        SRC="${draft_files[$i]}"
+        break
+      fi
+    done
+  fi
+fi
+
 if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
-  echo "Usage: publish.sh <draft.md> [--slug SLUG] [--publish] [--pr] [--force]" >&2
+  if [ -z "$SRC" ]; then
+    echo "Missing required argument: <draft.md>" >&2
+  else
+    echo "File not found: $SRC" >&2
+  fi
+  echo "Run ./scripts/publish.sh --help for usage." >&2
   exit 1
 fi
 

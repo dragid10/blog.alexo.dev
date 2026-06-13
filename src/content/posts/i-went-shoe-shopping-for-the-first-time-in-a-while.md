@@ -5,7 +5,7 @@ pubDatetime: 2026-06-13T20:47:33Z
 tags:
   - "slice-of-life"
   - "til"
-draft: true
+draft: false
 ---
 
 ...and turns out my foot size has increased! To any regular person, I'm sure this is normal and uninteresting, but to me this was actually a shock.
