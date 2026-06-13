@@ -38,6 +38,7 @@ export default defineAstroPaperConfig({
     { name: "storygraph", url: "https://app.thestorygraph.com/profile/wizkid_alex" },
     { name: "letterboxd", url: "https://letterboxd.com/wizkid_alex/" },
     { name: "mail", url: "mailto:oladelaa@gmail.com" },
+    { name: "rss", url: "/rss.xml", linkTitle: "RSS Feed" },
   ],
   shareLinks: [
     { name: "bluesky", url: "https://bsky.app/intent/compose?text=" },
