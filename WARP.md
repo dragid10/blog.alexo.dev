@@ -26,6 +26,8 @@ yarn format       # prettier --write
 ./scripts/new.sh post     # scaffold a draft post (prompts, or flags: --title --description --tags)
 ./scripts/new.sh project  # scaffold a project card (--title --description --repo --status ...)
 ./scripts/new.sh talk     # add a speaking engagement to speaking.yaml (--year --event --talk ...)
+./scripts/tag.sh           # interactive tag editor — pick source (Obsidian/repo), post, tags (requires gum)
+./scripts/tag.sh <slug>    # jump straight to tagging a specific repo post
 ./scripts/publish.sh <draft.md> [--publish] [--pr]  # move an Obsidian draft into the site:
                           # strips date prefix, copies/rewrites images, lints wikilinks.
                           # Set BLOG_REPO env var to run it from outside the repo.
@@ -70,9 +72,11 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Nav**: Home, Blog (route stays `/posts/`), Speaking, Projects, About (text
   links) + Search, Theme toggle (icon buttons). Tags and Archives pages exist but
   are not in the nav. Nav labels live in `src/i18n/lang/en.ts`.
-- **Scripts**: `scripts/new.sh` (scaffold post/project/talk) and
+- **Scripts**: `scripts/new.sh` (scaffold post/project/talk),
+  `scripts/tag.sh` (interactive tag editor, requires `gum`), and
   `scripts/publish.sh` (import an Obsidian draft; honors `BLOG_REPO` env var).
-  Plain bash, no dependencies, flags documented in each file's header.
+  Plain bash, no dependencies beyond gum for tag.sh, flags documented in each
+  file's header.
 - **Commit graph**: `src/components/CommitGraph.astro` — client-side fetch from
   jogruber API, theme-aware colors. Uses `astro:page-load` event to re-init after
   SPA navigation (Astro ClientRouter pattern).
@@ -99,6 +103,20 @@ All in `astro-paper.config.ts`. Socials need a matching SVG icon in `src/assets/
 ### Speaking engagements
 
 `src/data/speaking.yaml` — add new entries under `engagements`. The speaking page renders them automatically, grouped by year descending.
+
+### Blog tags
+
+Standard tag set lives in `scripts/tags.txt` (one per line). Use `./scripts/tag.sh`
+to interactively tag posts. Tags are lowercase kebab-case in frontmatter and
+display as-is on the site (slug-based dedup). Current standard tags:
+
+| Category | Tags |
+|----------|------|
+| Format | `tutorial`, `opinion`, `reflection`, `til`, `project`, `speaking` |
+| Topic | `python`, `devops`, `linux`, `open-source`, `hardware`, `web`, `productivity` |
+| Vibe | `slice-of-life`, `media`, `career`, `learning`, `travel` |
+
+To add a new tag: append it to `scripts/tags.txt` (alphabetical order).
 
 ### Projects
 
