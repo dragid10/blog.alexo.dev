@@ -26,8 +26,8 @@ yarn format       # prettier --write
 ./scripts/new.sh post     # scaffold a draft post (prompts, or flags: --title --description --tags)
 ./scripts/new.sh project  # scaffold a project card (--title --description --repo --status ...)
 ./scripts/new.sh talk     # add a speaking engagement to speaking.yaml (--year --event --talk ...)
-./scripts/tag.sh           # interactive tag editor — pick a post, multi-select tags (requires gum)
-./scripts/tag.sh <slug>    # jump straight to tagging a specific post
+./scripts/tag.sh           # interactive tag editor — pick source (Obsidian/repo), post, tags (requires gum)
+./scripts/tag.sh <slug>    # jump straight to tagging a specific repo post
 ./scripts/publish.sh <draft.md> [--publish] [--pr]  # move an Obsidian draft into the site:
                           # strips date prefix, copies/rewrites images, lints wikilinks.
                           # Set BLOG_REPO env var to run it from outside the repo.

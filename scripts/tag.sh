@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Interactive tag editor for blog posts. Uses gum for the TUI.
 #
-#   ./scripts/tag.sh            # pick a post, then pick tags
-#   ./scripts/tag.sh <slug>     # jump straight to tagging a specific post
+#   ./scripts/tag.sh            # pick a source (Obsidian drafts or repo), then a post, then tags
+#   ./scripts/tag.sh <slug>     # jump straight to tagging a specific repo post
 #
 # Reads the canonical tag list from scripts/tags.txt.
+# Set OBSIDIAN_POSTS to override the default Obsidian blog posts path.
 # Requires: gum (https://github.com/charmbracelet/gum)
 
 set -euo pipefail
@@ -12,6 +13,7 @@ cd "$(dirname "$0")/.."
 
 POSTS_DIR="src/content/posts"
 TAGS_FILE="scripts/tags.txt"
+OBSIDIAN_POSTS="${OBSIDIAN_POSTS:-$HOME/Documents/karabraxos/Personal/blog/posts}"
 
 # --- dependency check ---
 if ! command -v gum &>/dev/null; then
@@ -54,38 +56,35 @@ post_display() {
   printf "%s  %s" "$date" "$title"
 }
 
-# --- pick a post ---
+# Build a sorted post list from a directory. Prints file paths to stdout.
+list_posts() {
+  local dir="$1"
+  for f in "$dir"/*.md; do
+    [ -f "$f" ] || continue
+    date="$(fm_field "$f" "pubDatetime" | cut -c1-10)"
+    printf "%s\t%s\n" "$date" "$f"
+  done | sort -t$'\t' -k1 | cut -f2
+}
 
-if [ "${1:-}" != "" ]; then
-  POST_FILE="$POSTS_DIR/$1.md"
-  if [ ! -f "$POST_FILE" ]; then
-    echo "Post not found: $POST_FILE" >&2
-    exit 1
-  fi
-else
-  # Build list of posts sorted by pubDatetime
+# Prompt user to pick a single post from a directory. Sets POST_FILE.
+pick_post() {
+  local dir="$1"
   declare -a post_files=()
   declare -a post_labels=()
 
   while IFS= read -r file; do
+    [ -z "$file" ] && continue
     post_files+=("$file")
     post_labels+=("$(post_display "$file")")
-  done < <(
-    for f in "$POSTS_DIR"/*.md; do
-      date="$(fm_field "$f" "pubDatetime" | cut -c1-10)"
-      printf "%s\t%s\n" "$date" "$f"
-    done | sort -t$'\t' -k1 | cut -f2
-  )
+  done < <(list_posts "$dir")
 
   if [ ${#post_files[@]} -eq 0 ]; then
-    echo "No posts found in $POSTS_DIR" >&2
+    echo "No posts found in $dir" >&2
     exit 1
   fi
 
-  # gum choose returns the selected label text
   CHOSEN_LABEL="$(printf '%s\n' "${post_labels[@]}" | gum choose --header "Pick a post to tag:")"
 
-  # Find the matching file
   POST_FILE=""
   for i in "${!post_labels[@]}"; do
     if [ "${post_labels[$i]}" = "$CHOSEN_LABEL" ]; then
@@ -97,6 +96,44 @@ else
   if [ -z "$POST_FILE" ]; then
     echo "Could not match selection to a file" >&2
     exit 1
+  fi
+}
+
+# --- pick a post ---
+
+if [ "${1:-}" != "" ]; then
+  POST_FILE="$POSTS_DIR/$1.md"
+  if [ ! -f "$POST_FILE" ]; then
+    echo "Post not found: $POST_FILE" >&2
+    exit 1
+  fi
+else
+  # Build source list — only show options that actually have posts
+  declare -a sources=()
+  declare -a source_dirs=()
+
+  if compgen -G "$POSTS_DIR/*.md" >/dev/null 2>&1; then
+    sources+=("Blog repo  (src/content/posts/)")
+    source_dirs+=("$POSTS_DIR")
+  fi
+  if [ -d "$OBSIDIAN_POSTS" ] && compgen -G "$OBSIDIAN_POSTS/*.md" >/dev/null 2>&1; then
+    sources+=("Obsidian   ($(basename "$(dirname "$OBSIDIAN_POSTS")")/posts/)")
+    source_dirs+=("$OBSIDIAN_POSTS")
+  fi
+
+  if [ ${#sources[@]} -eq 0 ]; then
+    echo "No posts found in either $POSTS_DIR or $OBSIDIAN_POSTS" >&2
+    exit 1
+  elif [ ${#sources[@]} -eq 1 ]; then
+    pick_post "${source_dirs[0]}"
+  else
+    SOURCE_LABEL="$(printf '%s\n' "${sources[@]}" | gum choose --header "Where are the posts?")"
+    for i in "${!sources[@]}"; do
+      if [ "${sources[$i]}" = "$SOURCE_LABEL" ]; then
+        pick_post "${source_dirs[$i]}"
+        break
+      fi
+    done
   fi
 fi
 

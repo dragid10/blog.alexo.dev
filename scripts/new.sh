@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Scaffold new site content. No dependencies beyond bash + coreutils.
+# Scaffold new site content. Requires bash + coreutils; gum is optional (tag picker).
 #
 #   ./scripts/new.sh post     [--title T] [--description D] [--tags "A, B"] [--slug S]
 #   ./scripts/new.sh project  [--title T] [--description D] [--repo URL] [--demo URL]
@@ -89,14 +89,29 @@ slugify() {
 # escape double quotes for YAML double-quoted scalars
 yq() { printf '"%s"' "$(printf '%s' "$1" | sed 's/"/\\"/g')"; }
 
-# print "tag, tag" input as Title-Cased quoted YAML list items, one per line
+# print "tag, tag" input as quoted YAML list items, one per line
 tag_lines() {
   printf '%s\n' "$1" | tr ',' '\n' | while IFS= read -r t; do
     t="$(printf '%s' "$t" | sed -e 's/^ *//' -e 's/ *$//')"
     [ -z "$t" ] && continue
-    t="$(printf '%s' "$t" | awk '{ print toupper(substr($0,1,1)) substr($0,2) }')"
     printf '  - "%s"\n' "$t"
   done
+}
+
+TAGS_FILE="scripts/tags.txt"
+
+# If gum + tags.txt are available and we're interactive, multi-select from the
+# standard tag set. Returns comma-separated tags or "" if the user cancels.
+pick_tags_gum() {
+  command -v gum &>/dev/null || return 1
+  [ -t 0 ] || return 1
+  [ -f "$TAGS_FILE" ] || return 1
+
+  local chosen
+  chosen="$(grep -v '^$' "$TAGS_FILE" \
+    | gum choose --no-limit --header "Select tags (space to toggle):")" || true
+  [ -z "$chosen" ] && return 1
+  printf '%s' "$chosen" | paste -sd ',' -
 }
 
 refuse_overwrite() {
@@ -115,7 +130,12 @@ new_post() {
   ask TITLE "Post title" "" required
   TITLE="$(tidy_title "$TITLE")"
   ask DESCRIPTION "Description (one sentence, used for SEO/OG)" "" required
-  ask TAGS "Tags (comma separated)" "Uncategorized"
+  if [ -z "$TAGS" ]; then
+    TAGS="$(pick_tags_gum)" || true
+  fi
+  if [ -z "$TAGS" ]; then
+    ask TAGS "Tags (comma separated)" "others"
+  fi
   [ -n "$SLUG" ] || SLUG="$(slugify "$TITLE")"
   local path="$POSTS_DIR/$SLUG.md"
   refuse_overwrite "$path"
