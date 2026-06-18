@@ -1,0 +1,21 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Subscribe from "@/components/Subscribe.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+---
+
+<Layout title={`Subscribe | ${config.site.title}`}>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle="Subscribe" pageDesc="Get new blog posts delivered to your inbox.">
+    <Subscribe />
+  </Main>
+
+  <Footer />
+</Layout>
