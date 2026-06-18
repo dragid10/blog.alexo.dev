@@ -73,22 +73,22 @@ if [ -z "$SRC" ] && [ -n "$HAS_GUM" ]; then
   declare -a draft_files=()
   declare -a draft_labels=()
 
-  # collect Obsidian drafts
+  # collect Obsidian drafts (newest first)
   if [ -n "$OBSIDIAN_POSTS_PATH" ] && [ -d "$OBSIDIAN_POSTS_PATH" ]; then
-    for f in "$OBSIDIAN_POSTS_PATH"/*.md; do
-      [ -f "$f" ] || continue
+    while IFS= read -r f; do
+      [ -z "$f" ] && continue
       draft_files+=("$f")
       draft_labels+=("[obsidian]  $(basename "$f" .md)")
-    done
+    done < <(ls -t "$OBSIDIAN_POSTS_PATH"/*.md 2>/dev/null)
   fi
 
-  # collect repo drafts (only those with draft: true)
-  for f in "$POSTS_DIR"/*.md; do
-    [ -f "$f" ] || continue
+  # collect repo drafts (only those with draft: true, newest first)
+  while IFS= read -r f; do
+    [ -z "$f" ] && continue
     grep -q '^draft: true' "$f" || continue
     draft_files+=("$f")
     draft_labels+=("[repo]      $(basename "$f" .md)")
-  done
+  done < <(ls -t "$POSTS_DIR"/*.md 2>/dev/null)
 
   if [ ${#draft_files[@]} -gt 0 ]; then
     CHOSEN_LABEL="$(printf '%s\n' "${draft_labels[@]}" | gum choose --header "Pick a draft to publish:")"

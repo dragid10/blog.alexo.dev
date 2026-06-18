@@ -77,7 +77,7 @@ list_posts() {
     [ -f "$f" ] || continue
     date="$(fm_field "$f" "pubDatetime" | cut -c1-10)"
     printf "%s\t%s\n" "$date" "$f"
-  done | sort -t$'\t' -k1 | cut -f2
+  done | sort -t$'\t' -k1 -r | cut -f2
 }
 
 # Prompt user to pick a single post from a directory. Sets POST_FILE.
