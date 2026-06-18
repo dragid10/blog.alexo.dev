@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
+# new.sh — Scaffold new site content (posts, projects, speaking engagements).
+#
+# Creates the markdown file (or YAML entry) with all required frontmatter
+# fields pre-filled. Anything not passed as a flag is prompted for
+# interactively (with a gum TUI if available, plain text otherwise).
+#
+# See --help for full usage.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-POSTS_DIR="src/content/posts"
-PROJECTS_DIR="src/content/projects"
-SPEAKING_YAML="src/data/speaking.yaml"
+REPO_POSTS_DIR="src/content/posts"
+REPO_PROJECTS_DIR="src/content/projects"
+SPEAKING_YAML_FILE="src/data/speaking.yaml"
+STANDARD_TAGS_FILE="scripts/tags.txt"
+
+# ---------------------------------------------------------------------------
+# Usage / help text
+# ---------------------------------------------------------------------------
 
 usage() {
   cat <<'EOF'
@@ -108,20 +120,26 @@ Output: appended to src/data/speaking.yaml
 EOF
 }
 
-CMD="${1:-}"
+# ---------------------------------------------------------------------------
+# Parse the subcommand and flags
+# ---------------------------------------------------------------------------
+
+SUBCOMMAND="${1:-}"
 [ $# -gt 0 ] && shift
 
-case "$CMD" in
+case "$SUBCOMMAND" in
   -h|--help) usage; exit 0 ;;
 esac
 
-TITLE="" DESCRIPTION="" TAGS="" SLUG="" REPO="" DEMO="" STATUS="" FEATURED="" ORDER=""
-YEAR="" EVENT="" TYPE="" TALK="" RECAP="" SLIDES="" VIDEO=""
+# All possible flag values — initialized empty
+TITLE="" DESCRIPTION="" TAGS="" URL_SLUG="" REPO_URL="" DEMO_URL="" STATUS=""
+IS_FEATURED="" SORT_ORDER="" YEAR="" EVENT_NAME="" TALK_TYPE="" TALK_TITLE=""
+RECAP_URL="" SLIDES_URL="" VIDEO_URL=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help)
-      case "$CMD" in
+      case "$SUBCOMMAND" in
         post)          usage_post ;;
         project)       usage_project ;;
         talk|speaking) usage_talk ;;
@@ -131,68 +149,86 @@ while [ $# -gt 0 ]; do
     --title)       TITLE="$2"; shift 2 ;;
     --description) DESCRIPTION="$2"; shift 2 ;;
     --tags)        TAGS="$2"; shift 2 ;;
-    --slug)        SLUG="$2"; shift 2 ;;
-    --repo)        REPO="$2"; shift 2 ;;
-    --demo)        DEMO="$2"; shift 2 ;;
+    --slug)        URL_SLUG="$2"; shift 2 ;;
+    --repo)        REPO_URL="$2"; shift 2 ;;
+    --demo)        DEMO_URL="$2"; shift 2 ;;
     --status)      STATUS="$2"; shift 2 ;;
-    --featured)    FEATURED="y"; shift ;;
-    --order)       ORDER="$2"; shift 2 ;;
+    --featured)    IS_FEATURED="y"; shift ;;
+    --order)       SORT_ORDER="$2"; shift 2 ;;
     --year)        YEAR="$2"; shift 2 ;;
-    --event)       EVENT="$2"; shift 2 ;;
-    --type)        TYPE="$2"; shift 2 ;;
-    --talk)        TALK="$2"; shift 2 ;;
-    --recap)       RECAP="$2"; shift 2 ;;
-    --slides)      SLIDES="$2"; shift 2 ;;
-    --video)       VIDEO="$2"; shift 2 ;;
-    *) echo "Unknown flag: $1" >&2; echo "Run ./scripts/new.sh $CMD --help for usage." >&2; exit 1 ;;
+    --event)       EVENT_NAME="$2"; shift 2 ;;
+    --type)        TALK_TYPE="$2"; shift 2 ;;
+    --talk)        TALK_TITLE="$2"; shift 2 ;;
+    --recap)       RECAP_URL="$2"; shift 2 ;;
+    --slides)      SLIDES_URL="$2"; shift 2 ;;
+    --video)       VIDEO_URL="$2"; shift 2 ;;
+    *) echo "Unknown flag: $1" >&2; echo "Run ./scripts/new.sh $SUBCOMMAND --help for usage." >&2; exit 1 ;;
   esac
 done
 
+# Check if gum is available for interactive prompts
 HAS_GUM=""
 command -v gum &>/dev/null && [ -t 0 ] && HAS_GUM="y"
 
-# ask VARNAME "prompt" [default] [required]
-ask() {
-  local var="$1" prompt="$2" default="${3:-}" required="${4:-}" current value
-  current="$(eval "printf '%s' \"\$$var\"")"
-  [ -n "$current" ] && return 0
+# ---------------------------------------------------------------------------
+# Shared helper functions
+# ---------------------------------------------------------------------------
+
+# Prompt the user for a value if the corresponding variable is empty.
+# Usage: prompt_for_value VARIABLE_NAME "Prompt text" [default_value] [required]
+#   - If the variable already has a value, does nothing.
+#   - In non-interactive mode (piped stdin), uses the default or errors if required.
+#   - Uses gum for input if available, falls back to plain read.
+prompt_for_value() {
+  local variable_name="$1" prompt_text="$2" default_value="${3:-}" is_required="${4:-}"
+  local current_value user_input
+
+  current_value="$(eval "printf '%s' \"\$$variable_name\"")"
+  [ -n "$current_value" ] && return 0
+
+  # Non-interactive mode: use default or fail
   if [ ! -t 0 ]; then
-    if [ -n "$required" ]; then
-      echo "Missing required value: --$(printf '%s' "$var" | tr '[:upper:]' '[:lower:]')" >&2
+    if [ -n "$is_required" ]; then
+      echo "Missing required value: --$(printf '%s' "$variable_name" | tr '[:upper:]' '[:lower:]')" >&2
       exit 1
     fi
-    eval "$var=\$default"
+    eval "$variable_name=\$default_value"
     return 0
   fi
+
+  # Interactive mode with gum
   if [ -n "$HAS_GUM" ]; then
-    local gum_args=(--header "$prompt")
-    [ -n "$default" ] && gum_args+=(--value "$default")
+    local gum_args=(--header "$prompt_text")
+    [ -n "$default_value" ] && gum_args+=(--value "$default_value")
     while true; do
-      value="$(gum input "${gum_args[@]}")" || true
-      if [ -n "$value" ] || [ -z "$required" ]; then
-        eval "$var=\$value"
+      user_input="$(gum input "${gum_args[@]}")" || true
+      if [ -n "$user_input" ] || [ -z "$is_required" ]; then
+        eval "$variable_name=\$user_input"
         return 0
       fi
       echo "  (required)" >&2
     done
   fi
+
+  # Interactive mode without gum (plain read)
   while true; do
-    if [ -n "$default" ]; then
-      read -r -p "$prompt [$default]: " value
-      value="${value:-$default}"
+    if [ -n "$default_value" ]; then
+      read -r -p "$prompt_text [$default_value]: " user_input
+      user_input="${user_input:-$default_value}"
     else
-      read -r -p "$prompt: " value
+      read -r -p "$prompt_text: " user_input
     fi
-    if [ -n "$value" ] || [ -z "$required" ]; then
-      eval "$var=\$value"
+    if [ -n "$user_input" ] || [ -z "$is_required" ]; then
+      eval "$variable_name=\$user_input"
       return 0
     fi
     echo "  (required)"
   done
 }
 
-# title -> safe filename/URL slug: lowercase kebab-case, ASCII alnum only
-slugify() {
+# Convert a title to a URL-safe slug: lowercase, ASCII alphanumeric, kebab-case.
+# Usage: title_to_slug "My Cool Post Title"
+title_to_slug() {
   local slug
   slug="$(printf '%s' "$1" \
     | tr '[:upper:]' '[:lower:]' \
@@ -204,167 +240,201 @@ slugify() {
   printf '%s' "$slug"
 }
 
-# escape double quotes for YAML double-quoted scalars
-yq() { printf '"%s"' "$(printf '%s' "$1" | sed 's/"/\\"/g')"; }
+# Escape double quotes for use in YAML double-quoted scalars.
+# Usage: yaml_quote "Some \"quoted\" text"
+yaml_quote() { printf '"%s"' "$(printf '%s' "$1" | sed 's/"/\\"/g')"; }
 
-# print "tag, tag" input as quoted YAML list items, one per line
-tag_lines() {
-  printf '%s\n' "$1" | tr ',' '\n' | while IFS= read -r t; do
-    t="$(printf '%s' "$t" | sed -e 's/^ *//' -e 's/ *$//')"
-    [ -z "$t" ] && continue
-    printf '  - "%s"\n' "$t"
+# Convert a comma-separated tag string into YAML list items (one per line).
+# Usage: tags_to_yaml_list "python, tutorial, web"
+tags_to_yaml_list() {
+  printf '%s\n' "$1" | tr ',' '\n' | while IFS= read -r tag; do
+    tag="$(printf '%s' "$tag" | sed -e 's/^ *//' -e 's/ *$//')"  # trim whitespace
+    [ -z "$tag" ] && continue
+    printf '  - "%s"\n' "$tag"
   done
 }
 
-TAGS_FILE="scripts/tags.txt"
-
-# If gum + tags.txt are available and we're interactive, multi-select from the
-# standard tag set. Returns comma-separated tags or "" if the user cancels.
-pick_tags_gum() {
+# Present a multi-select gum picker for the standard tag set.
+# Returns comma-separated selected tags, or fails (return 1) if
+# gum/tags.txt is unavailable or the user cancels.
+pick_tags_with_gum() {
   command -v gum &>/dev/null || return 1
   [ -t 0 ] || return 1
-  [ -f "$TAGS_FILE" ] || return 1
+  [ -f "$STANDARD_TAGS_FILE" ] || return 1
 
-  local chosen
-  chosen="$(grep -v '^$' "$TAGS_FILE" \
+  local selected_tags
+  selected_tags="$(grep -v '^$' "$STANDARD_TAGS_FILE" \
     | gum choose --no-limit --header "Select tags (space to toggle):")" || true
-  [ -z "$chosen" ] && return 1
-  printf '%s' "$chosen" | paste -sd ',' -
+  [ -z "$selected_tags" ] && return 1
+  printf '%s' "$selected_tags" | paste -sd ',' -
 }
 
-refuse_overwrite() {
+# Exit with an error if the given file path already exists.
+refuse_if_file_exists() {
   if [ -e "$1" ]; then
     echo "Refusing to overwrite existing file: $1" >&2
     exit 1
   fi
 }
 
-# trim, collapse doubled spaces
-tidy_title() {
+# Clean up a title: trim leading/trailing spaces, collapse doubled spaces.
+clean_title() {
   printf '%s' "$1" | sed -e 's/^ *//' -e 's/ *$//' -e 's/  */ /g'
 }
 
+# ---------------------------------------------------------------------------
+# Subcommand: post
+# ---------------------------------------------------------------------------
 new_post() {
-  ask TITLE "Post title" "" required
-  TITLE="$(tidy_title "$TITLE")"
-  ask DESCRIPTION "Description (one sentence, used for SEO/OG)" "" required
+  prompt_for_value TITLE "Post title" "" required
+  TITLE="$(clean_title "$TITLE")"
+  prompt_for_value DESCRIPTION "Description (one sentence, used for SEO/OG)" "" required
+
+  # Tags: try gum picker first, fall back to text prompt
   if [ -z "$TAGS" ]; then
-    TAGS="$(pick_tags_gum)" || true
+    TAGS="$(pick_tags_with_gum)" || true
   fi
   if [ -z "$TAGS" ]; then
-    ask TAGS "Tags (comma separated)" "others"
+    prompt_for_value TAGS "Tags (comma separated)" "others"
   fi
-  [ -n "$SLUG" ] || SLUG="$(slugify "$TITLE")"
-  local path="$POSTS_DIR/$SLUG.md"
-  refuse_overwrite "$path"
+
+  [ -n "$URL_SLUG" ] || URL_SLUG="$(title_to_slug "$TITLE")"
+  local output_path="$REPO_POSTS_DIR/$URL_SLUG.md"
+  refuse_if_file_exists "$output_path"
 
   {
     echo "---"
-    echo "title: $(yq "$TITLE")"
-    echo "description: $(yq "$DESCRIPTION")"
+    echo "title: $(yaml_quote "$TITLE")"
+    echo "description: $(yaml_quote "$DESCRIPTION")"
     echo "pubDatetime: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo "tags:"
-    tag_lines "$TAGS"
+    tags_to_yaml_list "$TAGS"
     echo "draft: true"
     echo "---"
     echo ""
-  } > "$path"
+  } > "$output_path"
+
   echo ""
-  echo "Created $path (draft)"
-  echo "URL when published: /posts/$SLUG/"
+  echo "Created $output_path (draft)"
+  echo "URL when published: /posts/$URL_SLUG/"
   echo "Write the post, set draft: false, then open a PR."
 }
 
+# ---------------------------------------------------------------------------
+# Subcommand: project
+# ---------------------------------------------------------------------------
 new_project() {
-  ask TITLE "Project title" "" required
-  ask DESCRIPTION "Description (one-liner for the card)" "" required
-  ask REPO "Repo URL (blank to skip)"
-  ask DEMO "Demo/live URL (blank to skip)"
+  prompt_for_value TITLE "Project title" "" required
+  prompt_for_value DESCRIPTION "Description (one-liner for the card)" "" required
+  prompt_for_value REPO_URL "Repo URL (blank to skip)"
+  prompt_for_value DEMO_URL "Demo/live URL (blank to skip)"
+
+  # Status: gum chooser or text prompt
   if [ -z "$STATUS" ] && [ -n "$HAS_GUM" ]; then
     STATUS="$(printf 'active\nmaintained\narchived' | gum choose --header "Status:")"
   else
-    ask STATUS "Status" "active"
+    prompt_for_value STATUS "Status" "active"
     case "$STATUS" in active|maintained|archived) ;; *) echo "Invalid status: $STATUS" >&2; exit 1 ;; esac
   fi
-  ask TAGS "Tags (comma separated, lowercase)"
-  if [ -z "$FEATURED" ] && [ -n "$HAS_GUM" ]; then
-    gum confirm "Featured on the projects page?" && FEATURED="y" || FEATURED="n"
-  else
-    ask FEATURED "Featured? (y/N)" "n"
-  fi
-  ask ORDER "Order (number, blank to skip)"
-  [ -n "$SLUG" ] || SLUG="$(slugify "$TITLE")"
-  local path="$PROJECTS_DIR/$SLUG.md"
-  refuse_overwrite "$path"
 
-  local tags_inline=""
+  prompt_for_value TAGS "Tags (comma separated, lowercase)"
+
+  # Featured: gum confirm or text prompt
+  if [ -z "$IS_FEATURED" ] && [ -n "$HAS_GUM" ]; then
+    gum confirm "Featured on the projects page?" && IS_FEATURED="y" || IS_FEATURED="n"
+  else
+    prompt_for_value IS_FEATURED "Featured? (y/N)" "n"
+  fi
+
+  prompt_for_value SORT_ORDER "Order (number, blank to skip)"
+
+  [ -n "$URL_SLUG" ] || URL_SLUG="$(title_to_slug "$TITLE")"
+  local output_path="$REPO_PROJECTS_DIR/$URL_SLUG.md"
+  refuse_if_file_exists "$output_path"
+
+  # Convert tags to inline YAML array format: ["tag1", "tag2"]
+  local inline_tags=""
   if [ -n "$TAGS" ]; then
-    tags_inline="$(printf '%s' "$TAGS" | tr '[:upper:]' '[:lower:]' | tr ',' '\n' \
+    inline_tags="$(printf '%s' "$TAGS" | tr '[:upper:]' '[:lower:]' | tr ',' '\n' \
       | sed -e 's/^ *//' -e 's/ *$//' -e '/^$/d' -e 's/.*/"&"/' | paste -sd ',' - | sed 's/,/, /g')"
   fi
 
   {
     echo "---"
-    echo "title: $(yq "$TITLE")"
-    echo "description: $(yq "$DESCRIPTION")"
-    if [ -n "$REPO" ]; then echo "repo: $(yq "$REPO")"; fi
-    if [ -n "$DEMO" ]; then echo "demo: $(yq "$DEMO")"; fi
-    echo "status: $(yq "$STATUS")"
-    if [ -n "$tags_inline" ]; then echo "tags: [$tags_inline]"; fi
-    case "$FEATURED" in y|Y|yes|true) echo "featured: true" ;; esac
-    if [ -n "$ORDER" ]; then echo "order: $ORDER"; fi
+    echo "title: $(yaml_quote "$TITLE")"
+    echo "description: $(yaml_quote "$DESCRIPTION")"
+    if [ -n "$REPO_URL" ]; then echo "repo: $(yaml_quote "$REPO_URL")"; fi
+    if [ -n "$DEMO_URL" ]; then echo "demo: $(yaml_quote "$DEMO_URL")"; fi
+    echo "status: $(yaml_quote "$STATUS")"
+    if [ -n "$inline_tags" ]; then echo "tags: [$inline_tags]"; fi
+    case "$IS_FEATURED" in y|Y|yes|true) echo "featured: true" ;; esac
+    if [ -n "$SORT_ORDER" ]; then echo "order: $SORT_ORDER"; fi
     echo "---"
-  } > "$path"
+  } > "$output_path"
+
   echo ""
-  echo "Created $path"
+  echo "Created $output_path"
   echo "It will appear on /projects/ on the next deploy. Open a PR."
 }
 
+# ---------------------------------------------------------------------------
+# Subcommand: talk
+# ---------------------------------------------------------------------------
 new_talk() {
-  ask YEAR "Year" "$(date +%Y)"
-  ask EVENT "Event name" "" required
-  if [ -z "$TYPE" ] && [ -n "$HAS_GUM" ]; then
-    TYPE="$(printf 'Conference talk\nGuest lecture\nPodcast\nPanel\nWorkshop' | gum choose --header "Type:")"
-  else
-    ask TYPE "Type (Conference talk/Guest lecture/Podcast/Panel/Workshop)" "Conference talk"
-  fi
-  ask TALK "Talk title" "" required
-  ask RECAP "Recap post URL (blank to skip)"
-  ask SLIDES "Slides URL (blank to skip)"
-  ask VIDEO "Video URL (blank to skip)"
+  prompt_for_value YEAR "Year" "$(date +%Y)"
+  prompt_for_value EVENT_NAME "Event name" "" required
 
-  grep -q '^engagements:$' "$SPEAKING_YAML" || {
-    echo "Could not find \"engagements:\" in $SPEAKING_YAML" >&2; exit 1
+  # Talk type: gum chooser or text prompt
+  if [ -z "$TALK_TYPE" ] && [ -n "$HAS_GUM" ]; then
+    TALK_TYPE="$(printf 'Conference talk\nGuest lecture\nPodcast\nPanel\nWorkshop' | gum choose --header "Type:")"
+  else
+    prompt_for_value TALK_TYPE "Type (Conference talk/Guest lecture/Podcast/Panel/Workshop)" "Conference talk"
+  fi
+
+  prompt_for_value TALK_TITLE "Talk title" "" required
+  prompt_for_value RECAP_URL "Recap post URL (blank to skip)"
+  prompt_for_value SLIDES_URL "Slides URL (blank to skip)"
+  prompt_for_value VIDEO_URL "Video URL (blank to skip)"
+
+  # Verify the speaking YAML file has the expected structure
+  grep -q '^engagements:$' "$SPEAKING_YAML_FILE" || {
+    echo "Could not find \"engagements:\" in $SPEAKING_YAML_FILE" >&2; exit 1
   }
 
-  local entry
-  entry="  - year: $YEAR
-    event: $(yq "$EVENT")
-    type: $(yq "$TYPE")
-    talk: $(yq "$TALK")"
-  if [ -n "$RECAP" ]; then entry="$entry
-    recap: $(yq "$RECAP")"; fi
-  if [ -n "$SLIDES" ]; then entry="$entry
-    slides: $(yq "$SLIDES")"; fi
-  if [ -n "$VIDEO" ]; then entry="$entry
-    video: $(yq "$VIDEO")"; fi
+  # Build the YAML entry for this engagement
+  local yaml_entry
+  yaml_entry="  - year: $YEAR
+    event: $(yaml_quote "$EVENT_NAME")
+    type: $(yaml_quote "$TALK_TYPE")
+    talk: $(yaml_quote "$TALK_TITLE")"
+  if [ -n "$RECAP_URL" ]; then yaml_entry="$yaml_entry
+    recap: $(yaml_quote "$RECAP_URL")"; fi
+  if [ -n "$SLIDES_URL" ]; then yaml_entry="$yaml_entry
+    slides: $(yaml_quote "$SLIDES_URL")"; fi
+  if [ -n "$VIDEO_URL" ]; then yaml_entry="$yaml_entry
+    video: $(yaml_quote "$VIDEO_URL")"; fi
 
-  # newest entries live at the top, right under the engagements: key
-  awk -v entry="$entry" '{ print } /^engagements:$/ { print entry }' "$SPEAKING_YAML" \
-    > "$SPEAKING_YAML.tmp" && mv "$SPEAKING_YAML.tmp" "$SPEAKING_YAML"
+  # Insert the new entry right after the "engagements:" key (newest at top)
+  awk -v entry="$yaml_entry" '{ print } /^engagements:$/ { print entry }' "$SPEAKING_YAML_FILE" \
+    > "$SPEAKING_YAML_FILE.tmp" && mv "$SPEAKING_YAML_FILE.tmp" "$SPEAKING_YAML_FILE"
+
   echo ""
-  echo "Added \"$TALK\" ($EVENT, $YEAR) to $SPEAKING_YAML"
+  echo "Added \"$TALK_TITLE\" ($EVENT_NAME, $YEAR) to $SPEAKING_YAML_FILE"
   echo "The speaking page groups by year automatically. Open a PR."
 }
 
-case "$CMD" in
+# ---------------------------------------------------------------------------
+# Dispatch subcommand
+# ---------------------------------------------------------------------------
+case "$SUBCOMMAND" in
   post)            new_post ;;
   project)         new_project ;;
   talk|speaking)   new_talk ;;
   "")
+    # No subcommand — let the user pick interactively if gum is available
     if [ -n "$HAS_GUM" ]; then
-      CMD="$(printf 'post\nproject\ntalk' | gum choose --header "What would you like to create?")"
-      case "$CMD" in
+      SUBCOMMAND="$(printf 'post\nproject\ntalk' | gum choose --header "What would you like to create?")"
+      case "$SUBCOMMAND" in
         post)    new_post ;;
         project) new_project ;;
         talk)    new_talk ;;
@@ -375,7 +445,7 @@ case "$CMD" in
     exit 0
     ;;
   *)
-    echo "Unknown command: $CMD" >&2
+    echo "Unknown command: $SUBCOMMAND" >&2
     echo "Run ./scripts/new.sh --help for usage." >&2
     exit 1
     ;;
