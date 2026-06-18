@@ -18,8 +18,8 @@ drafts and the blog repo, then pick a post, then select tags from
 the standard set (scripts/tags.txt) with a multi-select TUI.
 
 Environment:
-  OBSIDIAN_POSTS   Override the Obsidian blog posts path
-                   (default: ~/Documents/obsidian-vault/Personal/blog/posts)
+  OBSIDIAN_POSTS_PATH   Path to your Obsidian blog posts folder
+                   (no default — set in your shell config)
 
 Requires: gum (https://github.com/charmbracelet/gum)
 EOF
@@ -27,7 +27,7 @@ EOF
 
 POSTS_DIR="src/content/posts"
 TAGS_FILE="scripts/tags.txt"
-OBSIDIAN_POSTS="${OBSIDIAN_POSTS:-$HOME/Documents/obsidian-vault/Personal/blog/posts}"
+OBSIDIAN_POSTS_PATH="${OBSIDIAN_POSTS_PATH:-}"
 
 # --- dependency check ---
 if ! command -v gum &>/dev/null; then
@@ -134,13 +134,13 @@ else
     sources+=("Blog repo  (src/content/posts/)")
     source_dirs+=("$POSTS_DIR")
   fi
-  if [ -d "$OBSIDIAN_POSTS" ] && compgen -G "$OBSIDIAN_POSTS/*.md" >/dev/null 2>&1; then
-    sources+=("Obsidian   ($(basename "$(dirname "$OBSIDIAN_POSTS")")/posts/)")
-    source_dirs+=("$OBSIDIAN_POSTS")
+  if [ -n "$OBSIDIAN_POSTS_PATH" ] && [ -d "$OBSIDIAN_POSTS_PATH" ] && compgen -G "$OBSIDIAN_POSTS_PATH/*.md" >/dev/null 2>&1; then
+    sources+=("Obsidian   ($(basename "$(dirname "$OBSIDIAN_POSTS_PATH")")/posts/)")
+    source_dirs+=("$OBSIDIAN_POSTS_PATH")
   fi
 
   if [ ${#sources[@]} -eq 0 ]; then
-    echo "No posts found in either $POSTS_DIR or $OBSIDIAN_POSTS" >&2
+    echo "No posts found in $POSTS_DIR${OBSIDIAN_POSTS_PATH:+ or $OBSIDIAN_POSTS_PATH}" >&2
     exit 1
   elif [ ${#sources[@]} -eq 1 ]; then
     pick_post "${source_dirs[0]}"

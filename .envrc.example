@@ -1,0 +1,8 @@
+# Copy to .envrc and adjust paths for your machine.
+# Then run: direnv allow
+
+# Path to your Obsidian blog posts folder (used by scripts/publish.sh and scripts/tag.sh)
+export OBSIDIAN_POSTS_PATH="$HOME/Documents/your-vault/Personal/blog/posts"
+
+# Path to this repo (only needed when running publish.sh from outside the repo)
+# export BLOG_REPO_PATH="$HOME/coding/alexo-website/blog.alexo.dev"
