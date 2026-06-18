@@ -9,6 +9,7 @@ import Socials from "@/components/Socials.astro";
 import Card from "@/components/Card.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import CommitGraph from "@/components/CommitGraph.astro";
+import Subscribe from "@/components/Subscribe.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -94,6 +95,7 @@ const linkButtons = [
               <IconArrowRight class="inline-block rtl:-rotate-180" />
             </LinkButton>
           </div>
+          <Subscribe class="mt-6" />
         </section>
       )
     }
