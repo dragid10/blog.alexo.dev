@@ -9,6 +9,7 @@ import sitemap from "@astrojs/sitemap";
 import { unified } from "@astrojs/markdown-remark";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import remarkLinkCard from "remark-link-card-plus";
 import rehypeCallouts from "rehype-callouts";
 import {
   transformerNotationDiff,
@@ -39,6 +40,7 @@ export default defineConfig({
       remarkPlugins: [
         remarkToc,
         [remarkCollapse, { test: "Table of contents" }],
+        [remarkLinkCard, { cache: true, shortenUrl: true }],
       ],
       rehypePlugins: [rehypeCallouts],
     }),
