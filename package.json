@@ -30,6 +30,7 @@
     "react-dom": "^19.2.0",
     "rehype-callouts": "^2.1.2",
     "remark-collapse": "^0.1.2",
+    "remark-link-card-plus": "^0.7.4",
     "remark-toc": "^9.0.0",
     "satori": "^0.26.0",
     "sharp": "^0.34.5",
