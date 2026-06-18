@@ -9,7 +9,7 @@ Usage:
   ./scripts/publish.sh <draft.md> [flags]
 
 Examples:
-  ./scripts/publish.sh ~/Documents/karabraxos/Personal/blog/posts/my-post.md
+  ./scripts/publish.sh "$OBSIDIAN_POSTS_PATH/my-post.md"
   ./scripts/publish.sh my-post.md --publish
   ./scripts/publish.sh my-post.md --publish --pr
 
@@ -28,24 +28,24 @@ Handles: date-prefix stripping, copying/rewriting image paths, and
 warning about wikilinks, missing descriptions, or Templater leftovers.
 
 Environment:
-  BLOG_REPO              Path to your blog.alexo.dev checkout
+  BLOG_REPO_PATH              Path to your blog.alexo.dev checkout
                          (default: inferred from script location)
 EOF
 }
 
 ORIG_PWD="$(pwd)"
-REPO="${BLOG_REPO:-$(cd "$(dirname "$0")/.." && pwd)}"
+REPO="${BLOG_REPO_PATH:-$(cd "$(dirname "$0")/.." && pwd)}"
 if [ ! -d "$REPO/src/content/posts" ]; then
   echo "Not a blog repo: $REPO" >&2
-  echo "Set BLOG_REPO to your blog.alexo.dev checkout, e.g.:" >&2
-  echo "  export BLOG_REPO=\"\$HOME/coding/alexo-website/blog.alexo.dev\"" >&2
+  echo "Set BLOG_REPO_PATH to your blog.alexo.dev checkout, e.g.:" >&2
+  echo "  export BLOG_REPO_PATH=\"\$HOME/coding/alexo-website/blog.alexo.dev\"" >&2
   exit 1
 fi
 cd "$REPO"
 
 POSTS_DIR="src/content/posts"
 UPLOADS_DIR="public/assets/uploads"
-OBSIDIAN_POSTS="${OBSIDIAN_POSTS:-$HOME/Documents/karabraxos/Personal/blog/posts}"
+OBSIDIAN_POSTS_PATH="${OBSIDIAN_POSTS_PATH:-}"
 
 HAS_GUM=""
 command -v gum &>/dev/null && [ -t 0 ] && HAS_GUM="y"
@@ -74,8 +74,8 @@ if [ -z "$SRC" ] && [ -n "$HAS_GUM" ]; then
   declare -a draft_labels=()
 
   # collect Obsidian drafts
-  if [ -d "$OBSIDIAN_POSTS" ]; then
-    for f in "$OBSIDIAN_POSTS"/*.md; do
+  if [ -n "$OBSIDIAN_POSTS_PATH" ] && [ -d "$OBSIDIAN_POSTS_PATH" ]; then
+    for f in "$OBSIDIAN_POSTS_PATH"/*.md; do
       [ -f "$f" ] || continue
       draft_files+=("$f")
       draft_labels+=("[obsidian]  $(basename "$f" .md)")
