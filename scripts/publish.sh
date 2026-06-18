@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+# publish.sh — Move an Obsidian draft into the blog repo and prepare it for deploy.
+#
+# Handles: date-prefix stripping, image copying/path rewriting, and
+# warnings about wikilinks, missing descriptions, or Templater leftovers.
+# Optionally flips draft→published and opens a PR.
+#
+# See --help for full usage.
 set -euo pipefail
 
 usage() {
@@ -28,184 +35,227 @@ Handles: date-prefix stripping, copying/rewriting image paths, and
 warning about wikilinks, missing descriptions, or Templater leftovers.
 
 Environment:
-  BLOG_REPO_PATH              Path to your blog.alexo.dev checkout
+  BLOG_REPO_PATH         Path to your blog.alexo.dev checkout
                          (default: inferred from script location)
+  OBSIDIAN_POSTS_PATH    Path to your Obsidian blog posts folder
+                         (no default — set in your shell config)
 EOF
 }
 
-ORIG_PWD="$(pwd)"
-REPO="${BLOG_REPO_PATH:-$(cd "$(dirname "$0")/.." && pwd)}"
-if [ ! -d "$REPO/src/content/posts" ]; then
-  echo "Not a blog repo: $REPO" >&2
+# ---------------------------------------------------------------------------
+# Configuration: locate the blog repo
+# ---------------------------------------------------------------------------
+ORIGINAL_WORKING_DIR="$(pwd)"
+BLOG_REPO="${BLOG_REPO_PATH:-$(cd "$(dirname "$0")/.." && pwd)}"
+
+if [ ! -d "$BLOG_REPO/src/content/posts" ]; then
+  echo "Not a blog repo: $BLOG_REPO" >&2
   echo "Set BLOG_REPO_PATH to your blog.alexo.dev checkout, e.g.:" >&2
   echo "  export BLOG_REPO_PATH=\"\$HOME/coding/alexo-website/blog.alexo.dev\"" >&2
   exit 1
 fi
-cd "$REPO"
+cd "$BLOG_REPO"
 
-POSTS_DIR="src/content/posts"
-UPLOADS_DIR="public/assets/uploads"
+REPO_POSTS_DIR="src/content/posts"
+IMAGE_UPLOADS_DIR="public/assets/uploads"
 OBSIDIAN_POSTS_PATH="${OBSIDIAN_POSTS_PATH:-}"
 
+# Check if gum is available for interactive prompts
 HAS_GUM=""
 command -v gum &>/dev/null && [ -t 0 ] && HAS_GUM="y"
 
-SRC="" SLUG="" PUBLISH="" MAKE_PR="" FORCE=""
+# ---------------------------------------------------------------------------
+# Parse command-line flags
+# ---------------------------------------------------------------------------
+SOURCE_FILE=""
+URL_SLUG=""
+SHOULD_PUBLISH=""
+SHOULD_CREATE_PR=""
+FORCE_OVERWRITE=""
+
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help) usage; exit 0 ;;
-    --slug)    SLUG="$2"; shift 2 ;;
-    --publish) PUBLISH="y"; shift ;;
-    --pr)      MAKE_PR="y"; PUBLISH="y"; shift ;;
-    --force)   FORCE="y"; shift ;;
+    --slug)    URL_SLUG="$2"; shift 2 ;;
+    --publish) SHOULD_PUBLISH="y"; shift ;;
+    --pr)      SHOULD_CREATE_PR="y"; SHOULD_PUBLISH="y"; shift ;;
+    --force)   FORCE_OVERWRITE="y"; shift ;;
     -*)        echo "Unknown flag: $1" >&2; echo "Run ./scripts/publish.sh --help for usage." >&2; exit 1 ;;
-    *)         SRC="$1"; shift ;;
+    *)         SOURCE_FILE="$1"; shift ;;
   esac
 done
 
-# resolve a relative draft path against the directory the user ran from
-if [ -n "$SRC" ] && [ ! -f "$SRC" ] && [ -f "$ORIG_PWD/$SRC" ]; then
-  SRC="$ORIG_PWD/$SRC"
+# If the source path is relative, resolve it against the directory the user ran from
+if [ -n "$SOURCE_FILE" ] && [ ! -f "$SOURCE_FILE" ] && [ -f "$ORIGINAL_WORKING_DIR/$SOURCE_FILE" ]; then
+  SOURCE_FILE="$ORIGINAL_WORKING_DIR/$SOURCE_FILE"
 fi
 
-# no file given - if gum is available, pick a draft interactively
-if [ -z "$SRC" ] && [ -n "$HAS_GUM" ]; then
-  declare -a draft_files=()
-  declare -a draft_labels=()
+# ---------------------------------------------------------------------------
+# Interactive draft picker (when no file argument is given)
+# ---------------------------------------------------------------------------
+if [ -z "$SOURCE_FILE" ] && [ -n "$HAS_GUM" ]; then
+  declare -a draft_file_paths=()
+  declare -a draft_display_labels=()
 
-  # collect Obsidian drafts
+  # Collect Obsidian drafts (newest first by modification time)
   if [ -n "$OBSIDIAN_POSTS_PATH" ] && [ -d "$OBSIDIAN_POSTS_PATH" ]; then
-    for f in "$OBSIDIAN_POSTS_PATH"/*.md; do
-      [ -f "$f" ] || continue
-      draft_files+=("$f")
-      draft_labels+=("[obsidian]  $(basename "$f" .md)")
-    done
+    while IFS= read -r file; do
+      [ -z "$file" ] && continue
+      draft_file_paths+=("$file")
+      draft_display_labels+=("[obsidian]  $(basename "$file" .md)")
+    done < <(ls -t "$OBSIDIAN_POSTS_PATH"/*.md 2>/dev/null)
   fi
 
-  # collect repo drafts (only those with draft: true)
-  for f in "$POSTS_DIR"/*.md; do
-    [ -f "$f" ] || continue
-    grep -q '^draft: true' "$f" || continue
-    draft_files+=("$f")
-    draft_labels+=("[repo]      $(basename "$f" .md)")
-  done
+  # Collect repo drafts (only files with draft: true, newest first)
+  while IFS= read -r file; do
+    [ -z "$file" ] && continue
+    grep -q '^draft: true' "$file" || continue
+    draft_file_paths+=("$file")
+    draft_display_labels+=("[repo]      $(basename "$file" .md)")
+  done < <(ls -t "$REPO_POSTS_DIR"/*.md 2>/dev/null)
 
-  if [ ${#draft_files[@]} -gt 0 ]; then
-    CHOSEN_LABEL="$(printf '%s\n' "${draft_labels[@]}" | gum choose --header "Pick a draft to publish:")"
-    for i in "${!draft_labels[@]}"; do
-      if [ "${draft_labels[$i]}" = "$CHOSEN_LABEL" ]; then
-        SRC="${draft_files[$i]}"
+  if [ ${#draft_file_paths[@]} -gt 0 ]; then
+    chosen_label="$(printf '%s\n' "${draft_display_labels[@]}" | gum choose --header "Pick a draft to publish:")"
+    for i in "${!draft_display_labels[@]}"; do
+      if [ "${draft_display_labels[$i]}" = "$chosen_label" ]; then
+        SOURCE_FILE="${draft_file_paths[$i]}"
         break
       fi
     done
   fi
 fi
 
-if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
-  if [ -z "$SRC" ]; then
+if [ -z "$SOURCE_FILE" ] || [ ! -f "$SOURCE_FILE" ]; then
+  if [ -z "$SOURCE_FILE" ]; then
     echo "Missing required argument: <draft.md>" >&2
   else
-    echo "File not found: $SRC" >&2
+    echo "File not found: $SOURCE_FILE" >&2
   fi
   echo "Run ./scripts/publish.sh --help for usage." >&2
   exit 1
 fi
 
-SRC_DIR="$(cd "$(dirname "$SRC")" && pwd)"
-BASE="$(basename "$SRC" .md)"
-# strip a Jekyll/vault-style date prefix: 2025-03-12-foo -> foo
-if [ -z "$SLUG" ]; then
-  SLUG="$(printf '%s' "$BASE" | sed -E 's/^[0-9]{4}-[0-9]{2}-[0-9]{2}-//')"
-fi
-DEST="$POSTS_DIR/$SLUG.md"
+# ---------------------------------------------------------------------------
+# Determine slug and destination path
+# ---------------------------------------------------------------------------
+source_directory="$(cd "$(dirname "$SOURCE_FILE")" && pwd)"
+source_basename="$(basename "$SOURCE_FILE" .md)"
 
-if [ "$SRC_DIR/$BASE.md" = "$(pwd)/$DEST" ]; then
-  : # already in place with the right name
-elif [ -e "$DEST" ] && [ -z "$FORCE" ]; then
-  echo "Refusing to overwrite existing post: $DEST (use --force to replace a stub)" >&2
+# Strip a Jekyll/vault-style date prefix (e.g. "2025-03-12-my-post" → "my-post")
+if [ -z "$URL_SLUG" ]; then
+  URL_SLUG="$(printf '%s' "$source_basename" | sed -E 's/^[0-9]{4}-[0-9]{2}-[0-9]{2}-//')"
+fi
+destination_file="$REPO_POSTS_DIR/$URL_SLUG.md"
+
+# ---------------------------------------------------------------------------
+# Copy the draft into the repo (unless it's already there)
+# ---------------------------------------------------------------------------
+if [ "$source_directory/$source_basename.md" = "$(pwd)/$destination_file" ]; then
+  : # Already in place with the right name — nothing to copy
+elif [ -e "$destination_file" ] && [ -z "$FORCE_OVERWRITE" ]; then
+  echo "Refusing to overwrite existing post: $destination_file (use --force to replace a stub)" >&2
   exit 1
 else
-  cp "$SRC" "$DEST"
-  # if the source was a plugin export sitting in posts/ under the wrong name, tidy it
-  case "$SRC_DIR/" in
-    "$(pwd)/$POSTS_DIR/") rm "$SRC" ;;
+  cp "$SOURCE_FILE" "$destination_file"
+  # If the source was a plugin export sitting in posts/ under the wrong name, clean it up
+  case "$source_directory/" in
+    "$(pwd)/$REPO_POSTS_DIR/") rm "$SOURCE_FILE" ;;
   esac
 fi
 
-# --- images -----------------------------------------------------------------
-mapfile -t IMAGE_REFS < <(grep -oE '!\[[^]]*\]\([^)]+\)' "$DEST" | sed -E 's/^!\[[^]]*\]\(([^)]+)\)$/\1/' | sort -u || true)
+# ---------------------------------------------------------------------------
+# Process images: copy local images into the site and rewrite paths
+# ---------------------------------------------------------------------------
 
-copied=0
-for ref in "${IMAGE_REFS[@]:-}"; do
-  [ -z "$ref" ] && continue
-  case "$ref" in
-    http://*|https://*) continue ;;                # remote, leave alone
-    /assets/uploads/*) continue ;;                 # already a site path
-    ../../../public/assets/uploads/*)              # markdown-export plugin output
-      new_ref="${ref#../../../public}"
-      sed -i "s|]($ref)|]($new_ref)|g" "$DEST"
+# Extract all markdown image references from the post
+mapfile -t image_references < <(grep -oE '!\[[^]]*\]\([^)]+\)' "$destination_file" | sed -E 's/^!\[[^]]*\]\(([^)]+)\)$/\1/' | sort -u || true)
+
+images_copied=0
+for image_ref in "${image_references[@]:-}"; do
+  [ -z "$image_ref" ] && continue
+  case "$image_ref" in
+    http://*|https://*)
+      # Remote URL — leave unchanged
       continue ;;
-    /*) echo "WARN: absolute image path left as-is: $ref" ;;
-    *)                                             # relative to the draft -> copy it in
-      decoded="${ref//%20/ }"
-      if [ -f "$SRC_DIR/$decoded" ]; then
-        mkdir -p "$UPLOADS_DIR/$SLUG"
-        img_name="$(basename "$decoded")"
-        cp "$SRC_DIR/$decoded" "$UPLOADS_DIR/$SLUG/$img_name"
-        new_ref="/assets/uploads/$SLUG/$(printf '%s' "$img_name" | sed 's/ /%20/g')"
-        sed -i "s|]($ref)|]($new_ref)|g" "$DEST"
-        copied=$((copied + 1))
+    /assets/uploads/*)
+      # Already a valid site path — no action needed
+      continue ;;
+    ../../../public/assets/uploads/*)
+      # Markdown-export plugin output — rewrite to site-relative path
+      rewritten_path="${image_ref#../../../public}"
+      sed -i "s|]($image_ref)|]($rewritten_path)|g" "$destination_file"
+      continue ;;
+    /*)
+      echo "WARN: absolute image path left as-is: $image_ref" ;;
+    *)
+      # Relative path (next to the draft file) — copy into the site
+      decoded_path="${image_ref//%20/ }"
+      if [ -f "$source_directory/$decoded_path" ]; then
+        mkdir -p "$IMAGE_UPLOADS_DIR/$URL_SLUG"
+        image_filename="$(basename "$decoded_path")"
+        cp "$source_directory/$decoded_path" "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename"
+        rewritten_path="/assets/uploads/$URL_SLUG/$(printf '%s' "$image_filename" | sed 's/ /%20/g')"
+        sed -i "s|]($image_ref)|]($rewritten_path)|g" "$destination_file"
+        images_copied=$((images_copied + 1))
       else
-        echo "WARN: image not found next to draft: $ref"
+        echo "WARN: image not found next to draft: $image_ref"
       fi ;;
   esac
 done
 
-# --- optional publish flip ----------------------------------------------------
-if [ -n "$PUBLISH" ]; then
-  sed -i 's/^draft: true$/draft: false/' "$DEST"
-  sed -i "s/^pubDatetime: .*/pubDatetime: $(date -u +%Y-%m-%dT%H:%M:%SZ)/" "$DEST"
+# ---------------------------------------------------------------------------
+# Optional: flip draft → published and update the publish timestamp
+# ---------------------------------------------------------------------------
+if [ -n "$SHOULD_PUBLISH" ]; then
+  sed -i 's/^draft: true$/draft: false/' "$destination_file"
+  sed -i "s/^pubDatetime: .*/pubDatetime: $(date -u +%Y-%m-%dT%H:%M:%SZ)/" "$destination_file"
 fi
 
-# --- sanity checks ------------------------------------------------------------
-problems=0
-flag() { echo "PROBLEM: $1"; problems=$((problems + 1)); }
+# ---------------------------------------------------------------------------
+# Sanity checks: catch common issues before they break the build
+# ---------------------------------------------------------------------------
+problem_count=0
+report_problem() { echo "PROBLEM: $1"; problem_count=$((problem_count + 1)); }
 
-grep -qE '!\[\[|[^!]\[\[' "$DEST" && flag "wikilinks/embeds remain (![[..]] or [[..]]) - Astro can't render them"
-grep -q '<%' "$DEST" && flag "Templater leftovers (<% .. %>) found"
-grep -qE '^description: *("")? *$' "$DEST" && flag "description is empty (required, used for SEO/OG)"
-head -1 "$DEST" | grep -q '^---$' || flag "no frontmatter block at top of file"
-grep -q '^draft: true' "$DEST" && echo "NOTE: still draft: true (use --publish to flip, or edit by hand)"
+grep -qE '!\[\[|[^!]\[\[' "$destination_file" && report_problem "wikilinks/embeds remain (![[..]] or [[..]]) — Astro can't render them"
+grep -q '<%' "$destination_file" && report_problem "Templater leftovers (<% .. %>) found"
+grep -qE '^description: *("")? *$' "$destination_file" && report_problem "description is empty (required, used for SEO/OG)"
+head -1 "$destination_file" | grep -q '^---$' || report_problem "no frontmatter block at top of file"
+grep -q '^draft: true' "$destination_file" && echo "NOTE: still draft: true (use --publish to flip, or edit by hand)"
 
-# --- report -------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
 echo ""
-echo "Placed: $DEST"
-[ "$copied" -gt 0 ] && echo "Copied $copied image(s) -> $UPLOADS_DIR/$SLUG/"
-echo "URL after deploy: /posts/$SLUG/"
+echo "Placed: $destination_file"
+[ "$images_copied" -gt 0 ] && echo "Copied $images_copied image(s) → $IMAGE_UPLOADS_DIR/$URL_SLUG/"
+echo "URL after deploy: /posts/$URL_SLUG/"
 
-if [ "$problems" -gt 0 ]; then
+if [ "$problem_count" -gt 0 ]; then
   echo ""
-  echo "$problems problem(s) above need fixing before this will build/render right."
+  echo "$problem_count problem(s) above need fixing before this will build/render right."
   exit 1
 fi
 
-# --- optional PR ----------------------------------------------------------------
-if [ -n "$MAKE_PR" ]; then
-  branch="post/$SLUG"
-  git checkout -b "$branch"
-  git add "$DEST"
-  [ -d "$UPLOADS_DIR/$SLUG" ] && git add "$UPLOADS_DIR/$SLUG"
-  git commit -m "New post: $SLUG"
-  git push -u origin "$branch"
+# ---------------------------------------------------------------------------
+# Optional: create a branch, commit, push, and open a PR
+# ---------------------------------------------------------------------------
+if [ -n "$SHOULD_CREATE_PR" ]; then
+  branch_name="post/$URL_SLUG"
+  git checkout -b "$branch_name"
+  git add "$destination_file"
+  [ -d "$IMAGE_UPLOADS_DIR/$URL_SLUG" ] && git add "$IMAGE_UPLOADS_DIR/$URL_SLUG"
+  git commit -m "New post: $URL_SLUG"
+  git push -u origin "$branch_name"
   gh pr create --fill
   echo ""
   echo "PR opened. Merge it and Vercel deploys automatically."
 else
   echo ""
   echo "Next steps:"
-  echo "  git checkout -b post/$SLUG"
-  echo "  git add $DEST $UPLOADS_DIR/$SLUG 2>/dev/null"
-  echo "  git commit -m \"New post: $SLUG\" && git push -u origin post/$SLUG"
+  echo "  git checkout -b post/$URL_SLUG"
+  echo "  git add $destination_file $IMAGE_UPLOADS_DIR/$URL_SLUG 2>/dev/null"
+  echo "  git commit -m \"New post: $URL_SLUG\" && git push -u origin post/$URL_SLUG"
   echo "  gh pr create --fill   # then merge"
   echo "(or rerun with --pr to do all of that for you)"
 fi
