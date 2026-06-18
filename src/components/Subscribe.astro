@@ -1,0 +1,51 @@
+---
+type Props = {
+  class?: string;
+};
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<section
+  class:list={[
+    "border-border rounded-lg border bg-muted/20 px-6 py-5",
+    className,
+  ]}
+  {...attrs}
+>
+  <h3 class="text-lg font-semibold">Get new posts by email</h3>
+  <p class="mt-1 text-sm opacity-75">
+    No spam, unsubscribe anytime.
+  </p>
+  <form
+    action="https://buttondown.com/api/emails/embed-subscribe/AlexO"
+    method="post"
+    target="_blank"
+    class="mt-3 flex gap-2"
+  >
+    <input
+      type="email"
+      name="email"
+      id="bd-email"
+      placeholder="you@example.com"
+      required
+      class="border-border bg-background min-w-0 flex-1 rounded-md border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="bg-accent text-accent-foreground hover:bg-accent/85 rounded-md px-4 py-2 text-sm font-medium transition-colors"
+    >
+      Subscribe
+    </button>
+  </form>
+  <p class="mt-2 text-xs opacity-50">
+    <a
+      href="https://buttondown.com/refer/AlexO"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hover:opacity-75"
+    >
+      Powered by Buttondown.
+    </a>
+  </p>
+</section>
