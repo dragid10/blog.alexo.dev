@@ -1,10 +1,10 @@
 ---
 title: In defense of frequently restarting your devices
 description: We should all reboot our devices more
-pubDatetime: 2026-06-21T17:22:16Z
+pubDatetime: 2026-06-21T15:46:17Z
 tags:
   - "opinion"
-draft: false
+draft: true
 ---
 Okay, I have what I consider to be an unpopular opinion, even though I think it is the correct opinion, and that opinion is that we should all be restarting our devices more frequently than we actually do.
 
@@ -21,11 +21,10 @@ This is not limited to computers. There are so many people that are terrified of
 ---
 
 So here is my proposed timeline for restarting devices:
-- Your computer: I personally believe you should restart that every single day. At worst you should restart it every three days.
-- Your phone: Honestly that could go a little bit longer without it being restarted so I would say restart your phone every three days. At worst once a week.
-- Once a week also goes for tablets.
-- Your TV: In some cases if you have a smart TV, turning your TV off and on is not actually the same as restarting it. It's kind of just turning the screen off. In some cases you have to go to the settings and actually do a restart. I would say we restart your TV once a week. Your TV gets bogged down; smart TVs get bogged down by background processes and they don't have a lot of resources to begin with. At worst we restart your TV every two weeks.
-- Your printer: We restart your printer every week. Printers are notorious for being difficult to deal with. Save yourself confusion and headache: just restart that. Honestly, keep it unplugged. Plug it back in only when you need it.
-- Your smartwatch: it's easy to forget about this one because it kind of just stays on. It lives on your wrist. You charge it up. I think you should restart your smartwatch at least once a week.
-- Your router: this one is a difficult one because it's very dependent on the hardware and the equipment you have. I had an issue with my AT&T Fiber router like three years ago where if the router or the gateway was online for more than a certain amount of time, it would just suddenly start to drop packets frequently. You feel like the performance is bad. I would maybe go every other day. I mean obviously there can be other factors into why your performance is bad and you're paying for good speeds, but restarting is an easy one. Maybe have a more robust network setup like enterprise-grade hardware equipment. Then I think you can honestly get away with restarting maybe once a month.
-- Your smart home devices: so this means your Google speakers, your Alexas, your whatever else you use, Apple stuff, again, when these are working they work fine. I would recommend restarting these once every two weeks, just to keep it fresh, keep it responsive, keep the voice assistant grounded.
+- **Your computer:** I personally believe you should restart that every single day. At worst you should restart it every three days.
+- **Your phone / Tablets:** Honestly that could go a little bit longer without it being restarted so I would say restart your phone every three days. At worst once a week.
+- **Your TV**: In some cases if you have a smart TV, turning your TV off and on is not actually the same as restarting it. It's kind of just turning the screen off. In some cases you have to go to the settings and actually do a restart. I would say we restart your TV once a week. Your TV gets bogged down; smart TVs get bogged down by background processes and they don't have a lot of resources to begin with. At worst we restart your TV every two weeks.
+- **Your printer:** We restart your printer every week. Printers are notorious for being difficult to deal with. Save yourself confusion and headache: just restart that. Honestly, keep it unplugged. Plug it back in only when you need it.
+- **Your smartwatch:** it's easy to forget about this one because it kind of just stays on. It lives on your wrist. You charge it up. I think you should restart your smartwatch at least once a week.
+- **Your router:** this one is a difficult one because it's very dependent on the hardware and the equipment you have. I had an issue with my AT&T Fiber router like three years ago where if the router or the gateway was online for more than a certain amount of time, it would just suddenly start to drop packets frequently. You feel like the performance is bad. I would maybe go every other day. I mean obviously there can be other factors into why your performance is bad and you're paying for good speeds, but restarting is an easy one. Maybe have a more robust network setup like enterprise-grade hardware equipment. Then I think you can honestly get away with restarting maybe once a month.
+- **Your smart home devices:** so this means your Google speakers, your Alexas, your whatever else you use, Apple stuff, again, when these are working they work fine. I would recommend restarting these once every two weeks, just to keep it fresh, keep it responsive, keep the voice assistant grounded.
