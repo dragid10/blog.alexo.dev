@@ -3,8 +3,8 @@ title: In defense of frequently restarting your devices
 description: We should all reboot our devices more
 pubDatetime: 2026-06-21T15:46:17Z
 tags:
-  - "opinion"
-draft: true
+  - opinion
+draft: false
 ---
 Okay, I have what I consider to be an unpopular opinion, even though I think it is the correct opinion, and that opinion is that we should all be restarting our devices more frequently than we actually do.
 
