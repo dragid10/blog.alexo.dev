@@ -245,7 +245,12 @@ if [ -n "$SHOULD_CREATE_PR" ]; then
   git checkout -b "$branch_name"
   git add "$destination_file"
   [ -d "$IMAGE_UPLOADS_DIR/$URL_SLUG" ] && git add "$IMAGE_UPLOADS_DIR/$URL_SLUG"
-  git commit -m "New post: $URL_SLUG"
+  if ! git commit -m "New post: $URL_SLUG"; then
+    echo "Pre-commit hooks modified files, re-staging and retrying commit..."
+    git add "$destination_file"
+    [ -d "$IMAGE_UPLOADS_DIR/$URL_SLUG" ] && git add "$IMAGE_UPLOADS_DIR/$URL_SLUG"
+    git commit -m "New post: $URL_SLUG"
+  fi
   git push -u origin "$branch_name"
   gh pr create --fill
   echo ""
