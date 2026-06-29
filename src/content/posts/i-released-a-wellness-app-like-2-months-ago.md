@@ -107,7 +107,7 @@ Admittedly there have been a couple of feature requests that I have declined bec
 
 ### Technical Stuff
 
-The app is built with Flutter so that it is cross-device compatible. Weirdly enough, it was fairly easy to get the app into the [iOS App Store](https://apps.apple.com/gb/app/wellnot/id6759883780). I had a lot more trouble getting the app into the [Google Play Store](https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app), surprisingly, because the Google Play Store has a very stringent rule about you needing to have **14 active testers for 14 days straight** before you can even submit the app for production access.
+The app is built with Flutter so that it is cross-device compatible. Weirdly enough, it was fairly easy to get the app into the [iOS App Store](https://apps.apple.com/us/app/wellnot/id6759883780). I had a lot more trouble getting the app into the [Google Play Store](https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app), surprisingly, because the Google Play Store has a very stringent rule about you needing to have **14 active testers for 14 days straight** before you can even submit the app for production access.
 
 (Mind you, I had already relaunched the app to production for the Apple App Store at this point. The app was in use. It was out in the wild. iPhone users could download it directly from the App Store and that was not enough to get into the Google Play Store.)
 
@@ -115,7 +115,7 @@ I had to still go through much more rigorous testing in order to get to the Goog
 
 Furthermore, for my Android users, I know not everyone is huge on using Google Play Store, so you can also get this app on Obtainium and I will soon hopefully be making the app available on F-Droid for use as well so that you don't have to be locked into the Google ecosystem in order to download and use this. I also publish the APKs directly on the [Wellnot releases page on GitHub](https://github.com/dragid10/Wellnot-releases).
 
-https://apps.apple.com/gb/app/wellnot/id6759883780
+https://apps.apple.com/us/app/wellnot/id6759883780
 
 https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app
 
