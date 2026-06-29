@@ -119,10 +119,6 @@ https://apps.apple.com/us/app/wellnot/id6759883780
 
 https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app
 
-https://github.com/dragid10/Wellnot-app
-
-https://github.com/dragid10/Wellnot-releases
-
 
 ## Wrap-up
 
