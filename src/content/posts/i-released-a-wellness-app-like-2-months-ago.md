@@ -20,13 +20,13 @@ I also have had friends and loved ones over the past year or two experience some
 
 It is a very open-ended app intentionally. I don't want to be prescriptive about what you can track, what you can't track, and necessarily how you do it.
 
-![Wellnot home calendar view](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223256.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223256.png" alt="Wellnot home calendar view" width="300" />
 
 ### Symptoms
 
 The way that it manifests in the app is that you choose a symptom that you think you're experiencing. That could be literally anything you want. You can use the built-in ones or add your own custom symptoms. Doesn't matter.
 
-![Creating a new symptom entry in Wellnot](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223306.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223306.png" alt="Creating a new symptom entry in Wellnot" width="300" />
 
 ### Severity
 
@@ -40,7 +40,7 @@ Then you choose a mood: how does it make you feel? It doesn't even have to be a 
 
 You can also set tags for a new entry. Tags are supposed to be whatever you want to associate with a symptom. It's again very open-ended on purpose. A tag could be around a relative time that you've experienced this. Maybe it was after lunch, maybe it was before dinner, maybe you got bad sleep, maybe you just watched a weird movie. You get to choose what you associate with that entry.
 
-![Tags and notes on a Wellnot entry](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223419.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223419.png" alt="Tags and notes on a Wellnot entry" width="300" />
 
 ### Notes
 
@@ -61,7 +61,7 @@ The most metrics you get in the app as of right now are frequency patterns, like
 - You used this mood **x** many times.
 - You've used this tag **x** many times.
 
-![Wellnot summary with frequency patterns](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223647.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223647.png" alt="Wellnot summary with frequency patterns" width="300" />
 
 That's about as much as the app is going to do. Yes, it's rather light and simple but that's intentional. I think that part of the experience of using the app is the mindfulness aspect: thinking about what you're feeling and why you're feeling it. I want the user to be able to look at their data and see those patterns themselves.
 
@@ -69,9 +69,9 @@ That's about as much as the app is going to do. Yes, it's rather light and simpl
 
 I know that when I adopt new tools, I have trouble using them because they're not in my daily workflow, so I simply forget they exist.
 
-![Wellnot settings page](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/settings-top.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/settings-top.png" alt="Wellnot settings page" width="300" />
 
-![Wellnot settings page continued](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/settings-bottom.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/settings-bottom.png" alt="Wellnot settings page continued" width="300" />
 
 There's a feature to get a notification at a specific time of the day that reminds you to log an entry. Some people need that push. That's perfectly fine.
 
@@ -79,7 +79,7 @@ Also to put more customization in the user's hands, the intent with the app was 
 
 Let's also say that you experience the same thing kind of frequently, you had an entry the day before. You can just duplicate that entry and put it for the next day or for the current day. It's supposed to help things be easier.
 
-![A Wellnot entry's detail view, with options to duplicate or delete it](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223557.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223557.png" alt="A Wellnot entry's detail view, with options to duplicate or delete it" width="300" />
 
 And I also know myself. I know that sometimes thinking about things may feel a little bit boring. It may feel a little bit stale. It's good for you obviously but sometimes it's like, "This is not helping me with anything."
 
@@ -93,9 +93,9 @@ I don't want to penalize you for being human. That'd be weird. Humans forget stu
 
 This is not supposed to be something you 100% have to do. The achievements are just there to keep things fun. If that's not really your jam, you can turn achievements off. That's completely your choice.
 
-![Wellnot achievements page](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223710.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223710.png" alt="Wellnot achievements page" width="300" />
 
-![More Wellnot achievements: milestones and tracking](/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223717.png)
+<img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223717.png" alt="More Wellnot achievements: milestones and tracking" width="300" />
 
 ## Open source and availability
 
