@@ -10,6 +10,10 @@ draft: false
 ---
 Okay so admittedly I did this two to three months ago but I figured I might as well actually do a blog post about it. I built a wellness app and, to be clear, it is explicitly *not* a health app because this does not meet health app criteria. It's a wellness app.
 
+https://apps.apple.com/us/app/wellnot/id6759883780
+
+https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app
+
 ## Why I built this
 
 Let me talk about why at the ripe age of 28, I have learned that sometimes when I feel something in my body that I am unsure about, I should probably question it. I am no longer able to just ignore it and assume it will go away, and I don't think that's something people really tell you as you're getting older. The random side pain you might experience, the popping, the crackling, those things, they might happen, and you're not supposed to just ignore them. You're supposed to be curious about why they happened, because ignoring them can lead to an actual problem down the line.
@@ -115,11 +119,6 @@ I had to still go through much more rigorous testing in order to get to the Goog
 
 Furthermore, for my Android users, I know not everyone is huge on using Google Play Store, so you can also get this app on Obtainium and I will soon hopefully be making the app available on F-Droid for use as well so that you don't have to be locked into the Google ecosystem in order to download and use this. I also publish the APKs directly on the [Wellnot releases page on GitHub](https://github.com/dragid10/Wellnot-releases).
 
-https://apps.apple.com/us/app/wellnot/id6759883780
-
-https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app
-
-
 ## Wrap-up
 
 All in all, I am extremely proud of this app. My goal is not to get 100,000 downloads or anything. My goal is to release free open software that anyone can benefit from. If at least one person benefits from this then I will consider this a success. I just want to do my best to help people.
@@ -127,3 +126,10 @@ All in all, I am extremely proud of this app. My goal is not to get 100,000 down
 Feel free to download the app if you think it would help you. I'm extremely open to feedback, any and all types of feedback. If it's something that I don't think I will be doing, I'll let you know.
 
 *Shoutout to all my alpha and beta testers that helped me get to production. I quite literally couldn't have done it without any of you!*
+
+### Links
+
+- [Wellnot on the App Store](https://apps.apple.com/us/app/wellnot/id6759883780)
+- [Wellnot on Google Play](https://play.google.com/store/apps/details?id=dev.alexo.symptom_tracker_app)
+- [Wellnot source code on GitHub](https://github.com/dragid10/Wellnot-app)
+- [Wellnot releases on GitHub](https://github.com/dragid10/Wellnot-releases)
