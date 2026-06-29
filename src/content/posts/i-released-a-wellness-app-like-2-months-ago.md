@@ -69,9 +69,10 @@ That's about as much as the app is going to do. Yes, it's rather light and simpl
 
 I know that when I adopt new tools, I have trouble using them because they're not in my daily workflow, so I simply forget they exist.
 
+<div style="display: flex; gap: 1rem;">
 <img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/settings-top.png" alt="Wellnot settings page" width="300" />
-
 <img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/settings-bottom.png" alt="Wellnot settings page continued" width="300" />
+</div>
 
 There's a feature to get a notification at a specific time of the day that reminds you to log an entry. Some people need that push. That's perfectly fine.
 
@@ -93,9 +94,10 @@ I don't want to penalize you for being human. That'd be weird. Humans forget stu
 
 This is not supposed to be something you 100% have to do. The achievements are just there to keep things fun. If that's not really your jam, you can turn achievements off. That's completely your choice.
 
+<div style="display: flex; gap: 1rem;">
 <img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223710.png" alt="Wellnot achievements page" width="300" />
-
 <img src="/assets/uploads/i-released-a-wellness-app-like-2-months-ago/Screenshot_20260628-223717.png" alt="More Wellnot achievements: milestones and tracking" width="300" />
+</div>
 
 ## Open source and availability
 
