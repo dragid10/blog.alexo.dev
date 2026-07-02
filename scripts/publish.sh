@@ -194,6 +194,9 @@ for image_ref in "${image_references[@]:-}"; do
         mkdir -p "$IMAGE_UPLOADS_DIR/$URL_SLUG"
         image_filename="$(basename "$decoded_path")"
         cp "$source_directory/$decoded_path" "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename"
+        if command -v magick &>/dev/null; then
+          magick "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename" -resize '600>' "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename"
+        fi
         rewritten_path="/assets/uploads/$URL_SLUG/$(printf '%s' "$image_filename" | sed 's/ /%20/g')"
         sed -i "s|]($image_ref)|]($rewritten_path)|g" "$destination_file"
         images_copied=$((images_copied + 1))
