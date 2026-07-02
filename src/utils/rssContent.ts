@@ -1,7 +1,7 @@
 import sanitizeHtml from "sanitize-html";
 import MarkdownIt from "markdown-it";
 
-const parser = new MarkdownIt({ html: true });
+const parser = new MarkdownIt();
 
 const ALLOWED_TAGS = [
   "h1", "h2", "h3", "h4", "h5", "h6",

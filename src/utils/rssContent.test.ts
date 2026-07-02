@@ -63,36 +63,35 @@ describe("sanitizeRssHtml", () => {
     expect(result).toContain("hello");
   });
 
-  it("strips iframe tags even with html passthrough enabled", () => {
+  it("escapes raw HTML iframe tags", () => {
     const result = sanitizeRssHtml('<iframe src="https://evil.com"></iframe>');
     expect(result).not.toContain("<iframe");
   });
 
-  it("strips style attributes even with html passthrough enabled", () => {
+  it("escapes raw HTML with style attributes", () => {
     const result = sanitizeRssHtml('<div style="background:url(evil)">content</div>');
-    expect(result).not.toContain("style=");
+    expect(result).not.toContain("<div style=");
     expect(result).toContain("content");
   });
 
-  it("strips script tags injected as raw HTML", () => {
+  it("escapes raw script tags", () => {
     const result = sanitizeRssHtml('<script>document.cookie</script>');
     expect(result).not.toContain("<script");
-    expect(result).not.toContain("document.cookie");
   });
 
-  it("strips onerror handlers on img tags", () => {
+  it("escapes raw img tags with event handlers into harmless text", () => {
     const result = sanitizeRssHtml('<img src="x" onerror="alert(1)" />');
-    expect(result).toContain("<img");
-    expect(result).not.toContain("onerror");
+    expect(result).not.toContain("<img");
+    expect(result).toContain("&lt;img");
   });
 
-  it("strips onclick handlers on links", () => {
+  it("escapes raw links with event handlers into harmless text", () => {
     const result = sanitizeRssHtml('<a href="https://example.com" onclick="alert(1)">click</a>');
-    expect(result).toContain('href="https://example.com"');
-    expect(result).not.toContain("onclick");
+    expect(result).not.toContain("<a ");
+    expect(result).toContain("&lt;a");
   });
 
-  it("strips form tags", () => {
+  it("escapes raw form tags", () => {
     const result = sanitizeRssHtml('<form action="https://evil.com"><input type="text" /></form>');
     expect(result).not.toContain("<form");
     expect(result).not.toContain("<input");
@@ -106,13 +105,11 @@ describe("sanitizeRssHtml", () => {
     expect(result).toContain('alt="photo"');
   });
 
-  it("passes through raw HTML img tags (not escaped)", () => {
+  it("escapes raw HTML img tags (markdown-it default behavior)", () => {
     const md = '<img src="/assets/uploads/photo.png" alt="test" width="300" />';
     const result = sanitizeRssHtml(md);
-    expect(result).toContain("<img");
-    expect(result).toContain('src="/assets/uploads/photo.png"');
-    expect(result).toContain('width="300"');
-    expect(result).not.toContain("&lt;img");
+    expect(result).not.toContain("<img");
+    expect(result).toContain("&lt;img");
   });
 
   it("allows basic formatting tags", () => {
