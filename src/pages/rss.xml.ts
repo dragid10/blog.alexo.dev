@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { renderRssContent } from "@/utils/rssContent";
+
 import config from "@/config";
 
 export async function GET() {
