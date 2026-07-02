@@ -1,12 +1,10 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import sanitizeHtml from "sanitize-html";
-import MarkdownIt from "markdown-it";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { getPostUrl } from "@/utils/getPostPaths";
-import config from "@/config";
+import { renderRssContent } from "@/utils/rssContent";
 
-const parser = new MarkdownIt();
+import config from "@/config";
 
 export async function GET() {
   const posts = await getCollection("posts");
@@ -23,9 +21,7 @@ export async function GET() {
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
-      content: sanitizeHtml(parser.render(body ?? ""), {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-      }),
+      content: renderRssContent(body ?? "", config.site.url),
     })),
   });
 }

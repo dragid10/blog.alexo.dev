@@ -193,12 +193,21 @@ for image_ref in "${image_references[@]:-}"; do
       if [ -f "$source_directory/$decoded_path" ]; then
         mkdir -p "$IMAGE_UPLOADS_DIR/$URL_SLUG"
         image_filename="$(basename "$decoded_path")"
+        echo "  Copying image: $image_filename"
         cp "$source_directory/$decoded_path" "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename"
+        if command -v magick &>/dev/null; then
+          orig_width=$(magick identify -format '%w' "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename")
+          if [ "$orig_width" -gt 600 ]; then
+            magick "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename" -resize '600>' "$IMAGE_UPLOADS_DIR/$URL_SLUG/$image_filename"
+            echo "    Resized: ${orig_width}px → 600px"
+          fi
+        fi
         rewritten_path="/assets/uploads/$URL_SLUG/$(printf '%s' "$image_filename" | sed 's/ /%20/g')"
         sed -i "s|]($image_ref)|]($rewritten_path)|g" "$destination_file"
+        echo "    Rewrote path → $rewritten_path"
         images_copied=$((images_copied + 1))
       else
-        echo "WARN: image not found next to draft: $image_ref"
+        echo "  WARN: image not found next to draft: $image_ref"
       fi ;;
   esac
 done
