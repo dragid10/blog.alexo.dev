@@ -136,6 +136,15 @@
     }
   }
 
+  /* ===== Name Pronunciation Button ===== */
+  .name-pronunciation-btn {
+    @apply inline-flex items-center justify-center align-middle cursor-pointer border-none bg-transparent p-0.5 rounded-full text-accent opacity-70 transition-opacity;
+    &:hover,
+    &.playing {
+      @apply opacity-100;
+    }
+  }
+
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
     @apply outline-border flex border bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
