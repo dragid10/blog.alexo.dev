@@ -1,0 +1,63 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button
+  class:list={["name-pronunciation-btn", className]}
+  type="button"
+  aria-label="Listen to name pronunciation"
+  title="Listen to name pronunciation"
+  data-audio-src="/assets/uploads/name-pronunciation.mp3"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M15 8a5 5 0 0 1 0 8"></path>
+    <path d="M17.7 5a9 9 0 0 1 0 14"></path>
+    <path
+      d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"
+    ></path>
+  </svg>
+</button>
+
+<script>
+  let activeAudio: HTMLAudioElement | null = null;
+
+  document.addEventListener("click", e => {
+    const btn = (e.target as HTMLElement).closest(
+      ".name-pronunciation-btn"
+    ) as HTMLElement | null;
+    if (!btn) return;
+
+    if (activeAudio) {
+      activeAudio.pause();
+      activeAudio.currentTime = 0;
+      document
+        .querySelectorAll(".name-pronunciation-btn.playing")
+        .forEach(b => b.classList.remove("playing"));
+    }
+
+    const src = btn.dataset.audioSrc;
+    if (!src) return;
+
+    activeAudio = new Audio(src);
+    btn.classList.add("playing");
+    activeAudio.play();
+    activeAudio.addEventListener("ended", () => {
+      btn.classList.remove("playing");
+      activeAudio = null;
+    });
+  });
+</script>

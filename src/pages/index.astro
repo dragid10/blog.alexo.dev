@@ -10,6 +10,7 @@ import Card from "@/components/Card.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import CommitGraph from "@/components/CommitGraph.astro";
 import Subscribe from "@/components/Subscribe.astro";
+import NamePronunciation from "@/components/NamePronunciation.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -48,7 +49,7 @@ const linkButtons = [
         class="mb-4 size-40 rounded-full object-cover"
         loading="eager"
       />
-      <h1 class="text-3xl font-bold sm:text-4xl">Alex Oladele</h1>
+      <h1 class="text-3xl font-bold sm:text-4xl">Alex Oladele <NamePronunciation /></h1>
       <p class="mt-1 text-sm opacity-60">
         <a href="https://pronouns.org/he-him" class="hover:underline">he/him</a>
       </p>
