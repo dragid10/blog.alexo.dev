@@ -1,0 +1,29 @@
+diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
+index 31bddc5..4bd5a18 100644
+--- a/node_modules/@tinacms/cli/dist/index.js
++++ b/node_modules/@tinacms/cli/dist/index.js
+@@ -1742,13 +1742,13 @@ var devHTML = (port) => `<!DOCTYPE html>
+
+   <!-- if development -->
+   <script type="module">
+-    import RefreshRuntime from 'http://localhost:${port}/@react-refresh'
++    import RefreshRuntime from 'http://localhost:${port}/admin/@react-refresh'
+     RefreshRuntime.injectIntoGlobalHook(window)
+     window.$RefreshReg$ = () => {}
+     window.$RefreshSig$ = () => (type) => type
+     window.__vite_plugin_react_preamble_installed__ = true
+   </script>
+-  <script type="module" src="http://localhost:${port}/@vite/client"></script>
++  <script type="module" src="http://localhost:${port}/admin/@vite/client"></script>
+   <script>
+   function handleLoadError() {
+     // Assets have failed to load
+@@ -1757,7 +1757,7 @@ var devHTML = (port) => `<!DOCTYPE html>
+   </script>
+   <script
+     type="module"
+-    src="http://localhost:${port}/src/main.tsx"
++    src="http://localhost:${port}/admin/src/main.tsx"
+     onerror="handleLoadError()"
+   ></script>
+   <body class="tina-tailwind">
