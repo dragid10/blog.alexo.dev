@@ -1,9 +1,9 @@
 diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
-index 31bddc5..4bd5a18 100644
+index 31bddc5..518876f 100644
 --- a/node_modules/@tinacms/cli/dist/index.js
 +++ b/node_modules/@tinacms/cli/dist/index.js
 @@ -1742,13 +1742,13 @@ var devHTML = (port) => `<!DOCTYPE html>
-
+ 
    <!-- if development -->
    <script type="module">
 -    import RefreshRuntime from 'http://localhost:${port}/@react-refresh'
@@ -27,3 +27,12 @@ index 31bddc5..4bd5a18 100644
      onerror="handleLoadError()"
    ></script>
    <body class="tina-tailwind">
+@@ -2231,7 +2231,7 @@ var createConfig = async ({
+        * `process.env` with `{}` are problematic, because browsers don't understand the `{}.` syntax,
+        * but node does. This was a surprise, but using `new Object()` seems to do the trick.
+        */
+-      "process.env": `new Object(${JSON.stringify(publicEnv)})`,
++      "process.env": JSON.stringify(publicEnv),
+       // Used by picomatch https://github.com/micromatch/picomatch/blob/master/lib/utils.js#L4
+       "process.platform": `"${process.platform}"`,
+       __API_URL__: `"${apiURL}"`,
