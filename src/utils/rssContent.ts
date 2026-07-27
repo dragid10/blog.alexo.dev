@@ -1,7 +1,7 @@
 import sanitizeHtml from "sanitize-html";
 import MarkdownIt from "markdown-it";
 
-const parser = new MarkdownIt();
+const parser = new MarkdownIt({ linkify: true });
 
 export function rewriteRelativeUrls(html: string, siteUrl: string): string {
   const origin = siteUrl.replace(/\/$/, "");
