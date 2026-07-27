@@ -4,7 +4,7 @@ Guidance for AI coding agents working in this repository.
 
 ## Overview
 
-Alex Oladele's personal site at alexo.dev — **Astro 6 (AstroPaper theme) + TinaCMS 3**, deployed
+Alex Oladele's personal site at alexo.dev — **Astro 7 (AstroPaper theme) + TinaCMS 3**, deployed
 on Vercel (Cloudflare-proxied). Includes a link-in-bio home page, blog, speaker portfolio,
 project showcase, and resume. Posts are plain markdown in `src/content/posts/`.
 Alex drafts in Obsidian and lands content via `scripts/publish.sh` + PR (see
@@ -124,10 +124,18 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 
 ## Gotchas (hard-won, do not relearn)
 
-- `@tinacms/cli` hoists vite 4 / zod 3 to root with yarn 1. Hence: Tailwind runs
-  via `@tailwindcss/postcss` (NOT `@tailwindcss/vite`), and `zod@^4` is a direct
-  devDependency so Astro's prerender resolves zod 4 at the root. Don't "clean up"
-  either of these.
+- `@tinacms/cli` hoists old deps to root with yarn 1; `zod@^4` is a direct
+  devDependency so Astro's prerender resolves zod 4 at the root. Don't "clean up".
+  Since the 2026-07 security remediation, cli's vite is forced to 6.4.3 via
+  `resolutions`, so Tailwind now runs via `@tailwindcss/vite` in `astro.config.ts`
+  (Astro 7 no longer picks up `postcss.config.js`).
+- **Security resolutions block** in `package.json` pins many transitive deps
+  (react-router 8 + react-router-dom 7 under the Tina admin, vite/esbuild under
+  `@tinacms/cli`, etc.). When bumping `tinacms`/`@tinacms/cli`, re-check whether
+  each pin is still needed (`yarn audit`). Known accepted residual:
+  brace-expansion 2.1.2 DoS advisory (GHSA-mh99-v99m-4gvg) via minimatch 5/9
+  under Tina build tooling — build-time only, no untrusted input, no
+  CJS-compatible patched version exists.
 - `tsconfig.json` excludes `public/admin`, `tina/__generated__`, `vendor` —
   `astro check` OOMs or errors on generated/vendored files otherwise.
 - Tina Cloud env vars on Vercel are type "sensitive" (`vercel env pull` shows them

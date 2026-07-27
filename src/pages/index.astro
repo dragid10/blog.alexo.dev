@@ -24,11 +24,11 @@ const recentPosts = sortedPosts.slice(0, 3);
 const homePath = getRelativeLocaleUrl(locale, "");
 
 const linkButtons = [
-  { label: "🎤 Speaking", href: "/speaking/" },
-  { label: "💻 Projects", href: "/projects/" },
-  { label: "💬 Blog", href: "/posts/" },
-  { label: "📄 Resume", href: "/resume/" },
-  { label: "🖋️ Fountain Pen Collection", href: "https://pens.alexo.dev" },
+  { icon: "🎤", label: "Speaking", href: "/speaking/" },
+  { icon: "💻", label: "Projects", href: "/projects/" },
+  { icon: "💬", label: "Blog", href: "/posts/" },
+  { icon: "📄", label: "Resume", href: "/resume/" },
+  { icon: "🖋️", label: "Fountain Pens", href: "https://pens.alexo.dev" },
 ];
 ---
 
@@ -46,7 +46,7 @@ const linkButtons = [
         alt="Alex Oladele"
         width="160"
         height="160"
-        class="mb-4 size-40 rounded-full object-cover"
+        class="mb-4 size-40 rounded-full object-cover transition-transform duration-300 motion-safe:hover:scale-105"
         loading="eager"
       />
       <h1 class="text-3xl font-bold sm:text-4xl">Alex Oladele <NamePronunciation /></h1>
@@ -65,14 +65,20 @@ const linkButtons = [
     </section>
 
     <section class="border-border border-b py-6">
-      <div class="mx-auto flex max-w-md flex-col gap-3">
+      <div class="mx-auto flex max-w-2xl flex-wrap justify-center gap-3">
         {
-          linkButtons.map(({ label, href }) => (
+          linkButtons.map(({ icon, label, href }) => (
             <a
               href={href}
-              class="border-border bg-background hover:bg-muted/30 hover:border-accent/40 block rounded-lg border px-4 py-3 text-center font-medium transition-all hover:-translate-y-0.5 hover:shadow-md"
+              class="group border-border bg-background hover:bg-muted/30 hover:border-accent/40 flex min-w-24 flex-col items-center gap-1.5 rounded-xl border px-5 py-4 text-center font-medium transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
             >
-              {label}
+              <span
+                aria-hidden="true"
+                class="text-2xl transition-transform duration-200 group-hover:scale-125 group-hover:-rotate-6"
+              >
+                {icon}
+              </span>
+              <span class="text-sm">{label}</span>
             </a>
           ))
         }

@@ -17,6 +17,7 @@ import {
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
+import tailwindcss from "@tailwindcss/vite";
 import config from "./astro-paper.config";
 
 export default defineConfig({
@@ -56,9 +57,9 @@ export default defineConfig({
       ],
     },
   },
-  // Tailwind runs via @tailwindcss/postcss (postcss.config.js) instead of
-  // @tailwindcss/vite: @tinacms/cli hoists vite 4 to the root, which the vite
-  // plugin would wrongly resolve at build time
+  vite: {
+    plugins: [tailwindcss()],
+  },
   fonts: [
     {
       name: "IBM Plex Sans",

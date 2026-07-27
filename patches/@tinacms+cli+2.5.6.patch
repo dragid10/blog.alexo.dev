@@ -1,0 +1,38 @@
+diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
+index 31bddc5..518876f 100644
+--- a/node_modules/@tinacms/cli/dist/index.js
++++ b/node_modules/@tinacms/cli/dist/index.js
+@@ -1742,13 +1742,13 @@ var devHTML = (port) => `<!DOCTYPE html>
+ 
+   <!-- if development -->
+   <script type="module">
+-    import RefreshRuntime from 'http://localhost:${port}/@react-refresh'
++    import RefreshRuntime from 'http://localhost:${port}/admin/@react-refresh'
+     RefreshRuntime.injectIntoGlobalHook(window)
+     window.$RefreshReg$ = () => {}
+     window.$RefreshSig$ = () => (type) => type
+     window.__vite_plugin_react_preamble_installed__ = true
+   </script>
+-  <script type="module" src="http://localhost:${port}/@vite/client"></script>
++  <script type="module" src="http://localhost:${port}/admin/@vite/client"></script>
+   <script>
+   function handleLoadError() {
+     // Assets have failed to load
+@@ -1757,7 +1757,7 @@ var devHTML = (port) => `<!DOCTYPE html>
+   </script>
+   <script
+     type="module"
+-    src="http://localhost:${port}/src/main.tsx"
++    src="http://localhost:${port}/admin/src/main.tsx"
+     onerror="handleLoadError()"
+   ></script>
+   <body class="tina-tailwind">
+@@ -2231,7 +2231,7 @@ var createConfig = async ({
+        * `process.env` with `{}` are problematic, because browsers don't understand the `{}.` syntax,
+        * but node does. This was a surprise, but using `new Object()` seems to do the trick.
+        */
+-      "process.env": `new Object(${JSON.stringify(publicEnv)})`,
++      "process.env": JSON.stringify(publicEnv),
+       // Used by picomatch https://github.com/micromatch/picomatch/blob/master/lib/utils.js#L4
+       "process.platform": `"${process.platform}"`,
+       __API_URL__: `"${apiURL}"`,
