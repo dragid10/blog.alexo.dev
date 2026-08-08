@@ -230,6 +230,7 @@ grep -qE '!\[\[|[^!]\[\[' "$destination_file" && report_problem "wikilinks/embed
 grep -q '<%' "$destination_file" && report_problem "Templater leftovers (<% .. %>) found"
 grep -qE '^description: *("")? *$' "$destination_file" && report_problem "description is empty (required, used for SEO/OG)"
 head -1 "$destination_file" | grep -q '^---$' || report_problem "no frontmatter block at top of file"
+grep -qE '^excerpt:|^date:|^author: content/authors' "$destination_file" && report_problem "legacy Jekyll frontmatter fields found (excerpt/date/author) — use the current astro-blog-post.md template"
 grep -q '^draft: true' "$destination_file" && echo "NOTE: still draft: true (use --publish to flip, or edit by hand)"
 
 # ---------------------------------------------------------------------------
