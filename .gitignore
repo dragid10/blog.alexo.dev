@@ -19,6 +19,7 @@ modules.xml
 
 # Local notes
 ASTRO_MIGRATION_PLAN.md
+AGENTS.local.md
 
 # Created by https://www.toptal.com/developers/gitignore/api/astro,node,yarn,linux,macos,intellij+all,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=astro,node,yarn,linux,macos,intellij+all,visualstudiocode

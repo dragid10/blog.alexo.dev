@@ -105,5 +105,5 @@ yarn format         # prettier --write
 `yarn build` (with `tinacms build`) needs Tina Cloud env vars and is what Vercel
 runs — you generally never run it locally.
 
-See `CLAUDE.md` for architecture notes and build gotchas (vite/zod hoisting,
+See `AGENTS.md` for architecture notes and build gotchas (vite/zod hoisting,
 tina-lock rebuilds, etc.).
