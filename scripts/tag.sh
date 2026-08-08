@@ -14,11 +14,19 @@ usage() {
 tag.sh - interactive tag editor for blog posts
 
 Usage:
-  ./scripts/tag.sh [slug]
+  ./scripts/tag.sh [slug] [--tags tag1,tag2,...] [--yes]
 
 Examples:
-  ./scripts/tag.sh                    # pick source, post, then tags
-  ./scripts/tag.sh avoid-pip-freeze   # tag a specific repo post by slug
+  ./scripts/tag.sh                              # pick source, post, then tags
+  ./scripts/tag.sh avoid-pip-freeze              # tag a specific post by slug
+  ./scripts/tag.sh vol2 --tags slice-of-life,media --yes
+                                                  # non-interactive: skip both
+                                                  # pickers and the confirm
+
+Slug lookup checks the repo (src/content/posts/) first, then the
+Obsidian vault ($OBSIDIAN_POSTS_PATH). --tags skips the gum multi-select
+TUI; each tag must exist in scripts/tags.txt. --yes skips the gum confirm
+prompt (only applies when --tags is also given).
 
 When run without arguments, prompts you to choose between Obsidian
 drafts and the blog repo, then pick a post, then select tags from
@@ -141,16 +149,34 @@ pick_post_from_directory() {
 # Step 1: Pick a post to tag
 # ---------------------------------------------------------------------------
 
-case "${1:-}" in
-  -h|--help) usage; exit 0 ;;
-esac
+SLUG=""
+TAGS_ARG=""
+SKIP_CONFIRM=0
 
-if [ "${1:-}" != "" ]; then
-  # Slug passed as argument — resolve directly
-  SELECTED_POST_FILE="$REPO_POSTS_DIR/$1.md"
-  if [ ! -f "$SELECTED_POST_FILE" ]; then
-    echo "Post not found: $SELECTED_POST_FILE" >&2
-    exit 1
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -h|--help) usage; exit 0 ;;
+    --tags) TAGS_ARG="$2"; shift 2 ;;
+    --tags=*) TAGS_ARG="${1#--tags=}"; shift ;;
+    --yes) SKIP_CONFIRM=1; shift ;;
+    *) SLUG="$1"; shift ;;
+  esac
+done
+
+if [ -n "$SLUG" ]; then
+  # Slug passed as argument — resolve against the repo, then Obsidian
+  if [ -f "$REPO_POSTS_DIR/$SLUG.md" ]; then
+    SELECTED_POST_FILE="$REPO_POSTS_DIR/$SLUG.md"
+  elif [ -n "$OBSIDIAN_POSTS_PATH" ] && [ -f "$OBSIDIAN_POSTS_PATH/$SLUG.md" ]; then
+    SELECTED_POST_FILE="$OBSIDIAN_POSTS_PATH/$SLUG.md"
+  else
+    matches=("$OBSIDIAN_POSTS_PATH"/*"$SLUG"*.md)
+    if [ -n "$OBSIDIAN_POSTS_PATH" ] && [ -f "${matches[0]:-}" ] && [ ${#matches[@]} -eq 1 ]; then
+      SELECTED_POST_FILE="${matches[0]}"
+    else
+      echo "Post not found: $REPO_POSTS_DIR/$SLUG.md${OBSIDIAN_POSTS_PATH:+ or $OBSIDIAN_POSTS_PATH/$SLUG.md}" >&2
+      exit 1
+    fi
   fi
 else
   # No slug given — build a list of available sources (repo + Obsidian)
@@ -227,7 +253,20 @@ if [ ${#preselected_tags[@]} -gt 0 ]; then
 fi
 
 chosen_tags=""
-if [ -n "$preselected_csv" ]; then
+if [ -n "$TAGS_ARG" ]; then
+  # Non-interactive: validate each tag against the standard set
+  while IFS=',' read -ra requested_tags; do
+    for tag in "${requested_tags[@]}"; do
+      [ -z "$tag" ] && continue
+      matched_tag="$(echo "$all_standard_tags" | grep -ix "$tag" || true)"
+      if [ -z "$matched_tag" ]; then
+        echo "Unknown tag: $tag (see $STANDARD_TAGS_FILE)" >&2
+        exit 1
+      fi
+      chosen_tags="${chosen_tags}${chosen_tags:+$'\n'}${matched_tag}"
+    done
+  done <<< "$TAGS_ARG"
+elif [ -n "$preselected_csv" ]; then
   chosen_tags="$(echo "$all_standard_tags" | gum choose --no-limit --header "Select tags (space to toggle):" --selected "$preselected_csv")" || true
 else
   chosen_tags="$(echo "$all_standard_tags" | gum choose --no-limit --header "Select tags (space to toggle):")" || true
@@ -248,7 +287,9 @@ while IFS= read -r tag; do
 done <<< "$chosen_tags"
 echo ""
 
-gum confirm "Apply these tags to $(basename "$SELECTED_POST_FILE")?" || { echo "Cancelled."; exit 0; }
+if [ "$SKIP_CONFIRM" -eq 0 ]; then
+  gum confirm "Apply these tags to $(basename "$SELECTED_POST_FILE")?" || { echo "Cancelled."; exit 0; }
+fi
 
 # Build the replacement YAML block for the tags field
 new_tags_yaml="tags:"
