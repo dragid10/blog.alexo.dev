@@ -171,3 +171,11 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
   to `Promise.allSettled` and catches the favicon fetch, so one bad link costs
   only its own card. Sites that 403 build-machine fetches (Printables, for one)
   hit this on every build. Re-check the patch when bumping the plugin.
+- Vercel restores Astro's content store from the previous deployment's build
+  cache. A change to *how* markdown renders (a remark plugin patch or config
+  change) with no change to the post files themselves will silently ship the
+  previously cached HTML — the plugin never re-runs, and the build log shows
+  `Synced content` with none of the plugin's usual output. Content edits are
+  safe, since editing a post invalidates its own cache entry. To force a real
+  re-render, deploy with the build cache skipped:
+  `vercel deploy --prod --force` (`vercel redeploy` has no such flag).
