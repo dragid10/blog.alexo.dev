@@ -1,0 +1,49 @@
+diff --git a/node_modules/remark-link-card-plus/build/index.js b/node_modules/remark-link-card-plus/build/index.js
+index 5913b7c..c54c90c 100644
+--- a/node_modules/remark-link-card-plus/build/index.js
++++ b/node_modules/remark-link-card-plus/build/index.js
+@@ -153,7 +153,7 @@ var remarkLinkCard = function (userOptions) { return function (tree) { return __
+                 _a.label = 1;
+             case 1:
+                 _a.trys.push([1, 3, , 4]);
+-                return [4 /*yield*/, Promise.all(transformers.map(function (t) { return t(); }))];
++                return [4 /*yield*/, Promise.allSettled(transformers.map(function (t) { return t(); }))];
+             case 2:
+                 _a.sent();
+                 return [3 /*break*/, 4];
+@@ -196,24 +196,18 @@ var getOpenGraph = function (targetUrl) { return __awaiter(void 0, void 0, void
+         }
+     });
+ }); };
+-var getFaviconImageSrc = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+-    var faviconUrl, res;
+-    return __generator(this, function (_a) {
+-        switch (_a.label) {
+-            case 0:
+-                faviconUrl = "https://www.google.com/s2/favicons?domain=".concat(url.hostname);
+-                return [4 /*yield*/, fetch(faviconUrl, {
+-                        method: "HEAD",
+-                        signal: AbortSignal.timeout(10000),
+-                    })];
+-            case 1:
+-                res = _a.sent();
+-                if (!res.ok)
+-                    return [2 /*return*/, ""];
+-                return [2 /*return*/, faviconUrl];
+-        }
++var getFaviconImageSrc = function (url) {
++    var faviconUrl = "https://www.google.com/s2/favicons?domain=".concat(url.hostname);
++    return fetch(faviconUrl, {
++        method: "HEAD",
++        signal: AbortSignal.timeout(10000),
++    })
++        .then(function (res) { return (res.ok ? faviconUrl : ""); })
++        .catch(function (error) {
++        console.error("[remark-link-card-plus] Error: Failed to fetch favicon for ".concat(url.hostname, "\n ").concat(error));
++        return "";
+     });
+-}); };
++};
+ var getLinkCardData = function (url, options) { return __awaiter(void 0, void 0, void 0, function () {
+     var ogRawResult, ogData, title, description, faviconUrl, ogImageUrl, displayUrl;
+     return __generator(this, function (_a) {
