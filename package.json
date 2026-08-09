@@ -68,7 +68,7 @@
   },
   "packageManager": "yarn@1.22.22",
   "resolutions": {
-    "dompurify": ">=3.4.12",
+    "dompurify": ">=3.4.13",
     "@tinacms/cli/js-yaml": ">=4.3.0 <5.0.0",
     "cosmiconfig/js-yaml": ">=4.3.0 <5.0.0",
     "postcss": ">=8.5.18",
