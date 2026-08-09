@@ -95,8 +95,6 @@ https://repebble.com/index
 
 ## A random thought
 
-A random thought I have, and I promise it's a weird one. It's related to Naruto because I've been watching so much!
-
 I guess quick context about Naruto: he's a ninja. He's probably the hero. He's the protagonist. He's kind of the chosen one ninja. His signature move is summoning a shadow clone and doing one of his cool ninja moves. His shadow clones kind of poof out of existence when they take enough damage or when he decides to poof them himself.
 
 There is this one scene that I watched where one of the enemies he was fighting was spitting nails directly at him, and Naruto summoned two or three shadow clones to just eat the nails, which meant they immediately got poofed. Ultimately, that gave Naruto the momentum to just punch his opponent because he was running at his opponent.
