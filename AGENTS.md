@@ -163,3 +163,11 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 - RSS/Buttondown email rendering has its own quirks and gotchas (separate
   markdown-it pass, embed cards, image handling). See local notes / agent
   memory — not documented here (see `AGENTS.local.md`).
+- `patches/remark-link-card-plus+0.7.4.patch` makes embed cards fault-tolerant.
+  Upstream runs all of a page's card transformers under `Promise.all` and calls
+  `fetch` for the Google favicon fallback with no error handling, so a single
+  unreachable URL drops **every** card on that page (the plugin logs the error
+  and returns the tree with the remaining cards unspliced). The patch switches
+  to `Promise.allSettled` and catches the favicon fetch, so one bad link costs
+  only its own card. Sites that 403 build-machine fetches (Printables, for one)
+  hit this on every build. Re-check the patch when bumping the plugin.
