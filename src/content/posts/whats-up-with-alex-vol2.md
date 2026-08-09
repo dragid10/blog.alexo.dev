@@ -47,8 +47,6 @@ Another thing I printed just for fun, honestly, is a little [crab pen holder](ht
 
 ![Red 3D-printed crab pen holder on a desk mat, holding a teal Kaweco Collection fountain pen](/assets/uploads/whats-up-with-alex-vol2/crab-pen-holder.png)
 
-https://www.printables.com/model/562448-crab-pen-holder-20
-
 3D printing is a very fun hobby! I still have not quite had the urge to buy my own 3D printer for home because I can use these 3D printers whenever I want, which is extremely convenient. If I ever do feel strongly enough, I know I have many friends who will point me in the right direction on what to get.
 
 ## What I've been watching
