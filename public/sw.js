@@ -25,8 +25,9 @@ self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
 
-  // Skip cross-origin requests (analytics, fonts CDN, etc.)
+  // Skip cross-origin and manifest requests
   if (!request.url.startsWith(self.location.origin)) return;
+  if (request.url.endsWith(".webmanifest")) return;
 
   // HTML navigations: network first, cache fallback, then offline page
   if (request.headers.get("accept")?.includes("text/html")) {
@@ -55,7 +56,7 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => new Response("", { status: 408 }))
     )
   );
 });
