@@ -1,6 +1,6 @@
 ---
 import { getEntry, render } from "astro:content";
-import yaml from "js-yaml";
+import { load as yamlLoad } from "js-yaml";
 import { z } from "astro/zod";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -24,7 +24,7 @@ const engagementSchema = z.object({
 });
 
 const speakingFile = await import("../data/speaking.yaml?raw");
-const speakingData = engagementSchema.parse(yaml.load(speakingFile.default));
+const speakingData = engagementSchema.parse(yamlLoad(speakingFile.default));
 const engagements = speakingData.engagements;
 
 const years = [...new Set(engagements.map(e => e.year))].sort((a, b) => b - a);
