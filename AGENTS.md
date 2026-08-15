@@ -157,6 +157,13 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
   Workflow needs a business plan and a protection bypass for the Tina app is a
   security risk Alex rejected. Content edits go through Obsidian/scripts/PRs;
   do not "fix" Tina saves by weakening the ruleset.
+- **PWA cache busting**: When changing CSS, JS, layouts, or site theme, bump
+  `CACHE_NAME` in `public/sw.js` (e.g. `"alexo-v1"` → `"alexo-v2"`). This
+  forces returning visitors to re-download cached assets. **Not needed** for new
+  blog posts or content edits (network-first HTML handles those). Forgetting to
+  bump means returning visitors see stale styles/scripts until they clear their
+  browser cache. When in doubt, bump it — the cost is one full re-cache, which
+  is cheap.
 - Pre-commit hooks (`pre-commit install` once): gitleaks, 2MB file guard
   (`public/content/images/` exempt), yaml/json checks, whitespace fixers. The
   whitespace fixer rewrites `tina/tina-lock.json` trailing newline — harmless.

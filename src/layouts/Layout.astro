@@ -42,6 +42,10 @@ const rssHref = getRelativeLocaleUrl(
     <link rel="icon" type="image/svg+xml" href={getAssetPath("favicon.svg")} />
     <link rel="icon" href={getAssetPath("favicon.ico")} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="manifest" href={getAssetPath("site.webmanifest")} />
+    <link rel="apple-touch-icon" href={getAssetPath("apple-touch-icon.png")} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Font -->
@@ -136,6 +140,11 @@ const rssHref = getRelativeLocaleUrl(
     <slot />
     <script>
       import "@/scripts/theme";
+    </script>
+    <script is:inline>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
     </script>
   </body>
 </html>
