@@ -25,7 +25,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.1.3",
     "dayjs": "^1.11.21",
-    "js-yaml": "^4.3.0",
+    "js-yaml": "^4.3.1",
     "lodash.kebabcase": "^4.1.1",
     "markdown-it": "^14.2.0",
     "react": "^19.2.0",
@@ -68,7 +68,7 @@
   },
   "packageManager": "yarn@1.22.22",
   "resolutions": {
-    "dompurify": ">=3.4.12",
+    "dompurify": ">=3.4.13",
     "@tinacms/cli/js-yaml": ">=4.3.0 <5.0.0",
     "cosmiconfig/js-yaml": ">=4.3.0 <5.0.0",
     "postcss": ">=8.5.18",
