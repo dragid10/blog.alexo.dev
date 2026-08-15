@@ -1,0 +1,39 @@
+diff --git a/node_modules/remark-link-card-plus/build/index.js b/node_modules/remark-link-card-plus/build/index.js
+index 5101716..03bbbc9 100644
+--- a/node_modules/remark-link-card-plus/build/index.js
++++ b/node_modules/remark-link-card-plus/build/index.js
+@@ -88,7 +88,7 @@ const remarkLinkCard = (userOptions) => async (tree) => {
+         });
+     });
+     try {
+-        await Promise.all(transformers.map((t) => t()));
++        await Promise.allSettled(transformers.map((t) => t()));
+     }
+     catch (error) {
+         console.error(`[remark-link-card-plus] Error: ${error}`);
+@@ -119,13 +119,19 @@ const getOpenGraph = async (targetUrl) => {
+ };
+ const getFaviconImageSrc = async (url) => {
+     const faviconUrl = `https://www.google.com/s2/favicons?domain=${url.hostname}`;
+-    const res = await fetch(faviconUrl, {
+-        method: "HEAD",
+-        signal: AbortSignal.timeout(10000),
+-    });
+-    if (!res.ok)
++    try {
++        const res = await fetch(faviconUrl, {
++            method: "HEAD",
++            signal: AbortSignal.timeout(10000),
++        });
++        if (!res.ok)
++            return "";
++        return faviconUrl;
++    }
++    catch (error) {
++        console.error(`[remark-link-card-plus] Error: Failed to fetch favicon for ${url.hostname}\n ${error}`);
+         return "";
+-    return faviconUrl;
++    }
+ };
+ const getLinkCardData = async (url, options) => {
+     const ogRawResult = await getOpenGraph(url);
