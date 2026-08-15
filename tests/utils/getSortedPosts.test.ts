@@ -6,7 +6,7 @@ vi.mock("@/config", () => ({
   },
 }));
 
-import { getSortedPosts } from "./getSortedPosts";
+import { getSortedPosts } from "@/utils/getSortedPosts";
 
 function makePost(
   id: string,

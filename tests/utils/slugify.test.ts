@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { slugifyStr, slugifyAll } from "./slugify";
+import { slugifyStr, slugifyAll } from "@/utils/slugify";
 
 describe("slugifyStr", () => {
   it("lowercases and kebab-cases latin strings", () => {
