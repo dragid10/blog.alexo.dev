@@ -16,6 +16,7 @@
     "astro": "astro",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
+    "test": "vitest run",
     "lint": "eslint .",
     "postinstall": "patch-package"
   },
@@ -25,7 +26,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.2.1",
     "dayjs": "^1.11.21",
-    "js-yaml": "^4.3.1",
+    "js-yaml": "^5.2.3",
     "lodash.kebabcase": "^4.1.1",
     "markdown-it": "^14.2.0",
     "react": "^19.2.8",
@@ -50,7 +51,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
     "@tinacms/cli": "^2.5.6",
-    "@types/js-yaml": "^4.0.9",
     "@types/lodash.kebabcase": "^4.1.9",
     "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.16.1",
@@ -92,6 +92,10 @@
     "@tinacms/cli/vite": "6.4.3",
     "**/react-router": "8.3.0",
     "**/react-router-dom": "^7.18.0",
-    "@tinacms/cli/**/esbuild": "^0.25.0"
+    "@tinacms/cli/**/esbuild": "^0.25.0",
+    "**/brace-expansion": "^2.1.4",
+    "postcss/nanoid": "^3.3.18",
+    "@udecode/plate-core/nanoid": "^5.1.16",
+    "**/gray-matter/js-yaml": "^3.15.1"
   }
 }

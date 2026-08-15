@@ -38,6 +38,8 @@ jobs:
         env:
           YARN_IGNORE_ENGINES: true
 
+      - run: yarn test
+
       - run: yarn lint
 
       - run: yarn build:local
