@@ -48,11 +48,14 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(request).then((cached) =>
       cached ||
-      fetch(request).then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-        return response;
-      })
+      fetch(request)
+        .then((response) => {
+          if (!response.ok || response.type === "opaqueredirect") return response;
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          return response;
+        })
+        .catch(() => caches.match(request))
     )
   );
 });
