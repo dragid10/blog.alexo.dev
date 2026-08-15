@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toTransitionName } from "./toTransitionName";
+import { toTransitionName } from "@/utils/toTransitionName";
 
 describe("toTransitionName", () => {
   it("converts simple strings to valid CSS idents", () => {

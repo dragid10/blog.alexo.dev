@@ -6,7 +6,7 @@ vi.mock("@/config", () => ({
   },
 }));
 
-import { postFilter } from "./postFilter";
+import { postFilter } from "@/utils/postFilter";
 
 function makePost(overrides: {
   draft?: boolean;

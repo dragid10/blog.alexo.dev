@@ -9,6 +9,6 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["src/**/*.test.{ts,js}"],
+    include: ["tests/**/*.test.{ts,js}"],
   },
 });

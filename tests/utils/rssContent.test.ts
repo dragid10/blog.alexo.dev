@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { rewriteRelativeUrls, renderRssContent } from "./rssContent";
+import { rewriteRelativeUrls, renderRssContent } from "@/utils/rssContent";
 
 const SITE_URL = "https://alexo.dev";
 
