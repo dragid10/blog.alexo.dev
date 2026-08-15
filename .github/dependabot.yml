@@ -10,6 +10,8 @@ updates:
         applies-to: version-updates
         patterns:
           - "*"
+        exclude-patterns:
+          - "@shikijs/*"
         update-types:
           - "minor"
           - "patch"
