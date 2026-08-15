@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getFontPathByWeight } from "./getFontPathByWeight";
+import { getFontPathByWeight } from "@/utils/getFontPathByWeight";
 
 const mockFonts = [
   {

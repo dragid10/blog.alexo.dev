@@ -6,7 +6,7 @@ vi.mock("@/config", () => ({
   },
 }));
 
-import { getUniqueTags } from "./getUniqueTags";
+import { getUniqueTags } from "@/utils/getUniqueTags";
 
 function makePost(tags: string[], draft = false) {
   return {
