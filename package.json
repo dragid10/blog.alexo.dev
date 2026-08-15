@@ -63,7 +63,7 @@
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3",
-    "vite": "6.4.3",
+    "vite": "8.2.1",
     "vitest": "^4.1.9",
     "zod": "^4.4.3"
   },
