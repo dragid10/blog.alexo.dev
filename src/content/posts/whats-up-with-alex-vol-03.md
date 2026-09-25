@@ -84,17 +84,13 @@ https://pawsync.com/products/smart-pet-feeder
 
 ### *Bleach* and *Lanterns*
 
-I recently started watching the anime [*Bleach*](https://bleach-anime.com/). It's not a new anime by any means. It's actually quite old, but I watched a little bit of it when I was younger and never really understood the storyline. Recently I've just been rediscovering some of those childhood anime that I really liked, and I always thought the characters in *Bleach* were cool.
+I recently started watching the anime [*Bleach*](https://thetvdb.com/series/bleach). It's not a new anime by any means. It's actually quite old, but I watched a little bit of it when I was younger and never really understood the storyline. Recently I've just been rediscovering some of those childhood anime that I really liked, and I always thought the characters in *Bleach* were cool.
 
 It also felt like significantly less work to start and catch up on than *Naruto*, for example, or *One Piece*, which I will never, **ever** plan to watch. *Bleach* has been good so far. It's had a bit of a slow start, but then again, it came out in the early 2000s, and I feel like anime from that period often worked that way. The characters and their sword abilities are fun to learn about. I'm currently on the Arrancar arc after skipping the entire Bount arc, which I'd heard multiple times was pure filler. Do I already know spoilers for the end of the series? Absolutely. Does that prevent me from watching? Not at all, not in the slightest. It's still very much enjoyable.
 
-I'm also enjoying HBO's [*Lanterns*](https://www.hbomax.com/shows/lanterns/8c11d041-6b71-4e54-8369-fdb310e063b8). I'm really digging the show! It follows John Stewart, who's an apprentice to the current Green Lantern, Hal Jordan, and their dynamic is so fun to watch. I won't say any spoilers, but there have been some really interesting plot points thus far. Maybe slight spoiler, but I appreciate the actual limited usage of the Green Lantern powers. The show focuses more on the plot than on showing off the ring every other second, and I think that's the right call. If it were only about cool powers and cool CGI, it would get boring.
+I'm also enjoying HBO's [*Lanterns*](https://thetvdb.com/series/lanterns). I'm really digging the show! It follows John Stewart, who's an apprentice to the current Green Lantern, Hal Jordan, and their dynamic is so fun to watch. I won't say any spoilers, but there have been some really interesting plot points thus far. Maybe slight spoiler, but I appreciate the actual limited usage of the Green Lantern powers. The show focuses more on the plot than on showing off the ring every other second, and I think that's the right call. If it were only about cool powers and cool CGI, it would get boring.
 
 At the time I'm writing this, there are two episodes left, and I genuinely cannot predict where the show is going. That's exciting to me. I'm not even a super huge Green Lantern fan, but this show has made me a lot more interested in the Green Lanterns as an organization and in the individual Green Lanterns as heroes.
-
-https://bleach-anime.com/
-
-https://www.hbomax.com/shows/lanterns/8c11d041-6b71-4e54-8369-fdb310e063b8
 
 ## The Pebble Index 01 ring
 
