@@ -20,3 +20,13 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
         exclude: ^patches/
+
+  - repo: local
+    hooks:
+      - id: audit-projects
+        name: audit project statuses
+        entry: scripts/audit-projects-hook.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true

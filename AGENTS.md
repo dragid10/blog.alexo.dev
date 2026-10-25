@@ -133,6 +133,8 @@ Bot commits (Dependabot and similar) don't count.
 
 Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is never changed by the script; if it has a commit in the last 6 months, the script suggests unarchiving it. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in the gitignored `scripts/project-repos.local`.
 
+A pre-commit hook (`scripts/audit-projects-hook.sh`) runs `--write` whenever a commit adds, removes, or renames a project card. If any status changes, the commit stops so the changes can be reviewed, staged, and committed again. It lets the commit through with a warning when `gh` is missing, logged out, or offline. Skip it with `SKIP=audit-projects`.
+
 ## Gotchas (hard-won, do not relearn)
 
 - `@tinacms/cli` hoists old deps to root with yarn 1; `zod@^4` is a direct
@@ -176,7 +178,7 @@ Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authentic
   browser cache. When in doubt, bump it — the cost is one full re-cache, which
   is cheap.
 - Pre-commit hooks (`pre-commit install` once): gitleaks, 2MB file guard
-  (`public/content/images/` exempt), yaml/json checks, whitespace fixers. The
+  (`public/content/images/` exempt), yaml/json checks, whitespace fixers, and the project status audit (see Projects). The
   whitespace fixer rewrites `tina/tina-lock.json` trailing newline — harmless.
 - RSS/Buttondown email rendering has its own quirks and gotchas (separate
   markdown-it pass, embed cards, image handling). See local notes / agent
