@@ -28,6 +28,7 @@ yarn format       # prettier --write
 ./scripts/new.sh talk     # add a speaking engagement to speaking.yaml (--year --event --talk ...)
 ./scripts/tag.sh           # interactive tag editor — pick source (Obsidian/repo), post, tags (requires gum)
 ./scripts/tag.sh <slug>    # jump straight to tagging a specific repo post
+./scripts/audit-projects.sh [--write]  # check project card statuses against last-commit dates
 ./scripts/publish.sh <draft.md> [--publish] [--pr]  # move an Obsidian draft into the site:
                           # strips date prefix, copies/rewrites images, lints wikilinks.
                           # Set BLOG_REPO env var to run it from outside the repo.
@@ -128,7 +129,7 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 - `maintained`: last commit 6 to 12 months ago.
 - `archived`: no commit in over a year, or explicitly declared archived (an explicit declaration wins regardless of dates).
 
-Re-check statuses when adding or editing a card, since they drift as time passes.
+Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is left alone. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in the gitignored `scripts/project-repos.local`.
 
 ## Gotchas (hard-won, do not relearn)
 
