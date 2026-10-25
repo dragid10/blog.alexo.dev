@@ -30,8 +30,9 @@ yarn format       # prettier --write
 ./scripts/tag.sh <slug>    # jump straight to tagging a specific repo post
 ./scripts/audit-projects.sh [--write]  # check project card statuses against last-commit dates
 ./scripts/publish.sh <draft.md> [--publish] [--pr]  # move an Obsidian draft into the site:
-                          # strips date prefix, copies/rewrites images, lints wikilinks.
-                          # Set BLOG_REPO env var to run it from outside the repo.
+                          # strips date prefix, copies/rewrites images (stripping their
+                          # metadata incl. GPS; needs exiftool), lints wikilinks.
+                          # Set BLOG_REPO_PATH env var to run it from outside the repo.
 ```
 
 Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
@@ -77,7 +78,7 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
   are not in the nav. Nav labels live in `src/i18n/lang/en.ts`.
 - **Scripts**: `scripts/new.sh` (scaffold post/project/talk),
   `scripts/tag.sh` (interactive tag editor, requires `gum`), and
-  `scripts/publish.sh` (import an Obsidian draft; honors `BLOG_REPO` env var).
+  `scripts/publish.sh` (import an Obsidian draft; honors `BLOG_REPO_PATH` env var).
   Plain bash, no dependencies beyond gum for tag.sh, flags documented in each
   file's header.
 - **Commit graph**: `src/components/CommitGraph.astro` — client-side fetch from
