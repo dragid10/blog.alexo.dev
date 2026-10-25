@@ -35,13 +35,16 @@ and [TinaCMS](https://tina.io), deployed on Vercel. All content is plain markdow
    This strips any date prefix off the filename (**the filename becomes the URL**:
    `my-cool-post.md` → `alexo.dev/posts/my-cool-post/`), copies referenced images
    into `public/assets/uploads/<slug>/`, rewrites their paths, and warns about
-   anything Astro can't render. `--publish` flips `draft: false` and bumps the
-   date; `--pr` opens the pull request for you. Merge it and you're live.
+   anything Astro can't render. Local images are scrubbed of metadata (including
+   GPS coordinates) in the repo copy before publication; this requires `exiftool`
+   and never changes the vault originals (image orientation is kept).
+   `--publish` flips `draft: false` and bumps the date; `--pr` opens the pull
+   request for you. Merge it and you're live.
 
    To run it from outside the repo, set the env var once per machine:
 
    ```bash
-   export BLOG_REPO="$HOME/coding/alexo-website/blog.alexo.dev"
+   export BLOG_REPO_PATH="$HOME/coding/alexo-website/blog.alexo.dev"
    ```
 
 Tips:
@@ -84,7 +87,7 @@ pre-commit install        # gitleaks + hygiene hooks (one-time, per clone)
 Optional, for the publish script to work from any directory:
 
 ```bash
-export BLOG_REPO="$HOME/path/to/blog.alexo.dev"   # put it in your shell rc
+export BLOG_REPO_PATH="$HOME/path/to/blog.alexo.dev"   # put it in your shell rc
 ```
 
 No env vars or cloud credentials are needed for local dev or local builds.

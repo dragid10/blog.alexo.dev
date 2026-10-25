@@ -213,6 +213,71 @@ for image_ref in "${image_references[@]:-}"; do
 done
 
 # ---------------------------------------------------------------------------
+# GPS sanitization: strip GPS from every local image referenced in this post
+# Operates only on repo copies under public/assets/uploads — never on originals.
+# Fail-closed: missing exiftool, missing file, or residual GPS all abort.
+# ---------------------------------------------------------------------------
+
+# After the image loop above, all local refs have been rewritten to /assets/uploads/...
+mapfile -t _gps_refs < <(grep -oE '!\[[^]]*\]\([^)]+\)' "$destination_file" \
+  | sed -E 's/^!\[[^]]*\]\(([^)]+)\)$/\1/' \
+  | grep '^/assets/uploads/' \
+  | sort -u \
+  || true)
+
+# Only require exiftool when there are local images to sanitize (fix 1)
+if [ "${#_gps_refs[@]}" -gt 0 ]; then
+  _EXIFTOOL="$(command -v exiftool 2>/dev/null || true)"
+  if [ -z "$_EXIFTOOL" ]; then
+    echo "ERROR: exiftool not found in PATH — cannot strip GPS coordinates" >&2
+    exit 1
+  fi
+  # Resolve the canonical upload root once; pwd -P follows directory symlinks (fix 3)
+  _uploads_real="$(cd "$IMAGE_UPLOADS_DIR" && pwd -P)"
+
+  for _gps_ref in "${_gps_refs[@]:-}"; do
+    [ -z "$_gps_ref" ] && continue
+    # Decode %20 → spaces to resolve actual filename on disk
+    _gps_decoded="${_gps_ref//%20/ }"
+    _gps_rel="${_gps_decoded#/assets/uploads/}"
+    # Guard against string-level path traversal
+    case "$_gps_rel" in
+      *..*)
+        echo "ERROR: path traversal in image ref: $_gps_ref" >&2
+        exit 1 ;;
+    esac
+    _gps_file="$IMAGE_UPLOADS_DIR/$_gps_rel"
+    if [ ! -f "$_gps_file" ]; then
+      echo "ERROR: local image not found in repo: $_gps_file" >&2
+      exit 1
+    fi
+    # Reject symlinks outright — never follow a link that could escape uploads (fix 3)
+    if [ -L "$_gps_file" ]; then
+      echo "ERROR: image is a symlink, refusing to process: $_gps_file" >&2
+      exit 1
+    fi
+    # Confirm resolved directory is inside IMAGE_UPLOADS_DIR (catches dir-level symlinks) (fix 3)
+    _gps_dir_real="$(cd "$(dirname "$_gps_file")" && pwd -P)"
+    case "$_gps_dir_real/" in
+      "$_uploads_real"/*)  ;; # within uploads — ok
+      *)
+        echo "ERROR: $_gps_file resolves outside $IMAGE_UPLOADS_DIR" >&2
+        exit 1 ;;
+    esac
+    # GPS can also be stored in XMP/IPTC; scrub all metadata from the repo copy.
+    # Keep Orientation, or phone photos would render sideways once it is gone.
+    "$_EXIFTOOL" -overwrite_original -all= -tagsfromfile @ -Orientation "$_gps_file" >/dev/null
+    # Check all GPS-bearing metadata families; a tool error also stops the script.
+    _gps_check="$("$_EXIFTOOL" -s3 -GPS:All -XMP:All -IPTC:All "$_gps_file")"
+    if [ -n "$_gps_check" ]; then
+      echo "ERROR: GPS data remains in $_gps_file after sanitization" >&2
+      exit 1
+    fi
+    echo "  GPS stripped: $(basename "$_gps_file")"
+  done
+fi
+
+# ---------------------------------------------------------------------------
 # Optional: flip draft → published and update the publish timestamp
 # ---------------------------------------------------------------------------
 if [ -n "$SHOULD_PUBLISH" ]; then
