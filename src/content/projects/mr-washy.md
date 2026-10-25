@@ -1,6 +1,7 @@
 ---
 title: "Mr. Washy"
 description: "Pebble watchface where an anthropomorphic washing machine overflows to show the time every minute."
+repo: "https://github.com/dragid10/washTimeWatchFace"
 demo: "https://apps.repebble.com/mr-washy_cd39c6e9c4134fb388376793"
 status: "active"
 tags: ["c", "pebble", "watchface"]
