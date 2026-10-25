@@ -54,6 +54,7 @@ const projects = defineCollection({
         })
       )
       .default([]),
+    pixelArt: z.boolean().default(false),
     featured: z.boolean().default(false),
     order: z.number().optional(),
   }),

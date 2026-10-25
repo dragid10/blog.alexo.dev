@@ -31,6 +31,7 @@ const {
   tags,
   stack,
   screenshots,
+  pixelArt,
 } = project.data;
 const { Content } = await render(project);
 const hasBody = Boolean(project.body?.trim());
@@ -97,12 +98,26 @@ const ogImage = screenshots[0]
           <section aria-label="Screenshots" data-gallery>
             <figure>
               <div class="border-border bg-muted/20 flex aspect-[4/5] items-center justify-center overflow-hidden rounded-lg border">
-                <img
-                  data-gallery-main
-                  src={screenshots[0].src}
-                  alt={screenshots[0].alt}
-                  class="max-h-full max-w-full object-contain"
-                />
+                <a
+                  data-gallery-link
+                  href={screenshots[0].src}
+                  target="_blank"
+                  rel="noopener"
+                  title="Open full size"
+                  class="flex size-full items-center justify-center"
+                >
+                  <img
+                    data-gallery-main
+                    src={screenshots[0].src}
+                    alt={screenshots[0].alt}
+                    class:list={[
+                      "object-contain",
+                      pixelArt
+                        ? "size-full [image-rendering:pixelated]"
+                        : "max-h-full max-w-full",
+                    ]}
+                  />
+                </a>
               </div>
               <figcaption
                 data-gallery-caption
@@ -133,7 +148,10 @@ const ogImage = screenshots[0]
                         src={shot.src}
                         alt=""
                         loading="lazy"
-                        class="size-full object-cover"
+                        class:list={[
+                          "size-full object-cover",
+                          { "[image-rendering:pixelated]": pixelArt },
+                        ]}
                       />
                     </button>
                   </li>
@@ -225,6 +243,9 @@ const ogImage = screenshots[0]
         const main = gallery.querySelector<HTMLImageElement>(
           "[data-gallery-main]"
         );
+        const link = gallery.querySelector<HTMLAnchorElement>(
+          "[data-gallery-link]"
+        );
         const caption = gallery.querySelector<HTMLElement>(
           "[data-gallery-caption]"
         );
@@ -236,6 +257,7 @@ const ogImage = screenshots[0]
             if (!main) return;
             main.src = thumb.dataset.src ?? "";
             main.alt = thumb.dataset.alt ?? "";
+            if (link) link.href = thumb.dataset.src ?? "";
             if (caption) {
               caption.textContent = thumb.dataset.caption ?? "";
               caption.classList.toggle("hidden", !thumb.dataset.caption);

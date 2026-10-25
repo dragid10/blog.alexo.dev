@@ -91,6 +91,13 @@ const Project: Collection = {
       ],
     },
     {
+      label: "Pixel-art screenshots",
+      name: "pixelArt",
+      type: "boolean",
+      description:
+        "Scale screenshots up without blurring (for tiny images like Pebble screens)",
+    },
+    {
       label: "Featured",
       name: "featured",
       type: "boolean",
