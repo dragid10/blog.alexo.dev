@@ -22,7 +22,7 @@ featured: true
 order: 1
 ---
 
-Wellnot is a mobile app for tracking your daily symptoms and moods, and spotting the patterns in them. Log an entry with a severity from very mild to very severe, add a mood, and tag it with things like "Before Meal" or "Chronic". You can create your own symptoms and tags, pin the ones you use most and hide the rest.
+Wellnot is a mobile app for tracking your daily symptoms and moods, and spotting the patterns in them. Log an entry with a severity from very mild to very severe, add a mood, and tag it with things that are important for you to know or remember. You can create your own symptoms and tags, pin the ones you use most and hide the rest.
 
 A calendar view lets you browse your history, and a summary screen shows frequency patterns for any date range. There's a home screen widget with a quick-add button, CSV and JSON export, app lock with biometrics or a PIN, daily reminders, and light and dark themes.
 

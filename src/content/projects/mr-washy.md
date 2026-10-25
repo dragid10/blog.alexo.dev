@@ -22,6 +22,6 @@ screenshots:
 order: 7
 ---
 
-Mr. Washy is a Pebble watchface starring an anthropomorphic front-load washing machine. Clothes tumble inside his door, his eyes blink and look around, and his arms sway. Once a minute the door pops open and water overflows into a puddle that shows the current time, then drains away again.
+Mr. Washy is a Pebble watchface starring an anthropomorphic front-load washing machine. Clothes tumble inside his door, his eyes blink and look around, and his arms sway. Once a minute the door pops open and water overflows into a puddle that shows the current time, then drains away again. For some reason I think anthropomorphic household items are funny.
 
 It runs on every Pebble model, adapting to color or black and white and to round or rectangular screens. You can pick from five color themes or choose your own wall and floor colors, and show weather, steps, heart rate or battery in the top corners. Weather comes from Open-Meteo, so there's no API key. There's also a sleepy mode that stops the animation during Quiet Time or while you sleep, and the animation timers are kept minimal to go easy on the battery.

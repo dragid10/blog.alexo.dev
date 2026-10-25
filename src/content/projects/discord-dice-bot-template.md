@@ -8,6 +8,6 @@ stack: ["Python"]
 order: 4
 ---
 
-A starter repository for building your own dice-rolling Discord bot. Create a new repository from the template, add your bot token to a `.env` file, and you have a working bot to extend.
+A starter repository for building your own dice-rolling Discord bot. I built it for my first ever conference talk at [Pyohio 2024](https://alexo.dev/posts/pyohio-2024/). 
 
-It's written in Python 3.12 with Py-cord, python-dotenv for configuration, mypy for type checking and ruff for linting. The project is archived.
+Create a new repository from the template, add your bot token to a `.env` file, and you have a working bot to extend! It uses `py-cord` as its discord library.

@@ -15,6 +15,8 @@ featured: true
 order: 2
 ---
 
-This is a Tidbyt app that shows how a FIRST Robotics Competition team is ranked at its current event, right on the pixel display on your desk. You enter a team number and a The Blue Alliance API key, and the app shows the team's rank, or "No Ranking" if there isn't one yet. A schedule setting lets you choose when it runs.
+This is a Tidbyt app that shows how a FIRST Robotics Competition team is ranked at its current event, right on the pixel display on your desk. You enter a team number and a The Blue Alliance API key, and the app shows the team's rank, or displays "No Ranking" if there isn't one yet. 
 
-It's written in Starlark with Pixlet, and it's in the Tidbyt community app store. The linked post covers how I built it. It's archived because the Tidbyt community seems to have died off, so there's nobody left to use it.
+It's written in Starlark with Pixlet, and it's in the Tidbyt community app store. The linked post covers how I built it.
+
+Unfortunately It's archived because the Tidbyt community seems to have died off.
