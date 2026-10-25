@@ -41,7 +41,7 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
   (title, description [required], pubDatetime, tags, ogImage…). Filename = URL slug
   (`/posts/<filename>/`). Drafts: `draft: true` or `_`-prefixed filename.
 - **Projects**: `src/content/projects/*.md` — title, description, repo, demo, status,
-  tags, featured, order. Archived projects are hidden from the page.
+  tags, featured, order. The page groups them into Active / Maintained / Archived sections.
 - **Speaking data**: `src/data/speaking.yaml` — engagements list under `engagements` key
   (object root required by Tina). Speaking page renders them grouped by year.
 - **Pages**: `src/content/pages/` — about.md, bio-short.md, bio-long.md, resume.md.
@@ -120,7 +120,15 @@ To add a new tag: append it to `scripts/tags.txt` (alphabetical order).
 
 ### Projects
 
-One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, status, tags, featured, order. Archived projects are hidden from the page.
+One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, status, tags, featured, order. The projects page shows three sections: Active, Maintained, Archived.
+
+`status` is set by hand, using the date of the project's last commit:
+
+- `active`: a commit within the last 6 months.
+- `maintained`: last commit 6 to 12 months ago.
+- `archived`: no commit in over a year, or explicitly declared archived (an explicit declaration wins regardless of dates).
+
+Re-check statuses when adding or editing a card, since they drift as time passes.
 
 ## Gotchas (hard-won, do not relearn)
 
