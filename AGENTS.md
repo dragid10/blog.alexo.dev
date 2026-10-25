@@ -28,6 +28,7 @@ yarn format       # prettier --write
 ./scripts/new.sh talk     # add a speaking engagement to speaking.yaml (--year --event --talk ...)
 ./scripts/tag.sh           # interactive tag editor — pick source (Obsidian/repo), post, tags (requires gum)
 ./scripts/tag.sh <slug>    # jump straight to tagging a specific repo post
+./scripts/audit-projects.sh [--write]  # check project card statuses against last-commit dates
 ./scripts/publish.sh <draft.md> [--publish] [--pr]  # move an Obsidian draft into the site:
                           # strips date prefix, copies/rewrites images, lints wikilinks.
                           # Set BLOG_REPO env var to run it from outside the repo.
@@ -41,7 +42,7 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
   (title, description [required], pubDatetime, tags, ogImage…). Filename = URL slug
   (`/posts/<filename>/`). Drafts: `draft: true` or `_`-prefixed filename.
 - **Projects**: `src/content/projects/*.md` — title, description, repo, demo, status,
-  tags, featured, order. Archived projects are hidden from the page.
+  tags, featured, order. The page groups them into Active / Maintained / Archived sections.
 - **Speaking data**: `src/data/speaking.yaml` — engagements list under `engagements` key
   (object root required by Tina). Speaking page renders them grouped by year.
 - **Pages**: `src/content/pages/` — about.md, bio-short.md, bio-long.md, resume.md.
@@ -120,7 +121,17 @@ To add a new tag: append it to `scripts/tags.txt` (alphabetical order).
 
 ### Projects
 
-One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, status, tags, featured, order. Archived projects are hidden from the page.
+One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, status, tags, featured, order. The projects page shows three sections: Active, Maintained, Archived.
+
+`status` is set by hand, using the date of the project's last commit:
+
+- `active`: a commit within the last 6 months.
+- `maintained`: last commit 6 to 18 months ago.
+- `archived`: no commit in over 18 months, or explicitly declared archived (an explicit declaration wins regardless of dates).
+
+Bot commits (Dependabot and similar) don't count.
+
+Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is never changed by the script; if it has a commit in the last 6 months, the script suggests unarchiving it. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in the gitignored `scripts/project-repos.local`.
 
 ## Gotchas (hard-won, do not relearn)
 
