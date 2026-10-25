@@ -13,3 +13,5 @@ screenshots:
     alt: "Which Filament home page with print categories on the left and materials like PLA, PETG, and ABS"
 order: 9
 ---
+
+Which Filament helps you work out which type of filament to use for your project. It is built for newcomers who do not know or understand all the different filament types yet: tell it what you are printing, and it points you to the right material and explains why.
