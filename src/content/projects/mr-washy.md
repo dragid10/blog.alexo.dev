@@ -4,5 +4,6 @@ description: "Pebble watchface where an anthropomorphic washing machine overflow
 demo: "https://apps.repebble.com/mr-washy_cd39c6e9c4134fb388376793"
 status: "active"
 tags: ["c", "pebble", "watchface"]
+stack: ["C", "Pebble SDK"]
 order: 7
 ---

@@ -44,6 +44,16 @@ const projects = defineCollection({
     post: z.string().optional(),
     status: z.enum(["active", "maintained", "archived"]).default("active"),
     tags: z.array(z.string()).default([]),
+    stack: z.array(z.string()).default([]),
+    screenshots: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string().optional(),
+        })
+      )
+      .default([]),
     featured: z.boolean().default(false),
     order: z.number().optional(),
   }),

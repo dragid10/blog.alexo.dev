@@ -4,5 +4,6 @@ description: "Discord bot for managing D&D groups, sessions, and characters."
 repo: "https://github.com/dragid10/dnd-bot"
 status: "archived"
 tags: ["python", "discord"]
+stack: ["Python"]
 order: 3
 ---

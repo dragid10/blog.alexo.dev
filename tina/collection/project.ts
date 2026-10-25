@@ -67,6 +67,30 @@ const Project: Collection = {
       list: true,
     },
     {
+      label: "Tech stack",
+      name: "stack",
+      type: "string",
+      list: true,
+      description: 'Shown as "Built with" on the project page',
+    },
+    {
+      label: "Screenshots",
+      name: "screenshots",
+      type: "object",
+      list: true,
+      ui: { itemProps: item => ({ label: item?.alt }) },
+      fields: [
+        { type: "image", name: "src", label: "Image", required: true },
+        {
+          type: "string",
+          name: "alt",
+          label: "Alt text",
+          required: true,
+        },
+        { type: "string", name: "caption", label: "Caption" },
+      ],
+    },
+    {
       label: "Featured",
       name: "featured",
       type: "boolean",
@@ -82,6 +106,8 @@ const Project: Collection = {
       type: "rich-text",
       name: "body",
       label: "Body",
+      description:
+        "Longer write-up for the project page (falls back to the description)",
       isBody: true,
     },
   ],

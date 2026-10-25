@@ -5,5 +5,6 @@ repo: "https://github.com/dragid10/which-filament"
 demo: "https://which-filament.com"
 status: "active"
 tags: ["astro", "typescript", "3d-printing"]
+stack: ["Astro", "TypeScript"]
 order: 9
 ---

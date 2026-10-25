@@ -4,11 +4,15 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Footer from "@/components/Footer.astro";
+import { statusColors } from "@/utils/projectStatus";
 import config from "@/config";
 
 const allProjects = await getCollection("projects");
 
-const sortProjects = (a: (typeof allProjects)[number], b: (typeof allProjects)[number]) => {
+const sortProjects = (
+  a: (typeof allProjects)[number],
+  b: (typeof allProjects)[number]
+) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
   if (a.data.order != null && b.data.order != null)
     return a.data.order - b.data.order;
@@ -29,14 +33,6 @@ const sections = [
       .sort(sortProjects),
   }))
   .filter(section => section.projects.length > 0);
-
-const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-  maintained:
-    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-  archived:
-    "bg-neutral-100 text-neutral-600 dark:bg-neutral-800/30 dark:text-neutral-400",
-};
 ---
 
 <Layout
@@ -54,12 +50,18 @@ const statusColors: Record<string, string> = {
       sections.map(section => (
         <section class="mb-10 last:mb-0">
           <h2 class="mb-4 text-xl font-semibold">{section.heading}</h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-          {
-            section.projects.map(project => (
-              <div class="border-border rounded-lg border p-4 transition-colors hover:border-accent/40">
+          <div class="grid gap-4 sm:grid-cols-2">
+            {section.projects.map(project => (
+              <div class="border-border hover:border-accent/40 relative rounded-lg border p-4 transition-colors">
                 <div class="mb-2 flex items-start justify-between gap-2">
-                  <h3 class="text-lg font-semibold">{project.data.title}</h3>
+                  <h3 class="text-lg font-semibold">
+                    <a
+                      href={`/projects/${project.id}/`}
+                      class="hover:text-accent after:absolute after:inset-0 after:z-[1] after:rounded-lg"
+                    >
+                      {project.data.title}
+                    </a>
+                  </h3>
                   <span
                     class:list={[
                       "shrink-0 rounded-full px-2 py-0.5 text-xs font-medium",
@@ -69,7 +71,9 @@ const statusColors: Record<string, string> = {
                     {project.data.status}
                   </span>
                 </div>
-                <p class="mb-3 text-sm opacity-75">{project.data.description}</p>
+                <p class="mb-3 text-sm opacity-75">
+                  {project.data.description}
+                </p>
                 {project.data.tags.length > 0 && (
                   <div class="mb-3 flex flex-wrap gap-1.5">
                     {project.data.tags.map(tag => (
@@ -79,7 +83,7 @@ const statusColors: Record<string, string> = {
                     ))}
                   </div>
                 )}
-                <div class="flex gap-3 text-sm">
+                <div class="relative z-10 flex w-fit gap-3 text-sm">
                   {project.data.repo && (
                     <a
                       href={project.data.repo}
@@ -93,23 +97,33 @@ const statusColors: Record<string, string> = {
                   {project.data.demo && (
                     <a
                       href={project.data.demo}
-                      target={project.data.demo.startsWith("http") ? "_blank" : undefined}
-                      rel={project.data.demo.startsWith("http") ? "noopener noreferrer" : undefined}
+                      target={
+                        project.data.demo.startsWith("http")
+                          ? "_blank"
+                          : undefined
+                      }
+                      rel={
+                        project.data.demo.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                       class="text-accent hover:underline"
                     >
                       {project.data.demo.startsWith("/") ? "Read more" : "Demo"}
                     </a>
                   )}
                   {project.data.post && (
-                    <a href={project.data.post} class="text-accent hover:underline">
+                    <a
+                      href={project.data.post}
+                      class="text-accent hover:underline"
+                    >
                       Read more
                     </a>
                   )}
                 </div>
               </div>
-            ))
-          }
-        </div>
+            ))}
+          </div>
         </section>
       ))
     }
