@@ -13,7 +13,6 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PROJECTS_DIR="src/content/projects"
-LOCAL_REPOS_FILE="scripts/project-repos.local"
 
 # Pre-commit's `files:` filter ignores deleted files, so check the staged diff directly.
 if [ -z "$(git diff --cached --name-only --diff-filter=ADR -- "$PROJECTS_DIR/*.md")" ]; then
@@ -25,10 +24,6 @@ warn() { echo "audit-projects: $*, skipping the status check." >&2; }
 command -v gh >/dev/null || { warn "gh is not installed"; exit 0; }
 gh auth token >/dev/null 2>&1 || { warn "gh is not logged in"; exit 0; }
 gh api --method GET rate_limit --silent >/dev/null 2>&1 || { warn "GitHub is unreachable"; exit 0; }
-
-if [ ! -f "$LOCAL_REPOS_FILE" ]; then
-  echo "audit-projects: $LOCAL_REPOS_FILE not found; cards without a repo link will be skipped." >&2
-fi
 
 before=$(git diff -- "$PROJECTS_DIR")
 ./scripts/audit-projects.sh --write

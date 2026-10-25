@@ -341,6 +341,3 @@ dist
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/astro,node,yarn,linux,macos,intellij+all,visualstudiocode
-
-# Private repo lookups for scripts/audit-projects.sh
-scripts/project-repos.local

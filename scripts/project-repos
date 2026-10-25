@@ -1,0 +1,4 @@
+# <card-slug> <owner>/<repo> for project cards without a public repo link.
+# Used by scripts/audit-projects.sh to look up their last commit.
+mr-washy dragid10/washTimeWatchFace
+resmed-stats dragid10/resmedStatsPebbleApp

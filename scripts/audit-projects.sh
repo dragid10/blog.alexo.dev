@@ -15,8 +15,7 @@
 #
 # Cards with a `repo:` URL are looked up automatically. For a card without
 # one (e.g. a private repo that isn't linked from the site), add a line
-# "<card-slug> <owner>/<repo>" to scripts/project-repos.local. That file is
-# gitignored, so private repo names stay out of this public repository.
+# "<card-slug> <owner>/<repo>" to scripts/project-repos.
 #
 # Requires: gh (authenticated). Read-only unless --write is passed.
 #
@@ -27,7 +26,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PROJECTS_DIR="src/content/projects"
-LOCAL_REPOS_FILE="scripts/project-repos.local"
+REPOS_FILE="scripts/project-repos"
 WRITE=0
 
 case "${1:-}" in
@@ -62,10 +61,10 @@ frontmatter() {
     }' "$1"
 }
 
-# local_repo <slug> — look up an owner/repo in the gitignored override file.
-local_repo() {
-  [ -f "$LOCAL_REPOS_FILE" ] || return 0
-  awk -v slug="$1" '$1 == slug { print $2; exit }' "$LOCAL_REPOS_FILE"
+# mapped_repo <slug> — look up an owner/repo in the mapping file.
+mapped_repo() {
+  [ -f "$REPOS_FILE" ] || return 0
+  awk -v slug="$1" '$1 == slug { print $2; exit }' "$REPOS_FILE"
 }
 
 # last_commit_date <owner/repo> [path] — date of the newest non-bot commit among
@@ -94,7 +93,7 @@ for file in "$PROJECTS_DIR"/*.md; do
     repo=${BASH_REMATCH[1]}
     path=${BASH_REMATCH[3]:-}
   else
-    repo=$(local_repo "$slug")
+    repo=$(mapped_repo "$slug")
   fi
 
   if [ "$status" = archived ]; then
@@ -110,7 +109,7 @@ for file in "$PROJECTS_DIR"/*.md; do
     continue
   fi
   if [ -z "$repo" ]; then
-    printf '%-32s %-11s %-11s %-12s %s\n' "$slug" "$status" - - "skipped: no repo (see $LOCAL_REPOS_FILE)"
+    printf '%-32s %-11s %-11s %-12s %s\n' "$slug" "$status" - - "skipped: no repo (see $REPOS_FILE)"
     continue
   fi
 

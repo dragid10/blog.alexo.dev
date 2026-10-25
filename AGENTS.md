@@ -131,7 +131,7 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 
 Bot commits (Dependabot and similar) don't count.
 
-Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is never changed by the script; if it has a commit in the last 6 months, the script suggests unarchiving it. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in the gitignored `scripts/project-repos.local`.
+Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is never changed by the script; if it has a commit in the last 6 months, the script suggests unarchiving it. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in `scripts/project-repos` (for private repos that aren't linked from the site).
 
 A pre-commit hook (`scripts/audit-projects-hook.sh`) runs `--write` whenever a commit adds, removes, or renames a project card. If any status changes, the commit stops so the changes can be reviewed, staged, and committed again. It lets the commit through with a warning when `gh` is missing, logged out, or offline. Skip it with `SKIP=audit-projects`.
 
