@@ -126,10 +126,12 @@ One markdown file per project in `src/content/projects/`. Schema: title, descrip
 `status` is set by hand, using the date of the project's last commit:
 
 - `active`: a commit within the last 6 months.
-- `maintained`: last commit 6 to 12 months ago.
-- `archived`: no commit in over a year, or explicitly declared archived (an explicit declaration wins regardless of dates).
+- `maintained`: last commit 6 to 18 months ago.
+- `archived`: no commit in over 18 months, or explicitly declared archived (an explicit declaration wins regardless of dates).
 
-Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is left alone. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in the gitignored `scripts/project-repos.local`.
+Bot commits (Dependabot and similar) don't count.
+
+Statuses drift as time passes. `./scripts/audit-projects.sh` (needs an authenticated `gh`) compares each card with its repo's last commit and lists the ones that should change; `--write` updates them. A card already marked `archived` is never changed by the script; if it has a commit in the last 6 months, the script suggests unarchiving it. Cards without a `repo:` link are skipped unless their repo is listed as `<card-slug> <owner>/<repo>` in the gitignored `scripts/project-repos.local`.
 
 ## Gotchas (hard-won, do not relearn)
 
