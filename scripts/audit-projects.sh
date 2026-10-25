@@ -69,7 +69,12 @@ last_commit_date() {
   local repo=$1 path=${2:-}
   local args=(-f per_page=1)
   [ -n "$path" ] && args+=(-f "path=$path")
-  gh api "repos/$repo/commits" "${args[@]}" --jq '.[0].commit.committer.date[:10]' 2>/dev/null || true
+  local out
+  # --method GET is required: gh sends a POST whenever -f is used.
+  out=$(gh api --method GET "repos/$repo/commits" "${args[@]}" --jq '.[0].commit.committer.date[:10]' 2>/dev/null) || return 0
+  # Only accept a real date, so an error body can't pass as one.
+  [[ "$out" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] && echo "$out"
+  return 0
 }
 
 stale=0
