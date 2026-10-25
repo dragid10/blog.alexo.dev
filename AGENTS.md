@@ -41,8 +41,10 @@ Node 24 via asdf (`.tool-versions`). Yarn classic 1.22.
 - **Posts**: `src/content/posts/*.md` — schema in `src/content.config.ts`
   (title, description [required], pubDatetime, tags, ogImage…). Filename = URL slug
   (`/posts/<filename>/`). Drafts: `draft: true` or `_`-prefixed filename.
-- **Projects**: `src/content/projects/*.md` — title, description, repo, demo, status,
-  tags, featured, order. The page groups them into Active / Maintained / Archived sections.
+- **Projects**: `src/content/projects/*.md` — title, description, repo, demo, post, status,
+  tags, stack, screenshots, pixelArt, featured, order. `/projects/` groups them into Active /
+  Maintained / Archived sections; each card links to its own page at
+  `/projects/<filename>/` (`src/pages/projects/[slug].astro`).
 - **Speaking data**: `src/data/speaking.yaml` — engagements list under `engagements` key
   (object root required by Tina). Speaking page renders them grouped by year.
 - **Pages**: `src/content/pages/` — about.md, bio-short.md, bio-long.md, resume.md.
@@ -121,7 +123,9 @@ To add a new tag: append it to `scripts/tags.txt` (alphabetical order).
 
 ### Projects
 
-One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, status, tags, featured, order. The projects page shows three sections: Active, Maintained, Archived.
+One markdown file per project in `src/content/projects/`. Schema: title, description, repo, demo, post, status, tags, stack, screenshots, pixelArt, featured, order. The projects page shows three sections: Active, Maintained, Archived, and each card opens a detail page at `/projects/<filename>/`.
+
+The detail page shows a screenshot gallery (`screenshots:` list of `src` + `alt`, optional `caption`; images go in `public/assets/uploads/projects/<slug>/`; clicking the big image opens it full size), an About section (the markdown body, falling back to `description` when the body is empty), "Built with" badges from `stack`, and buttons for the repo, demo, and write-up links. A project with no screenshots gets a single-column page. Set `pixelArt: true` for tiny screenshots (Pebble screens) so they scale up sharp instead of blurry. Portrait shots fill the frame best, so lead with a phone-sized one when you have it.
 
 `status` is set by hand, using the date of the project's last commit:
 

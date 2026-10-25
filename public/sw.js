@@ -2,7 +2,7 @@
 // Without a bump, returning visitors see stale cached assets until they clear
 // their browser cache. New blog posts and content edits don't need a bump
 // (network-first HTML means they get fresh content when online).
-const CACHE_NAME = "alexo-v2";
+const CACHE_NAME = "alexo-v3";
 const SHELL = ["/", "/offline.html"];
 
 self.addEventListener("install", (event) => {
