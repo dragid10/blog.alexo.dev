@@ -15,3 +15,7 @@ screenshots:
     alt: "ResMed Stats showing a poor myAir score"
 order: 8
 ---
+
+ResMed Stats puts your CPAP therapy numbers on your wrist. It signs in to your ResMed myAir account and shows your myAir score for the past week, color-coded green, yellow or red, along with events per hour, usage, mask-off count and leak percentage. Up and Down step through the days, newest first.
+
+Data is cached, so the app opens instantly and only fetches when it's stale. It also refreshes itself once a day in the background. In the phone settings you can choose which stats to show, switch to a colorblind-friendly monochrome mode, or replace the numbers with simple Good / OK / Poor labels. Your login stays on your phone, the watch only stores the sleep stats, and nothing goes anywhere except ResMed's own servers.

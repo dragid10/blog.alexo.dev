@@ -14,4 +14,8 @@ screenshots:
 order: 9
 ---
 
-Which Filament helps you work out which type of filament to use for your project. It is built for newcomers who do not know or understand all the different filament types yet: tell it what you are printing, and it points you to the right material and explains why.
+Which Filament helps you work out which type of filament to use for your project. It's great for newcomers who don't know or understand all the different filament types yet.
+
+Tell it what you're printing, whether that's something decorative, a functional part, an outdoor piece or a flexible one, and it gives you a ranked shortlist of filaments with the reasons behind each pick. You can also browse by material, from PLA and PETG up to ABS, ASA and TPU, and open any of them to compare its variants like Rapid, Plus, Matte and Silk. Common examples such as a phone stand, a planter or a car mount each have a best pick, runners-up and what to avoid.
+
+The site is open source, and every filament is a single Markdown file, so adding or fixing one is easy to contribute.
