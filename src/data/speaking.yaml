@@ -3,6 +3,7 @@ engagements:
     event: "All Things Open"
     type: "Conference talk"
     talk: "Code Reviews: Compassion vs Criticism"
+    slides: "https://docs.google.com/presentation/d/e/2PACX-1vSKKi94QZOSlmDO-fUATfXWTWjyL7oPjvwfMbpH7E8KRqXOXefdihNlrdP0RsnXow/pub?start=false&loop=true&delayms=5000"
   - year: 2025
     event: "GitHub Universe"
     type: "Discussion lounge"
